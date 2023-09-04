@@ -5,7 +5,6 @@ import {
   Layout,
   Text,
   Icon,
-  Button,
   Select,
   SelectItem,
   IndexPath,
@@ -14,15 +13,15 @@ import {
   BottomTabBarProps,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
-import {useRecoilState} from 'recoil';
-import {textState} from 'store/index';
-import {produce} from 'immer';
-import {useState} from 'react';
-import {StyleSheet} from 'react-native';
+import { useRecoilState } from 'recoil';
+import { textState } from 'store/index';
+import { produce } from 'immer';
+import { useState } from 'react';
+import { StyleSheet } from 'react-native';
 
-const {Navigator, Screen} = createBottomTabNavigator();
+const { Navigator, Screen } = createBottomTabNavigator();
 
-const BottomTabBar = ({navigation, state}: BottomTabBarProps) => {
+const BottomTabBar = ({ navigation, state }: BottomTabBarProps) => {
   function onSelect(index: number) {
     console.log(index);
     navigation.navigate(state.routeNames[index]);
@@ -40,7 +39,7 @@ const HomeScreen = () => (
   <BaseLayout title={'首页'}>
     <Navigator
       tabBar={props => <BottomTabBar {...props} />}
-      screenOptions={{headerShown: false}}>
+      screenOptions={{ headerShown: false }}>
       <Screen name="Users" component={UsersScreen} />
       <Screen name="Orders" component={OrdersScreen} />
     </Navigator>
@@ -58,7 +57,7 @@ const UsersScreen = () => {
   };
 
   return (
-    <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>姓名:{user.name}</Text>
       <Text>年龄:{user.age}</Text>
     </Layout>
@@ -75,7 +74,7 @@ const OrdersScreen = () => {
     <SelectItem title={title} key={key} />
   );
   return (
-    <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text category="h1">喜欢</Text>
       <Select
         style={styles.container}

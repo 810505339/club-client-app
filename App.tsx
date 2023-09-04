@@ -1,9 +1,10 @@
 import * as eva from '@eva-design/eva';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppNavigator from 'router';
-import {ApplicationProvider, IconRegistry} from '@ui-kitten/components';
-import {EvaIconsPack} from '@ui-kitten/eva-icons';
-import {RecoilRoot} from 'recoil';
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import { RecoilRoot } from 'recoil';
+import '@utils/i18next';
 
 export default () => (
   <RecoilRoot>

@@ -1,0 +1,1 @@
+export {textState} from './user';

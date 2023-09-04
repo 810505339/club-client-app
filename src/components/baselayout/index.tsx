@@ -26,8 +26,7 @@ const BaseLayout = ({
 }: PropsWithChildren<ComponentProps>) => {
   const TopBar = showTopNav ? (
     <TopNavigation
-      title={() => <Text category="h1">{title}</Text>}
-      subtitle="Subtitle"
+      title={title}
       accessoryLeft={renderBackAction}
       alignment="center"
     />

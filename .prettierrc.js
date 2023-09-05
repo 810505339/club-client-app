@@ -3,7 +3,11 @@ module.exports = {
   bracketSameLine: true,
   bracketSpacing: false,
   singleQuote: true,
-  trailingComma: 'all',
+  trailingComma: 'none',
   parser: "flow",
-  semi: true // 使用 prettier 的 semi 选项
+  endOfLine: "auto",
+  semi: true,
+  "printWidth": 80,
+  "tabWidth": 2,
+  "trailingComma": 'all'
 };

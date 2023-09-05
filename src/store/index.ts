@@ -1,1 +1,1 @@
-export {textState} from './user';
+export { textState } from './user';

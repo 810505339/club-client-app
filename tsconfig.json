@@ -9,8 +9,9 @@
       "@storage/*": ["src/storage/*"],
       "@store/*": ["src/store/*"],
       "@utils/*": ["src/utils/*"],
-      "@locales/*":["src/locales/*"]
-    }
+      "@locales/*": ["src/locales/*"]
+    },
+    "types": ["webpack-env"]
   },
-  "extends": "@tsconfig/react-native/tsconfig.json"
+  "extends": "@tsconfig/react-native/tsconfig.json",
 }

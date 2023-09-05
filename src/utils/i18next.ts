@@ -1,51 +1,43 @@
 import i18next, { ModuleType, Resource } from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import storage from "@storage/index";
-import * as en from '@locales/en-US'
-import * as zh from '@locales/zh-CN'
+import storage from '@storage/index';
+import * as en from '@locales/en-US';
+import * as zh from '@locales/zh-CN';
 import { getLocales } from 'react-native-localize';
-const files = require.context('../page', true, /i18n\/.*\.ts$/)
-let enTarget = en
-let zhTarget = zh
+const files = require.context('../page', true, /i18n\/.*\.ts$/);
+let enTarget = en;
+let zhTarget = zh;
 files.keys().forEach((key: string) => {
-  console.log(files(key).default);
   //判断是英文还是中文
   if (key.includes('en-US')) {
-    enTarget = Object.assign(enTarget, files(key).default)
+    enTarget = Object.assign(enTarget, files(key).default);
   }
   if (key.includes('zh-CN')) {
-    zhTarget = Object.assign(zhTarget, files(key).default)
+    zhTarget = Object.assign(zhTarget, files(key).default);
   }
 
 });
 
-
-
-
-
 const resources: Resource = {
   en: {
-    translation: enTarget
+    translation: enTarget,
   },
   zh: {
-    translation: zhTarget
+    translation: zhTarget,
   },
-}
+};
 
 console.log(resources);
-
-
-
 const lngKey = '@lng';
-
 const languageDetector = {
   type: 'languageDetector' as ModuleType,
   async: true,
   detect: async function (callback) {
     // 获取上次选择的语言
-    const lng = await storage.load({ key: lngKey })
 
 
+    const lng = await storage.load({ key: lngKey });
+    console.log('123123123213', lng);
     if (lng === 'locale') {
       callback(getSystemLanguage());
     } else {
@@ -77,17 +69,13 @@ i18next
 export const getSystemLanguage = (): string => {
   const locales = getLocales();
   return locales[0].languageCode;
-
 };
-
-
-
 
 /**
  * 切换语言
  * @param lng
  */
-export const changeLanguage = async (lng?: 'en' | 'zh' | 'locale') => {
+export const changeLanguage = async (lng?: string) => {
   // 切换语言
 
   //todo 首次进入需要读取storage.load
@@ -96,11 +84,9 @@ export const changeLanguage = async (lng?: 'en' | 'zh' | 'locale') => {
   storage.save({
     key: lngKey,
     data: {
-      lng: lng
-    }
+      lng: lng,
+    },
   });
 };
 
 export default i18next;
-
-

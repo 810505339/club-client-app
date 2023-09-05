@@ -58,7 +58,8 @@ const UsersScreen = () => {
     });
     setUser(newUserInfo);
   };
-  const onChangeLanguage=()=>{
+  const onChangeLanguage = () => {
+
     changeLanguage('en')
   }
 
@@ -67,8 +68,8 @@ const UsersScreen = () => {
     <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>姓名:{user.name}</Text>
       <Text>年龄:{user.age}</Text>
-      <Button  onPress={onChangeLanguage}>change Language</Button>
-      <Text>{t('language')}</Text>
+      <Button onPress={onChangeLanguage}>change Language</Button>
+      <Text>{t('login')}</Text>
     </Layout>
   );
 };

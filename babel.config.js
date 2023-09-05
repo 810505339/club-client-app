@@ -12,9 +12,11 @@ module.exports = {
           '@storage': './src/storage',
           '@store': './src/store',
           '@utils': './src/utils',
-          "@locales":'./src/locales'
+          "@locales": './src/locales',
+          '@page':'./src/page'
         },
       },
+      'import-glob'
     ],
   ],
 };

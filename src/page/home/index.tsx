@@ -9,6 +9,7 @@ import {
   SelectItem,
   IndexPath,
   Button,
+  ViewPager,
 } from '@ui-kitten/components';
 import {
   BottomTabBarProps,

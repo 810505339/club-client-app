@@ -8,7 +8,7 @@ import {
   Select,
   SelectItem,
   IndexPath,
-  Button
+  Button,
 } from '@ui-kitten/components';
 import {
   BottomTabBarProps,
@@ -21,6 +21,22 @@ import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { useTranslation, withTranslation } from 'react-i18next';
 import { changeLanguage } from 'utils/i18next';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+type RootStackParamList = {
+  Login: undefined;
+  Profile: { userId: string };
+  Feed: { sort: 'latest' | 'top' } | undefined;
+};
+
+
+type loginScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Login'
+>;
+
+
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -50,18 +66,18 @@ const HomeScreen = () => (
 );
 
 const UsersScreen = () => {
-  const [user, setUser] = useRecoilState(textState);
-  const { t, i18n } = useTranslation();
-  const onChange = () => {
-    const newUserInfo = produce(user, darft => {
-      darft.age += 1;
-    });
-    setUser(newUserInfo);
-  };
+  const [user] = useRecoilState(textState);
+  const { t } = useTranslation();
+  const navigation = useNavigation<loginScreenNavigationProp>();
+
   const onChangeLanguage = () => {
 
-    changeLanguage('en')
-  }
+    changeLanguage('en');
+  };
+
+  const toLogin = () => {
+    navigation.navigate('Login');
+  };
 
 
   return (
@@ -69,6 +85,7 @@ const UsersScreen = () => {
       <Text>姓名:{user.name}</Text>
       <Text>年龄:{user.age}</Text>
       <Button onPress={onChangeLanguage}>change Language</Button>
+      <Button onPress={toLogin}>Login</Button>
       <Text>{t('login')}</Text>
     </Layout>
   );

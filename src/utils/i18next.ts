@@ -4,6 +4,7 @@ import storage from '@storage/index';
 import * as en from '@locales/en-US';
 import * as zh from '@locales/zh-CN';
 import { getLocales } from 'react-native-localize';
+
 const files = require.context('../page', true, /i18n\/.*\.ts$/);
 let enTarget = en;
 let zhTarget = zh;

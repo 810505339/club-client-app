@@ -1,22 +1,19 @@
-import * as eva from '@eva-design/eva';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AppNavigator from 'router';
-import {ApplicationProvider, IconRegistry} from '@ui-kitten/components';
-import {EvaIconsPack} from '@ui-kitten/eva-icons';
 import {RecoilRoot} from 'recoil';
 import '@utils/i18next';
-import useTheme from 'hooks/useTheme';
-export default () => {
-  //获取系统主题
-  const {theme} = useTheme();
+import {PaperProvider} from 'react-native-paper';
+
+const App = () => {
   return (
     <RecoilRoot>
-      <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={theme}>
+      <PaperProvider>
         <SafeAreaProvider>
           <AppNavigator />
         </SafeAreaProvider>
-      </ApplicationProvider>
+      </PaperProvider>
     </RecoilRoot>
   );
 };
+
+export default App;

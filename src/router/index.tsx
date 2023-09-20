@@ -1,21 +1,10 @@
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import HomeScreen from '@page/home';
 import useSysLanguage from 'hooks/useSysLanguage';
-import LoginScreen from '@page/login';
 import {getGenericPassword} from 'react-native-keychain';
 import {useEffect} from 'react';
-
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import HomeTabs from './HomeTabs';
 const Stack = createNativeStackNavigator();
-
-const HomeNavigator = () => (
-  <Stack.Navigator
-    initialRouteName="Login"
-    screenOptions={{headerShown: false}}>
-    <Stack.Screen name="Login" component={LoginScreen} />
-    <Stack.Screen name="Home" component={HomeScreen} />
-  </Stack.Navigator>
-);
 
 const AppNavigator = () => {
   useSysLanguage();
@@ -37,7 +26,11 @@ const AppNavigator = () => {
 
   return (
     <NavigationContainer>
-      <HomeNavigator />
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{headerShown: false}}>
+        <Stack.Screen name="HomeTabs" component={HomeTabs} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };

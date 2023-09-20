@@ -18,5 +18,6 @@ module.exports = {
       },
       'import-glob',
     ],
+    ['nativewind/babel'],
   ],
 };

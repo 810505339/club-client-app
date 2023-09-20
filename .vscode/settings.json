@@ -3,5 +3,7 @@
     "darft",
     "immer",
   ],
-  ""
+  "editor.quickSuggestions": {
+    "strings": true
+  }
 }

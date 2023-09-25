@@ -12,11 +12,17 @@ module.exports = {
           '@storage': './src/storage',
           '@store': './src/store',
           '@utils': './src/utils',
-          "@locales": './src/locales',
-          '@page':'./src/page'
+          '@locales': './src/locales',
+          '@pages': './src/pages',
         },
       },
-      'import-glob'
+      'import-glob',
     ],
+    ['nativewind/babel'],
   ],
+  env: {
+    production: {
+      plugins: ['react-native-paper/babel'],
+    },
+  },
 };

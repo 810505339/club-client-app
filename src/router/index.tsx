@@ -4,6 +4,7 @@ import {getGenericPassword} from 'react-native-keychain';
 import {useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeTabs from './HomeTabs';
+import LoginScreen from '@pages/LoginScreen';
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
@@ -30,6 +31,7 @@ const AppNavigator = () => {
         initialRouteName="Home"
         screenOptions={{headerShown: false}}>
         <Stack.Screen name="HomeTabs" component={HomeTabs} />
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

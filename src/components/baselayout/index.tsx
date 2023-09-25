@@ -3,15 +3,14 @@ import {
   TopNavigationAction,
   Icon,
   Divider,
-  Text,
 } from '@ui-kitten/components';
 import {PropsWithChildren, ReactNode} from 'react';
 import {StyleSheet} from 'react-native';
 import {TouchableWebElement} from '@ui-kitten/components/devsupport';
 type ComponentProps = {
-  title?: string;
-  showTopNav?: boolean;
-  TopNav?: ReactNode;
+  title?: string,
+  showTopNav?: boolean,
+  TopNav?: ReactNode,
 };
 
 const renderBackAction = (): TouchableWebElement => (
@@ -41,13 +40,5 @@ const BaseLayout = ({
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export default BaseLayout;

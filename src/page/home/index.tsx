@@ -8,7 +8,7 @@ import {
   Select,
   SelectItem,
   IndexPath,
-  Button
+  Button,
 } from '@ui-kitten/components';
 import {
   BottomTabBarProps,
@@ -19,7 +19,7 @@ import { textState } from 'store/index';
 import { produce } from 'immer';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { useTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { changeLanguage } from 'utils/i18next';
 
 const { Navigator, Screen } = createBottomTabNavigator();
@@ -60,8 +60,8 @@ const UsersScreen = () => {
   };
   const onChangeLanguage = () => {
 
-    changeLanguage('en')
-  }
+    changeLanguage('en');
+  };
 
 
   return (

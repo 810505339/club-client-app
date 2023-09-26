@@ -1,15 +1,22 @@
-import {View, Text} from 'react-native';
+import {View, Platform, ImageBackground} from 'react-native';
 import {Appbar} from 'react-native-paper';
 
-const demoScreen = () => {
+const MORE_ICON = Platform.OS === 'ios' ? 'dots-horizontal' : 'dots-vertical';
+
+const DemoScreen = () => {
   return (
-    <View>
-      <Appbar.Header>
-        <Appbar.Content title="Title" subtitle={'Subtitle'} />
-        <Appbar.Action icon="magnify" onPress={() => {}} />
-        <Appbar.Action icon="dots-horizontal" onPress={() => {}} />
-      </Appbar.Header>
+    <View className="flex-1">
+      <ImageBackground
+        className="flex-1"
+        source={require('@assets/imgs/login/bg.jpg')}
+      />
+
+      <View className=" absolute top-0 left-0 right-0 z-30 bg-transparent">
+        <Appbar.Header style={{backgroundColor: 'transparent'}}>
+          <Appbar.BackAction />
+        </Appbar.Header>
+      </View>
     </View>
   );
 };
-export default demoScreen;
+export default DemoScreen;

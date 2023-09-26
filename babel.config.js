@@ -14,6 +14,7 @@ module.exports = {
           '@utils': './src/utils',
           '@locales': './src/locales',
           '@pages': './src/pages',
+          '@assets': './assets',
         },
       },
       'import-glob',

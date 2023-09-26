@@ -3,7 +3,7 @@ import AppNavigator from 'router';
 import {RecoilRoot} from 'recoil';
 import '@utils/i18next';
 import {PaperProvider, MD3DarkTheme, MD3LightTheme} from 'react-native-paper';
-import {useColorScheme} from 'react-native';
+import {StatusBar, useColorScheme} from 'react-native';
 import {useMaterial3Theme} from '@pchmn/expo-material3-theme';
 
 const App = () => {

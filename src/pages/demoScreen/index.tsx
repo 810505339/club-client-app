@@ -1,7 +1,7 @@
 import {View, Text} from 'react-native';
 import {Appbar} from 'react-native-paper';
 
-const demoScreen = () => {
+const DemoScreen = () => {
   return (
     <View>
       <Appbar.Header>
@@ -12,4 +12,4 @@ const demoScreen = () => {
     </View>
   );
 };
-export default demoScreen;
+export default DemoScreen;

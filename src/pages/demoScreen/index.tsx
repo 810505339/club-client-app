@@ -1,8 +1,6 @@
 import {View, Platform, ImageBackground} from 'react-native';
 import {Appbar} from 'react-native-paper';
 
-const MORE_ICON = Platform.OS === 'ios' ? 'dots-horizontal' : 'dots-vertical';
-
 const DemoScreen = () => {
   return (
     <View className="flex-1">

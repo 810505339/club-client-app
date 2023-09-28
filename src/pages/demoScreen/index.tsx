@@ -1,5 +1,5 @@
 import {View, Platform, ImageBackground} from 'react-native';
-import {Appbar} from 'react-native-paper';
+import {Appbar, Text, Button} from 'react-native-paper';
 
 const DemoScreen = () => {
   return (
@@ -8,11 +8,15 @@ const DemoScreen = () => {
         className="flex-1"
         source={require('@assets/imgs/login/bg.jpg')}
       />
-
       <View className=" absolute top-0 left-0 right-0 z-30 bg-transparent">
         <Appbar.Header style={{backgroundColor: 'transparent'}}>
           <Appbar.BackAction />
         </Appbar.Header>
+      </View>
+      <View className="absolute top-12">
+        <Button mode="outlined" className="border-red-500" onPress={() => {}}>
+          Share
+        </Button>
       </View>
     </View>
   );

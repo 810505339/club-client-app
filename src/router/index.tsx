@@ -5,9 +5,11 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {adaptNavigationTheme} from 'react-native-paper';
 import HomeTabs from './HomeTabs';
 import LoginScreen from '@pages/loginScreen';
-import DemoScreen from '@pages/demoScreen';
 import CustomNavigationBar from '@components/appbar/customNavigationBar';
 import useSysLanguage from '@hooks/useSysLanguage';
+import Login from '@pages/loginScreen/login';
+import NewUser from '@pages/loginScreen/set-password/newUser';
+import OldUser from '@pages/loginScreen/set-password/oldUser';
 
 const Stack = createNativeStackNavigator();
 const {DarkTheme} = adaptNavigationTheme({reactNavigationDark: DefaultTheme});
@@ -32,21 +34,17 @@ const AppNavigator = () => {
   return (
     <NavigationContainer theme={DarkTheme}>
       <Stack.Navigator
-        initialRouteName="HomeTabs"
-        screenOptions={{
-          header: props => <CustomNavigationBar {...props} />,
-        }}>
-        <Stack.Screen
-          name="HomeTabs"
-          options={{headerShown: false}}
-          component={HomeTabs}
-        />
+        initialRouteName="Login"
+        screenOptions={{headerShown: false}}>
+        <Stack.Screen name="HomeTabs" component={HomeTabs} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
-        <Stack.Screen
-          options={{headerShown: true, headerTitle: '登录/注册'}}
-          name="DemoScreen"
-          component={DemoScreen}
-        />
+        <Stack.Screen name="DemoScreen" component={DemoScreen} />
+        <Stack.Group>
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="NewUser" component={NewUser} />
+          <Stack.Screen name="OldUser" component={OldUser} />
+        </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
   );

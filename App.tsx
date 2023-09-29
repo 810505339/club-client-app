@@ -5,8 +5,13 @@ import '@utils/i18next';
 import {PaperProvider, MD3DarkTheme, MD3LightTheme} from 'react-native-paper';
 import {useColorScheme} from 'react-native';
 import {useMaterial3Theme} from '@pchmn/expo-material3-theme';
-
+import SplashScreen from 'react-native-splash-screen';
+import {useEffect} from 'react';
+import {StatusBar} from 'react-native';
 const App = () => {
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
   const colorScheme = useColorScheme();
   const {theme} = useMaterial3Theme();
 
@@ -18,6 +23,7 @@ const App = () => {
     <RecoilRoot>
       <PaperProvider theme={paperTheme}>
         <SafeAreaProvider>
+          <StatusBar backgroundColor="transparent" translucent={true} />
           <AppNavigator />
         </SafeAreaProvider>
       </PaperProvider>

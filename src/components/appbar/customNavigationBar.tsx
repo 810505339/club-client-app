@@ -1,8 +1,9 @@
-import {Appbar, Menu} from 'react-native-paper';
+import {Appbar} from 'react-native-paper';
 import {getHeaderTitle} from '@react-navigation/elements';
 import {useState} from 'react';
 import {View} from 'react-native';
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
+import {StatusBar} from 'react-native';
 
 export default function CustomNavigationBar({
   navigation,
@@ -11,11 +12,17 @@ export default function CustomNavigationBar({
   back,
 }: NativeStackHeaderProps) {
   const title = getHeaderTitle(options, route.name);
+  const Right = options.headerRight || (() => null);
 
   return (
-    <Appbar.Header className="absolute bg-transparent top-0 left-0 right-0 h-[64px] z-10">
-      {back ? <Appbar.BackAction onPress={navigation.goBack} /> : null}
-      <Appbar.Content title={title} />
-    </Appbar.Header>
+    <View>
+      <Appbar.Header
+        style={{backgroundColor: 'transparent'}}
+        statusBarHeight={StatusBar.currentHeight}>
+        {back ? <Appbar.BackAction onPress={navigation.goBack} /> : null}
+        <Appbar.Content titleStyle={{fontSize: 17}} title={title} />
+        <Right />
+      </Appbar.Header>
+    </View>
   );
 }

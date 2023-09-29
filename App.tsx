@@ -1,5 +1,5 @@
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import AppNavigator from 'router';
+import AppNavigator from '@router/index';
 import {RecoilRoot} from 'recoil';
 import '@utils/i18next';
 import {PaperProvider, MD3DarkTheme, MD3LightTheme} from 'react-native-paper';
@@ -10,6 +10,7 @@ import {useEffect} from 'react';
 import {StatusBar} from 'react-native';
 const App = () => {
   useEffect(() => {
+    /* 这是启动页 */
     SplashScreen.hide();
   }, []);
   const colorScheme = useColorScheme();

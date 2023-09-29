@@ -4,7 +4,7 @@ module.exports = {
     [
       'module-resolver',
       {
-        root: ['./src'],
+        root: ['./'],
         extensions: ['.ios.js', '.android.js', '.js', '.ts', '.tsx', '.json'],
         alias: {
           '@components': './src/components',
@@ -14,6 +14,8 @@ module.exports = {
           '@utils': './src/utils',
           '@locales': './src/locales',
           '@pages': './src/pages',
+          '@hooks': './src/hooks',
+          '@assets': './assets',
         },
       },
       'import-glob',

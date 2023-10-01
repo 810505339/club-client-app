@@ -15,11 +15,15 @@ const App = () => {
   }, []);
   const colorScheme = useColorScheme();
   const {theme} = useMaterial3Theme();
+  const colors = {
+    ...theme.dark,
+    primary: '#EE2737',
+  };
 
   const paperTheme =
     colorScheme === 'dark'
-      ? {...MD3DarkTheme, colors: theme.dark}
-      : {...MD3LightTheme, colors: theme.dark};
+      ? {...MD3DarkTheme, colors: colors}
+      : {...MD3LightTheme, colors: colors};
   return (
     <RecoilRoot>
       <PaperProvider theme={paperTheme}>

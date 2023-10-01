@@ -1,18 +1,18 @@
 import {useNavigation} from '@react-navigation/native';
 import {ImageBackground, View} from 'react-native';
 import {Button, Text} from 'react-native-paper';
-import {LoginOrRegisterScreenNavigationProp} from '@router/type';
+import {ScreenNavigationProp} from '@router/type';
+import BaseLayout from '@components/baselayout';
 
 const bgImage = require('@assets/imgs/login/bg.png');
 
 const Login = () => {
-  const navigation = useNavigation<LoginOrRegisterScreenNavigationProp>();
+  const navigation = useNavigation<ScreenNavigationProp<'LoginOrRegister'>>();
   function handleLogin() {
     navigation.navigate('LoginOrRegister');
   }
   return (
-    <View className="flex-1">
-      <ImageBackground source={bgImage} className="flex-1" />
+    <BaseLayout source={bgImage}>
       <View className="absolute left-16 right-16 bottom-0 h-64">
         <Button
           mode="outlined"
@@ -30,7 +30,7 @@ const Login = () => {
           <View className="w-8 h-0 border-t border-[#ffffff7f] absolute top-[50%] right-14" />
         </View>
       </View>
-    </View>
+    </BaseLayout>
   );
 };
 

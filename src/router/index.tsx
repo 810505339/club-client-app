@@ -11,6 +11,7 @@ import NewUser from '@pages/loginScreen/set-password/newUser';
 import OldUser from '@pages/loginScreen/set-password/oldUser';
 import LoginOrRegister from '@pages/loginScreen/login/loginOrRegister';
 import {RootStackParamList} from './type';
+import Verification from '@pages/loginScreen/verification';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const {DarkTheme} = adaptNavigationTheme({reactNavigationDark: DefaultTheme});
@@ -51,8 +52,21 @@ const AppNavigator = () => {
             options={{title: '登录/注册'}}
             component={LoginOrRegister}
           />
-          <Stack.Screen name="NewUser" component={NewUser} />
-          <Stack.Screen name="OldUser" component={OldUser} />
+          <Stack.Screen
+            name="NewUser"
+            component={NewUser}
+            options={{title: '设置密码'}}
+          />
+          <Stack.Screen
+            name="OldUser"
+            component={OldUser}
+            options={{title: '输入密码'}}
+          />
+          <Stack.Screen
+            name="Verification"
+            component={Verification}
+            options={{title: '输入验证码'}}
+          />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

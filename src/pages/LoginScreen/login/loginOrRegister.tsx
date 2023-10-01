@@ -67,8 +67,14 @@ const LoginOrRegister = () => {
         <View>
           <Button
             mode="outlined"
-            style={{borderColor: '#FFFFFF', width: 162}}
+            style={{
+              borderColor: '#FFFFFF',
+              width: 162,
+              height: 50,
+              borderRadius: 33,
+            }}
             labelStyle={{fontSize: 18, color: '#FFFFFF', fontWeight: '600'}}
+            contentStyle={{height: 50}}
             onPress={handlePwsLogin}>
             密码登录
           </Button>
@@ -76,8 +82,14 @@ const LoginOrRegister = () => {
         <View>
           <Button
             mode="outlined"
-            style={{borderColor: '#FFFFFF', width: 162}}
+            style={{
+              borderColor: '#FFFFFF',
+              width: 162,
+              height: 50,
+              borderRadius: 33,
+            }}
             labelStyle={{fontSize: 18, color: '#FFFFFF', fontWeight: '600'}}
+            contentStyle={{height: 50}}
             onPress={handleVerification}>
             获取验证码
           </Button>

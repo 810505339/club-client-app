@@ -17,11 +17,16 @@ const Login = () => {
         <Button
           mode="outlined"
           style={{borderColor: '#EE2737'}}
-          labelStyle={{fontSize: 18, color: '#EE2737'}}
+          labelStyle={{
+            fontSize: 18,
+            color: '#EE2737',
+            fontWeight: '600',
+            borderRadius: 33,
+          }}
+          contentStyle={{height: 50}}
           onPress={handleLogin}>
           登录 / 注册
         </Button>
-
         <View className="relative mt-16">
           <View className="w-8 h-0 border-t border-[#ffffff7f] absolute top-[50%] left-14" />
           <Text className="text-xs text-center text-[#ffffff7f] ">

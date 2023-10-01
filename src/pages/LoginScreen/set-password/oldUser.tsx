@@ -25,11 +25,13 @@ const OldUser = () => {
       <View className="absolute left-5 right-5 bottom-36">
         <Button
           mode="outlined"
-          labelStyle={{
-            fontSize: 18,
-            color: '#FFFFFF',
-            fontWeight: '600',
-          }}>
+          style={{
+            borderColor: '#FFFFFF',
+            height: 50,
+            borderRadius: 33,
+          }}
+          labelStyle={{fontSize: 18, color: '#FFFFFF', fontWeight: '600'}}
+          contentStyle={{height: 50}}>
           登录
         </Button>
       </View>

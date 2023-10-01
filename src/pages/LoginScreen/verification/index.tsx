@@ -1,12 +1,14 @@
 import {useNavigation} from '@react-navigation/native';
-import {View, TextInput as BaseTextInput} from 'react-native';
+import {View} from 'react-native';
 import {Button, Text} from 'react-native-paper';
 import {ScreenNavigationProp} from '@router/type';
 import BaseLayout from '@components/baselayout';
 import {useCountdown} from '@hooks/useCountdown';
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
+import VerificationCodeField from './compoents/VerificationCodeField';
 
 const bgImage = require('@assets/imgs/login/login-register-bg.png');
+
 const Verification = () => {
   const navigation = useNavigation<ScreenNavigationProp<'LoginOrRegister'>>();
   const [isResend, setIsResend] = useState(false);
@@ -16,6 +18,10 @@ const Verification = () => {
     setIsResend(true);
     start();
   };
+
+  const codeChange = useCallback((value: string) => {
+    console.log(value);
+  }, []);
 
   useEffect(() => {
     if (count <= 0) {
@@ -35,7 +41,7 @@ const Verification = () => {
 
   const CountdownRender = (
     <Text className="text-center text-[#ffffff7f] font-semibold">
-      {count}秒后重试
+      <Text className="text-[#EE2737]">{count}秒</Text>后重试
     </Text>
   );
 
@@ -44,20 +50,8 @@ const Verification = () => {
       <View className="absolute left-5 right-5 top-36">
         <Text className="text-[#ffffff7f]">请输入验证码</Text>
         <View className="mt-4">
-          <View
-            className=" bg-[#FFFFFF1A] rounded-xl h-24 w-20 px-6"
-            style={{
-              shadowColor: '#1affffff',
-              shadowOffset: {width: 0, height: 1},
-              shadowOpacity: 0.2,
-              shadowRadius: 1.41,
-            }}>
-            <BaseTextInput
-              selectionColor="transparent"
-              keyboardType="numeric"
-              maxLength={1}
-              className="text-5xl text-center"
-            />
+          <View>
+            <VerificationCodeField onChange={codeChange} />
           </View>
           <View className="mt-6">
             {isResend ? CountdownRender : ResendRender}
@@ -68,11 +62,13 @@ const Verification = () => {
       <View className="absolute left-5 right-5 bottom-0 h-36">
         <Button
           mode="outlined"
-          labelStyle={{
-            fontSize: 18,
-            color: '#FFFFFF',
-            fontWeight: '600',
-          }}>
+          style={{
+            borderColor: '#FFFFFF',
+            height: 50,
+            borderRadius: 33,
+          }}
+          labelStyle={{fontSize: 18, color: '#FFFFFF', fontWeight: '600'}}
+          contentStyle={{height: 50}}>
           登录
         </Button>
       </View>

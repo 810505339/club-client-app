@@ -16,12 +16,11 @@ const Login = () => {
       <View className="absolute left-16 right-16 bottom-0 h-64">
         <Button
           mode="outlined"
-          style={{borderColor: '#EE2737'}}
+          style={{borderColor: '#EE2737', height: 50, borderRadius: 33}}
           labelStyle={{
             fontSize: 18,
             color: '#EE2737',
             fontWeight: '600',
-            borderRadius: 33,
           }}
           contentStyle={{height: 50}}
           onPress={handleLogin}>

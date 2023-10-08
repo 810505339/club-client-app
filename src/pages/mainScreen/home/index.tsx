@@ -1,18 +1,19 @@
 import {useNavigation} from '@react-navigation/native';
-import {View, Text} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import {Button} from 'react-native-paper';
+import {ScreenNavigationProp, TabParamList} from '@router/type';
+import Header from './components/header';
+import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 
 const HomeScreen = () => {
-  const navigation = useNavigation();
-  const handleToDemo = () => {
-    navigation.navigate('DemoScreen');
-  };
-
+  const navigation =
+    useNavigation<BottomTabNavigationProp<TabParamList, 'Home'>>();
+  navigation.setOptions({
+    header: props => <Header {...props} />,
+  });
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Button icon="camera" mode="contained" onPress={handleToDemo}>
-        to demo
-      </Button>
+    <View>
+      <ScrollView horizontal={true} />
     </View>
   );
 };

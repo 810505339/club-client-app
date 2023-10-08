@@ -7,17 +7,18 @@ export type RootStackParamList = {
   Login: undefined,
   NewUser: undefined,
   OldUser: undefined,
-  Verification: undefined
+  Verification: undefined,
+  HomeTab: undefined,
 };
 
-type TabParamList = {
-  Home: NavigatorScreenParams<RootStackParamList>,
-  Profile: { userId: string },
+export type TabParamList = {
+  Home: undefined,
+  Dynamic: undefined,
+  Fightwine: undefined,
+  User: undefined,
 };
 
 export type ScreenNavigationProp<T extends keyof RootStackParamList> = CompositeNavigationProp<
   BottomTabNavigationProp<TabParamList>,
   NativeStackNavigationProp<RootStackParamList, T>,
 >;
-
-

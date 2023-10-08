@@ -3,7 +3,7 @@ import {StyleSheet, Platform} from 'react-native';
 export const CELL_SIZE = 76;
 export const CELL_BORDER_RADIUS = 8;
 export const DEFAULT_CELL_BG_COLOR = '#FFFFFF1A';
-export const NOT_EMPTY_CELL_BG_COLOR = '#EE2737';
+export const NOT_EMPTY_CELL_BG_COLOR = '#fff';
 export const ACTIVE_CELL_BG_COLOR = '#FFFFFF1A';
 
 const styles = StyleSheet.create({
@@ -16,10 +16,10 @@ const styles = StyleSheet.create({
     width: CELL_SIZE,
     lineHeight: CELL_SIZE - 5,
     ...Platform.select({web: {lineHeight: 65}}),
-    fontSize: 30,
+    fontSize: 50,
     textAlign: 'center',
     borderRadius: CELL_BORDER_RADIUS,
-    color: '#EE2737',
+    color: '#0F0F0F',
     backgroundColor: '#fff',
 
     // IOS

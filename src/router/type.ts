@@ -13,8 +13,8 @@ export type RootStackParamList = {
 
 export type TabParamList = {
   Home: undefined,
-  Dynamic: undefined,
   Fightwine: undefined,
+  Ticket: undefined,
   User: undefined,
 };
 

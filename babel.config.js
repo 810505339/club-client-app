@@ -21,6 +21,7 @@ module.exports = {
       'import-glob',
     ],
     ['nativewind/babel'],
+    ['react-native-reanimated/plugin']
   ],
   env: {
     production: {

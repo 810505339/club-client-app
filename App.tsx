@@ -8,6 +8,7 @@ import { useMaterial3Theme } from '@pchmn/expo-material3-theme';
 import SplashScreen from 'react-native-splash-screen';
 import { useEffect } from 'react';
 import { StatusBar } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const App = () => {
   useEffect(() => {
@@ -26,13 +27,16 @@ const App = () => {
       ? { ...MD3DarkTheme, colors: colors }
       : { ...MD3LightTheme, colors: colors };
   return (
+
     <RecoilRoot>
-      <PaperProvider theme={paperTheme}>
-        <SafeAreaProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <PaperProvider theme={paperTheme}>
+          <SafeAreaProvider>
             <StatusBar backgroundColor="transparent" translucent={true} />
             <AppNavigator />
-        </SafeAreaProvider>
-      </PaperProvider>
+          </SafeAreaProvider>
+        </PaperProvider>
+      </GestureHandlerRootView>
     </RecoilRoot>
   );
 };

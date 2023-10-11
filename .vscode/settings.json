@@ -5,7 +5,8 @@
     "HOMEBG",
     "imgs",
     "immer",
-    "pchmn"
+    "pchmn",
+    "Swiper"
   ],
   "editor.quickSuggestions": {
     "strings": true

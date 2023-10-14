@@ -9,6 +9,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 const App = () => {
   useEffect(() => {
@@ -30,12 +31,14 @@ const App = () => {
 
     <RecoilRoot>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <PaperProvider theme={paperTheme}>
-          <SafeAreaProvider>
-            <StatusBar backgroundColor="transparent" translucent={true} />
-            <AppNavigator />
-          </SafeAreaProvider>
-        </PaperProvider>
+        <BottomSheetModalProvider>
+          <PaperProvider theme={paperTheme}>
+            <SafeAreaProvider>
+              <StatusBar backgroundColor="transparent" translucent={true} />
+              <AppNavigator />
+            </SafeAreaProvider>
+          </PaperProvider>
+        </BottomSheetModalProvider>
       </GestureHandlerRootView>
     </RecoilRoot>
   );

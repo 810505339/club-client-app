@@ -1,5 +1,5 @@
 import { View, FlatList, ImageBackground, ImageSourcePropType } from 'react-native';
-import { Text } from 'react-native-paper'
+import { Text } from 'react-native-paper';
 
 type IData = {
 
@@ -17,13 +17,13 @@ const data: IData[] = [
 ];
 
 const Item = ({ text, source, color }: IData) => (
-  <View className='mx-1.5  w-[72px] h-[102px]  rounded-md relative'>
-    <ImageBackground source={source as ImageSourcePropType} className='w-full h-full' />
-    <Text className='text-xs   absolute bottom-2 text-center w-full' style={{ color: color }}>{text}</Text>
+  <View className="mx-1.5  w-[72px] h-[102px]  rounded-md relative">
+    <ImageBackground source={source as ImageSourcePropType} className="w-full h-full" />
+    <Text className="text-xs   absolute bottom-2 text-center w-full" style={{ color: color }}>{text}</Text>
   </View>
 );
 const HorizontalFlatList = () => (
-  <View className='absolute z-10 top-28'>
+  <View className="">
     <FlatList
       data={data}
       renderItem={({ item }) => <Item  {...item} />}

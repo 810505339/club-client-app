@@ -10,8 +10,10 @@ import Login from '@pages/loginScreen/login';
 import NewUser from '@pages/loginScreen/set-password/newUser';
 import OldUser from '@pages/loginScreen/set-password/oldUser';
 import LoginOrRegister from '@pages/loginScreen/login/loginOrRegister';
+
 import {RootStackParamList} from './type';
 import Verification from '@pages/loginScreen/verification';
+import Camera from '@pages/loginScreen/camera';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const {DarkTheme} = adaptNavigationTheme({reactNavigationDark: DefaultTheme});
@@ -35,7 +37,7 @@ const AppNavigator = () => {
 
   return (
     <NavigationContainer theme={DarkTheme}>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="Camera">
 
       <Stack.Group
           screenOptions={{
@@ -66,6 +68,12 @@ const AppNavigator = () => {
             name="Verification"
             component={Verification}
             options={{title: '输入验证码'}}
+          />
+
+        <Stack.Screen
+            name="Camera"
+            component={Camera}
+            options={{title: 'Camera'}}
           />
         </Stack.Group>
         <Stack.Screen

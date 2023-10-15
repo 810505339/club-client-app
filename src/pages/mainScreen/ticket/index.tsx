@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { ImageBackground, View } from 'react-native';
 import {
   Button,
   Title,
@@ -11,9 +11,17 @@ import {
   useTabIndex,
   useTabNavigation,
 } from 'react-native-paper-tabs';
+import { useHeaderHeight } from '@react-navigation/elements';
 
+
+const HOMEBG = require('@assets/imgs/home/bg.png')
 const TicketScreen = () => {
+
+  const headerHeight = useHeaderHeight();
   return (
+   <View className='relative'>
+   <ImageBackground source={HOMEBG} className='h-[100vh] absolute w-[100vw]'/>
+   <View style={{height:headerHeight}}></View>
     <TabsProvider
     defaultIndex={0}
     // onChangeIndex={handleChangeIndex} optional
@@ -53,6 +61,7 @@ const TicketScreen = () => {
       </TabScreen>
     </Tabs>
   </TabsProvider>
+   </View>
   );
 };
 export default TicketScreen;

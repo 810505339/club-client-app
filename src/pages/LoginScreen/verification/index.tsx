@@ -47,7 +47,7 @@ const Verification = () => {
 
   return (
     <BaseLayout source={bgImage}>
-      <View className="absolute left-5 right-5 top-36">
+      <View className="mx-5 mt-11">
         <Text className="text-[#ffffff7f]">请输入验证码</Text>
         <View className="mt-4">
           <View>

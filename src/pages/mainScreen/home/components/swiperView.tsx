@@ -1,6 +1,6 @@
-import { StyleSheet, View } from "react-native";
-import { Text } from "react-native-paper";
-import SwiperFlatList, { Pagination, PaginationProps } from "react-native-swiper-flatlist";
+import { StyleSheet, View } from 'react-native';
+import { Text } from 'react-native-paper';
+import SwiperFlatList, { Pagination, PaginationProps } from 'react-native-swiper-flatlist';
 
 const colors = ['tomato', 'thistle', 'skyblue', 'teal'];
 
@@ -12,11 +12,11 @@ const styles = StyleSheet.create({
     width:50,
     height:6,
     borderRadius:3,
-   
+
   },
   activePagination:{
-    width:50
-  }
+    width:50,
+  },
 });
 
 export const CustomPagination = (props: JSX.IntrinsicAttributes & PaginationProps) => {
@@ -33,7 +33,7 @@ export const CustomPagination = (props: JSX.IntrinsicAttributes & PaginationProp
 };
 
 const SwiperView = () => {
-  return (<View className='absolute z-10 top-60'>
+  return (<View className="">
     <SwiperFlatList
       autoplay
       autoplayDelay={2}
@@ -48,7 +48,7 @@ const SwiperView = () => {
         </View>
       )}
     />
-  </View>)
-}
+  </View>);
+};
 
-export default SwiperView
+export default SwiperView;

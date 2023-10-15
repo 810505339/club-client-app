@@ -29,7 +29,7 @@ const LoginOrRegister = () => {
 
   return (
     <BaseLayout source={bgImage}>
-      <View className="absolute top-36   left-5 right-5 ">
+      <View className="mx-5 mt-11">
         <View>
           <Text className="text-[#ffffff7f] text-sx">请输入你的联系电话</Text>
         </View>

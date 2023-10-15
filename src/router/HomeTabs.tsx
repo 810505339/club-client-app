@@ -6,7 +6,7 @@ import UserScreen from '@pages/mainScreen/user';
 import CustomNavigationBar from '@components/appbar/customNavigationBar';
 import { TabParamList } from './type';
 import { Image } from 'react-native';
-import { } from 'react-native-safe-area-context';
+
 
 
 const HOMEICON = require('@assets/imgs/bottombar/user.png')
@@ -25,6 +25,7 @@ const HomeTabs = () => {
 
       return {
         headerTransparent: true,
+        
         tabBarActiveTintColor: '#E6A055FF',
         tabBarIconStyle: {
           position:'absolute',

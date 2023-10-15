@@ -8,6 +8,7 @@ const bgImage = require('@assets/imgs/login/bg.png');
 
 const Login = () => {
   const navigation = useNavigation<ScreenNavigationProp<'LoginOrRegister'>>();
+
   function handleLogin() {
     navigation.navigate('LoginOrRegister');
   }

@@ -7,7 +7,7 @@ const bgImage = require('@assets/imgs/login/login-register-bg.png');
 const NewUser = () => {
   return (
     <BaseLayout source={bgImage}>
-      <View className="absolute  top-36 left-5 right-5">
+      <View className="mx-5 mt-11">
         <PswInput label="请输入密码" />
         <View className="mt-12">
           <PswInput label="确认密码" />

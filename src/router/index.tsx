@@ -35,13 +35,9 @@ const AppNavigator = () => {
 
   return (
     <NavigationContainer theme={DarkTheme}>
-      <Stack.Navigator initialRouteName="HomeTab">
-        <Stack.Screen
-          name="HomeTab"
-          component={HomeTabs}
-          options={{headerShown: false}}
-        />
-        <Stack.Group
+      <Stack.Navigator initialRouteName="Login">
+
+      <Stack.Group
           screenOptions={{
             header: props => <CustomNavigationBar {...props} />,
             headerTransparent: true,
@@ -72,6 +68,12 @@ const AppNavigator = () => {
             options={{title: '输入验证码'}}
           />
         </Stack.Group>
+        <Stack.Screen
+          name="HomeTab"
+          component={HomeTabs}
+          options={{headerShown: false}}
+        />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

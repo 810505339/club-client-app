@@ -20,7 +20,7 @@ const App = () => {
   const { theme } = useMaterial3Theme();
   const colors = {
     ...theme.dark,
-    primary: '#EE2737',
+    primary: '#FFFFFF',
   };
 
   const paperTheme =

@@ -13,7 +13,7 @@ const NewUser = () => {
           <PswInput label="确认密码" />
         </View>
       </View>
-      <View className="absolute left-5 right-5 bottom-36">
+      <View  className="absolute left-5 right-5 bottom-0  h-32">
         <Button
           mode="outlined"
           style={{

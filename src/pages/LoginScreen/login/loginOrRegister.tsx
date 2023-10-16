@@ -41,7 +41,7 @@ const LoginOrRegister = () => {
             maxLength={11}
             value={phone}
             onChangeText={text => setPhone(text)}
-            className="bg-transparent flex-grow font-bold text-4xl "
+            className="bg-transparent flex-grow font-bold text-2xl "
           />
         </View>
         <View className="flex-row items-start justify-start  mt-6 relative">
@@ -56,9 +56,9 @@ const LoginOrRegister = () => {
           <View className="flex-1 ">
             <Text className="text-[#ffffff7f]">
               继续下一步，即表示你同意0.2Lounge & Club 的
-              <Text style={{color: theme.colors.primary}}>服务条款》</Text>
-              《并确认你已阅读我们
-              <Text style={{color: theme.colors.primary}}>《隐私政策》</Text>。
+              <Text className="text-[#EE2737]">《服务条款》</Text>
+              并确认你已阅读我们
+              <Text className="text-[#EE2737]">《隐私政策》</Text>
             </Text>
           </View>
         </View>
@@ -69,8 +69,6 @@ const LoginOrRegister = () => {
             mode="outlined"
             style={{
               borderColor: '#FFFFFF',
-              width: 162,
-              height: 50,
               borderRadius: 33,
             }}
             labelStyle={{fontSize: 18, color: '#FFFFFF', fontWeight: '600'}}
@@ -84,8 +82,7 @@ const LoginOrRegister = () => {
             mode="outlined"
             style={{
               borderColor: '#FFFFFF',
-              width: 162,
-              height: 50,
+
               borderRadius: 33,
             }}
             labelStyle={{fontSize: 18, color: '#FFFFFF', fontWeight: '600'}}

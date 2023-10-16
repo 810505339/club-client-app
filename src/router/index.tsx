@@ -37,7 +37,7 @@ const AppNavigator = () => {
 
   return (
     <NavigationContainer theme={DarkTheme}>
-      <Stack.Navigator initialRouteName="Camera">
+      <Stack.Navigator initialRouteName="Login">
 
       <Stack.Group
           screenOptions={{

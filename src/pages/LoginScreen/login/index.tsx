@@ -27,12 +27,12 @@ const Login = () => {
           onPress={handleLogin}>
           登录 / 注册
         </Button>
-        <View className="relative mt-16">
-          <View className="w-8 h-0 border-t border-[#ffffff7f] absolute top-[50%] left-14" />
+        <View className=" m-auto border  mt-16 w-[70%]">
+          <View className="w-8 h-0 border-t border-[#ffffff7f]  top-[50%] " />
           <Text className="text-xs text-center text-[#ffffff7f] ">
             三方账号登录
           </Text>
-          <View className="w-8 h-0 border-t border-[#ffffff7f] absolute top-[50%] right-14" />
+          <View className="w-8 h-0 border-t border-[#ffffff7f]  top-[50%] absolute right-0" />
         </View>
       </View>
     </BaseLayout>

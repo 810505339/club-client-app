@@ -11,7 +11,7 @@ const OldUser = () => {
       <View className="mx-5 mt-11">
         <PswInput label="请输入密码" />
       </View>
-      <View className="absolute left-5 right-5 bottom-36">
+      <View className="absolute left-5 right-5 bottom-0  h-32">
         <Button
           mode="outlined"
           style={{

@@ -4,7 +4,7 @@ import {useCallback, useEffect, useRef, useState} from 'react';
 export function useCountdown(seconds = 60) {
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
   const [target, setTarget] = useState<Date | null>(null);
-  const [count, setCount] = useState<number>(0);
+  const [count, setCount] = useState<number>(seconds);
   const appState = useAppState();
 
   const start = useCallback(() => {

@@ -10,6 +10,8 @@ import { useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import Toast from 'react-native-toast-message';
+import toastConfig from '@components/toast/customToast';
 
 const App = () => {
   useEffect(() => {
@@ -20,7 +22,7 @@ const App = () => {
   const { theme } = useMaterial3Theme();
   const colors = {
     ...theme.dark,
-    primary: '#FFFFFF',
+    primary: '#EE2737',
   };
 
   const paperTheme =
@@ -36,6 +38,7 @@ const App = () => {
             <SafeAreaProvider>
               <StatusBar backgroundColor="transparent" translucent={true} />
               <AppNavigator />
+              <Toast  config={toastConfig} bottomOffset={200} position="bottom"  />
             </SafeAreaProvider>
           </PaperProvider>
         </BottomSheetModalProvider>

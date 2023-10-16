@@ -24,6 +24,8 @@ const Verification = () => {
   }, []);
 
   useEffect(() => {
+    console.log(isResend);
+
     if (count <= 0) {
       stop();
       setIsResend(false);

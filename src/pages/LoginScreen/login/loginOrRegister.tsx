@@ -5,26 +5,43 @@ import {Button, Checkbox, Text, useTheme} from 'react-native-paper';
 import {TextInput} from 'react-native-paper';
 import {ScreenNavigationProp} from '@router/type';
 import BaseLayout from '@components/baselayout';
+import Toast from 'react-native-toast-message';
+import  {loginApi} from '@api/login';
 const bgImage = require('@assets/imgs/login/login-register-bg.png');
+
 
 const LoginOrRegister = () => {
   const [phone, setPhone] = useState('');
-  const theme = useTheme();
   const [checked, setChecked] = useState(false);
   const navigation = useNavigation<
     | ScreenNavigationProp<'NewUser'>
     | ScreenNavigationProp<'OldUser'>
-    | ScreenNavigationProp<'Verification'>,
+    | ScreenNavigationProp<'Verification'>
   >();
 
   //密码登录
   function handlePwsLogin() {
+    if (!checked)
+    {
+      Toast.show({text1:'请勾选'});
+      return;
+    }
     checked ? navigation.navigate('OldUser') : navigation.navigate('NewUser');
   }
 
   //
-  function handleVerification() {
-    navigation.navigate('Verification');
+  async function handleVerification() {
+    if (!checked)
+    {
+      Toast.show({text1:'请勾选'});
+      return;
+    }
+    //发送验证码
+
+   //const {data} = await loginApi({mobile: '13111111111',code:'1234'});
+
+   navigation.navigate('Verification');
+
   }
 
   return (

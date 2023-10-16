@@ -15,6 +15,7 @@ export default function CustomNavigationBar({
   const Right = options.headerRight || (() => null);
   const insets = useSafeAreaInsets();
 
+
   return (
     <View>
       <Appbar.Header

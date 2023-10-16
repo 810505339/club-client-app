@@ -1,31 +1,42 @@
-import {useNavigation} from '@react-navigation/native';
-import {View} from 'react-native';
-import {Button, Text} from 'react-native-paper';
-import {ScreenNavigationProp} from '@router/type';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { View } from 'react-native';
+import { Button, Text } from 'react-native-paper';
+import { RootStackParamList, ScreenNavigationProp } from '@router/type';
 import BaseLayout from '@components/baselayout';
-import {useCountdown} from '@hooks/useCountdown';
-import {useCallback, useEffect, useState} from 'react';
+import { useCountdown } from '@hooks/useCountdown';
+import { useCallback, useEffect, useState } from 'react';
 import VerificationCodeField from './compoents/VerificationCodeField';
+import { loginApi, sendYzmApi } from '@api/login';
 
 const bgImage = require('@assets/imgs/login/login-register-bg.png');
 
 const Verification = () => {
-  const navigation = useNavigation<ScreenNavigationProp<'LoginOrRegister'>>();
-  const [isResend, setIsResend] = useState(false);
-  const {count, start, stop} = useCountdown();
+  const route = useRoute<RouteProp<RootStackParamList, 'Verification'>>();
+  const mobile = route.params.phone;
 
-  const sendVerification = () => {
+
+  const [isResend, setIsResend] = useState(false);
+  const { count, start, stop } = useCountdown(60);
+  const [code, setCode] = useState('1234');
+
+  const sendVerification = async () => {
     setIsResend(true);
     start();
+
+    await sendYzmApi(mobile);
+
   };
 
   const codeChange = useCallback((value: string) => {
-    console.log(value);
+    // setCode(value);
   }, []);
 
+  const handleLogin = async () => {
+    await loginApi({ mobile, code });
+  };
+
   useEffect(() => {
-    if (count <= 0) {
-      stop();
+    if (count == 0) {
       setIsResend(false);
     }
   }, [count, stop]);
@@ -40,7 +51,7 @@ const Verification = () => {
   );
 
   const CountdownRender = (
-    <Text className="text-center text-[#ffffff7f] font-semibold">
+    <Text className="text-center text-[#ffffff7f] font-semibold" onPress={sendVerification}>
       <Text className="text-[#EE2737]">{count}秒</Text>后重试
     </Text>
   );
@@ -67,8 +78,8 @@ const Verification = () => {
             height: 50,
             borderRadius: 33,
           }}
-          labelStyle={{fontSize: 18, color: '#FFFFFF', fontWeight: '600'}}
-          contentStyle={{height: 50}}>
+          labelStyle={{ fontSize: 18, color: '#FFFFFF', fontWeight: '600' }}
+          contentStyle={{ height: 50 }} onPress={handleLogin}>
           登录
         </Button>
       </View>

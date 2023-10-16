@@ -1,30 +1,64 @@
-import {useNavigation} from '@react-navigation/native';
-import {useState} from 'react';
-import {ImageBackground, View} from 'react-native';
-import {Button, Checkbox, Text, useTheme} from 'react-native-paper';
-import {TextInput} from 'react-native-paper';
-import {ScreenNavigationProp} from '@router/type';
+import { useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
+import { ImageBackground, View } from 'react-native';
+import { Button, Checkbox, Text, useTheme } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
+import { ScreenNavigationProp } from '@router/type';
 import BaseLayout from '@components/baselayout';
+import Toast from 'react-native-toast-message';
+import { loginApi, sendYzmApi } from '@api/login';
 const bgImage = require('@assets/imgs/login/login-register-bg.png');
 
+
 const LoginOrRegister = () => {
-  const [phone, setPhone] = useState('');
-  const theme = useTheme();
+
+
+  const [phone, setPhone] = useState(13111111111);
   const [checked, setChecked] = useState(false);
   const navigation = useNavigation<
     | ScreenNavigationProp<'NewUser'>
     | ScreenNavigationProp<'OldUser'>
-    | ScreenNavigationProp<'Verification'>,
+    | ScreenNavigationProp<'Verification'>
   >();
 
   //密码登录
   function handlePwsLogin() {
+    if (!checked) {
+      Toast.show({ text1: '请勾选' });
+      return;
+    }
     checked ? navigation.navigate('OldUser') : navigation.navigate('NewUser');
   }
 
   //
-  function handleVerification() {
-    navigation.navigate('Verification');
+  async function handleVerification() {
+    if (!checked) {
+      Toast.show({ text1: '请勾选' });
+      return;
+    }
+
+    if (phone.length < 11) {
+      Toast.show({ text1: '手机号错误' });
+      return;
+    }
+    //发送验证码
+
+    try {
+
+      const { data } = await sendYzmApi(phone);
+      console.log(data, 'data');
+
+      navigation.navigate('Verification', {
+        phone,
+      });
+
+    } catch (err) {
+
+    }
+
+
+
+
   }
 
   return (
@@ -71,8 +105,8 @@ const LoginOrRegister = () => {
               borderColor: '#FFFFFF',
               borderRadius: 33,
             }}
-            labelStyle={{fontSize: 18, color: '#FFFFFF', fontWeight: '600'}}
-            contentStyle={{height: 50}}
+            labelStyle={{ fontSize: 18, color: '#FFFFFF', fontWeight: '600' }}
+            contentStyle={{ height: 50 }}
             onPress={handlePwsLogin}>
             密码登录
           </Button>
@@ -85,8 +119,8 @@ const LoginOrRegister = () => {
 
               borderRadius: 33,
             }}
-            labelStyle={{fontSize: 18, color: '#FFFFFF', fontWeight: '600'}}
-            contentStyle={{height: 50}}
+            labelStyle={{ fontSize: 18, color: '#FFFFFF', fontWeight: '600' }}
+            contentStyle={{ height: 50 }}
             onPress={handleVerification}>
             获取验证码
           </Button>

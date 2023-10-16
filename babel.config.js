@@ -17,6 +17,7 @@ module.exports = {
           '@pages': './src/pages',
           '@hooks': './src/hooks',
           '@assets': './assets',
+          '@api': './src/api',
         },
       },
       'import-glob',

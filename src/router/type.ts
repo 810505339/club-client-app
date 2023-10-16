@@ -7,7 +7,9 @@ export type RootStackParamList = {
   Login: undefined,
   NewUser: undefined,
   OldUser: undefined,
-  Verification: undefined,
+  Verification: {
+    phone: string
+  },
   HomeTab: undefined,
 };
 

@@ -11,7 +11,8 @@
       "@utils/*": ["src/utils/*"],
       "@locales/*": ["src/locales/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@assets/*":["assets/*"]
+      "@assets/*":["assets/*"],
+      "@api/*":["src/api/*"],
     },
     "types": ["webpack-env"]
   },

@@ -36,14 +36,7 @@ const Verification = () => {
   };
 
   useEffect(() => {
-<<<<<<< HEAD
     if (count == 0) {
-=======
-    console.log(isResend);
-
-    if (count <= 0) {
-      stop();
->>>>>>> 53d6f10f639cabb7a97685946f3030729ce8fcab
       setIsResend(false);
     }
   }, [count, stop]);

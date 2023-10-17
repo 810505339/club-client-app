@@ -6,22 +6,14 @@ import { TextInput } from 'react-native-paper';
 import { ScreenNavigationProp } from '@router/type';
 import BaseLayout from '@components/baselayout';
 import Toast from 'react-native-toast-message';
-<<<<<<< HEAD
 import { loginApi, sendYzmApi } from '@api/login';
-=======
-import  {loginApi} from '@api/login';
->>>>>>> 53d6f10f639cabb7a97685946f3030729ce8fcab
 const bgImage = require('@assets/imgs/login/login-register-bg.png');
 
 
 const LoginOrRegister = () => {
-<<<<<<< HEAD
 
 
   const [phone, setPhone] = useState(13111111111);
-=======
-  const [phone, setPhone] = useState('');
->>>>>>> 53d6f10f639cabb7a97685946f3030729ce8fcab
   const [checked, setChecked] = useState(false);
   const navigation = useNavigation<
     | ScreenNavigationProp<'NewUser'>
@@ -31,14 +23,8 @@ const LoginOrRegister = () => {
 
   //密码登录
   function handlePwsLogin() {
-<<<<<<< HEAD
     if (!checked) {
       Toast.show({ text1: '请勾选' });
-=======
-    if (!checked)
-    {
-      Toast.show({text1:'请勾选'});
->>>>>>> 53d6f10f639cabb7a97685946f3030729ce8fcab
       return;
     }
     checked ? navigation.navigate('OldUser') : navigation.navigate('NewUser');
@@ -46,7 +32,6 @@ const LoginOrRegister = () => {
 
   //
   async function handleVerification() {
-<<<<<<< HEAD
     if (!checked) {
       Toast.show({ text1: '请勾选' });
       return;
@@ -54,16 +39,10 @@ const LoginOrRegister = () => {
 
     if (phone.length < 11) {
       Toast.show({ text1: '手机号错误' });
-=======
-    if (!checked)
-    {
-      Toast.show({text1:'请勾选'});
->>>>>>> 53d6f10f639cabb7a97685946f3030729ce8fcab
       return;
     }
     //发送验证码
 
-<<<<<<< HEAD
     try {
 
       const { data } = await sendYzmApi(phone);
@@ -79,11 +58,6 @@ const LoginOrRegister = () => {
 
 
 
-=======
-   //const {data} = await loginApi({mobile: '13111111111',code:'1234'});
-
-   navigation.navigate('Verification');
->>>>>>> 53d6f10f639cabb7a97685946f3030729ce8fcab
 
   }
 

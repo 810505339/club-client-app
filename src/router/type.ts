@@ -9,9 +9,10 @@ export type RootStackParamList = {
   Verification: {
     phone: string
   },
-  AuthenticationSex:undefined,
-  AuthenticationPower:undefined,
-  Authentication:undefined,
+  AuthenticationSex: undefined,
+  AuthenticationPower: undefined,
+  Authentication: undefined,
+  AuthenticationCamera: undefined,
   HomeTab: undefined,
 };
 

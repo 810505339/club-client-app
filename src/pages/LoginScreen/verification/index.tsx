@@ -5,13 +5,20 @@ import { RootStackParamList, ScreenNavigationProp } from '@router/type';
 import BaseLayout from '@components/baselayout';
 import { useCountdown } from '@hooks/useCountdown';
 import { useCallback, useEffect, useState } from 'react';
-import VerificationCodeField from './compoents/VerificationCodeField';
+import VerificationCodeField from './component/VerificationCodeField';
 import { loginApi, sendYzmApi } from '@api/login';
+import { useSetRecoilState } from 'recoil';
+import { userAtom } from '@store/index';
 
 const bgImage = require('@assets/imgs/login/login-register-bg.png');
 
 const Verification = () => {
   const route = useRoute<RouteProp<RootStackParamList, 'Verification'>>();
+  const navigation = useNavigation<
+    | ScreenNavigationProp<'AuthenticationSex'>
+    | ScreenNavigationProp<'OldUser'>
+  >();
+  const setUserAtom = useSetRecoilState(userAtom);
   const mobile = route.params.phone;
 
 
@@ -32,7 +39,25 @@ const Verification = () => {
   }, []);
 
   const handleLogin = async () => {
-    await loginApi({ mobile, code });
+    try {
+      const { data } = await loginApi({ mobile, code });
+      setUserAtom({
+        token: data.access_token,
+        userInfo: data.user_info,
+      });
+      //没有人脸去人脸识别
+      if (!data.checkFace) {
+        navigation.navigate('AuthenticationSex');
+        return;
+      }
+
+      //设置信息
+      if (!data.setPersonalInfo) {
+        return;
+      }
+    } catch (err) {
+
+    }
   };
 
   useEffect(() => {

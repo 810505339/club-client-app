@@ -28,6 +28,7 @@
     "react": "18.2.0",
     "react-i18next": "^13.2.2",
     "react-native": "0.72.5",
+    "react-native-circular-progress-indicator": "^4.4.2",
     "react-native-confirmation-code-field": "^7.3.1",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.13.1",
@@ -49,7 +50,8 @@
     "react-native-vector-icons": "^10.0.0",
     "react-native-vision-camera": "^3.3.1",
     "recoil": "^0.7.7",
-    "use-immer": "^0.9.0"
+    "use-immer": "^0.9.0",
+    "vision-camera-face-detector": "^0.1.8"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

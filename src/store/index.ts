@@ -1,1 +1,1 @@
-export { textState } from './user';
+export { userAtom } from './user';

@@ -13,7 +13,7 @@ const bgImage = require('@assets/imgs/login/login-register-bg.png');
 const LoginOrRegister = () => {
 
 
-  const [phone, setPhone] = useState(13111111111);
+  const [phone, setPhone] = useState('13111111111');
   const [checked, setChecked] = useState(false);
   const navigation = useNavigation<
     | ScreenNavigationProp<'NewUser'>

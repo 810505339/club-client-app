@@ -15,46 +15,19 @@ const CameraDemo = () => {
   const isActive = isFocused && appState === 'active';
 
 
-  const requestPermission = async () => {
-    try {
-
-      // 要使请求权限功能生效，需在 AndroidManifest.xml 文件中配置需要请求的权限
-
-      // 权限列表
-      const permissions = [
-        PermissionsAndroid.PERMISSIONS.CAMaERA,
-      ];
-
-      if (Platform.OS === 'android') {
-        //  PermissionsAndroid.requestMultiple 向用户请求多个权限
-        const results = await PermissionsAndroid.requestMultiple(permissions);
-        // 返回值为一个 object，key 为各权限名称，值为PermissionsAndroid.RESULTS
-        const allPermissionsGranted = Object.values(results).every(result => result === PermissionsAndroid.RESULTS.GRANTED);
-        let check = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA);
-        console.log(device, check, 'check');
-        if (allPermissionsGranted) {
-          setPermissionsGranted(true);
-        }
-      } else {
-        setPermissionsGranted(false);
-      }
 
 
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  if (!device) { return <BaseLayout><Button mode="outlined" onPress={requestPermission}>测试摄像头</Button></BaseLayout>; }
+  if (!device) {
+    return <BaseLayout>
+      <View className="flex-1">
+        <Text>请打开摄像头</Text>
+      </View>
+    </BaseLayout>;
+  }
 
 
   return (
     <BaseLayout>
-      <Button onPress={requestCameraPermission} >
-
-        <Text>request permissions</Text>
-      </Button>
-{/*
       {isFocused && <Camera
         style={{ flex: 1 }}
 
@@ -64,10 +37,7 @@ const CameraDemo = () => {
         // supportsVideoHDR={true}
         isActive={isActive} //是否打开相机， 可以缓存相机，加快打开速度
         photo={true} //拍照功能是否打开
-      />} */}
-
-
-
+      />}
     </BaseLayout>
   );
 };

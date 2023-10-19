@@ -1,5 +1,7 @@
 import axios from 'axios';
 import qs from 'qs';
+import { getGenericPassword } from 'react-native-keychain';
+import { TOKENKEY } from '@store/user';
 
 const baseUrl = 'http://114.67.231.163:9999';
 
@@ -14,8 +16,8 @@ const service = axios.create({
 			return qs.stringify(params, { arrayFormat: 'repeat' });
 		},
 	},
-	headers:{
-		'Content-Type':'application/x-www-form-urlencoded',
+	headers: {
+		'Content-Type': 'application/x-www-form-urlencoded',
 	},
 });
 
@@ -26,11 +28,11 @@ const service = axios.create({
  * 3. 自动适配单体、微服务架构不同的URL
  * @param config AxiosRequestConfig对象，包含请求配置信息
  */
-service.interceptors.request.use((config) => {
+service.interceptors.request.use(async(config) => {
 	// 统一增加Authorization请求头, skipToken 跳过增加token
+	const a = await getGenericPassword();
+	console.log(a,'aaaaa');
 	const token = 'token';
-	console.log(config.baseURL + config.url);
-	console.log('headers',config.headers);
 
 
 	if (token && !config.headers?.skipToken) {

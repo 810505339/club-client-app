@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNavigationProp } from 'router/type';
+import { getGenericPassword } from 'react-native-keychain';
 const bgImage = require('@assets/imgs/login/login-register-bg.png');
 const DURATION = 800;
 const Authentication = () => {
@@ -29,17 +30,19 @@ const Authentication = () => {
 
 
   const checkPermission = async () => {
-    await requestPermission();
-    if (!hasPermission) {
+    const permission = await requestPermission();
+    if (!permission) {
       Toast.show({
         text1: '请授权相机',
       });
       return;
     }
     navigation.navigate('AuthenticationCamera');
-
-
   };
+
+
+
+
   return (
     <BaseLayout source={bgImage} >
       <View className="pt-24 ">
@@ -58,7 +61,7 @@ const Authentication = () => {
           }}
           labelStyle={{ fontSize: 18, color: '#FFFFFF', fontWeight: '600' }}
           contentStyle={{ height: 50 }}
-          onPress={checkPermission}
+          onPress={test}
 
         >
           拍照

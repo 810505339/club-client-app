@@ -46,7 +46,7 @@ const LoginOrRegister = () => {
     try {
 
       const { data } = await sendYzmApi(phone);
-      console.log(data, 'data');
+
 
       navigation.navigate('Verification', {
         phone,

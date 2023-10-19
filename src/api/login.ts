@@ -11,6 +11,8 @@ type IData = {
 	[key in string]: string
 }
 
+//登录
+
 export const loginApi = async ({ code, grant_type = 'mobile', scope = 'server', mobile }: IData) => {
 	const basicAuth = 'Basic ' + btoa(BASICAUTH);
 	return await service({
@@ -32,3 +34,4 @@ export const sendYzmApi = (mobile: string) => {
 		url: `/admin/mobile/customer_login/${mobile}`,
 	});
 };
+

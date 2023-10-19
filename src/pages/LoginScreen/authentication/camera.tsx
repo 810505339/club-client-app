@@ -15,9 +15,7 @@ const AuthenticationCamera = () => {
   const [active, setActive] = useState(true);
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', () => {
-      setTimeout(() => {
-        setActive(false);
-      }, 0);
+      setActive(false);
     });
     return unsubscribe;
   }, [navigation]);

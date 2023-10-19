@@ -13,25 +13,9 @@ export const Stack = createNativeStackNavigator<RootStackParamList>();
 const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: DefaultTheme });
 const AppNavigator = () => {
   useSysLanguage();
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const credentials = await getGenericPassword();
-        console.log(credentials);
-        if (credentials) {
-        } else {
-          console.log('No credentials stored');
-        }
-      } catch (error) {
-        console.log("Keychain couldn't be accessed!", error);
-      }
-    })();
-  }, []);
-
   return (
     <NavigationContainer theme={DarkTheme}>
-      <Stack.Navigator initialRouteName="AuthenticationSex" screenOptions={{
+      <Stack.Navigator initialRouteName="Login" screenOptions={{
         header: props => <CustomNavigationBar {...props} />,
         headerTransparent: true,
       }}>

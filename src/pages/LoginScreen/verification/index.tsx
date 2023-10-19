@@ -9,6 +9,8 @@ import VerificationCodeField from './component/VerificationCodeField';
 import { loginApi, sendYzmApi } from '@api/login';
 import { useSetRecoilState } from 'recoil';
 import { userAtom } from '@store/index';
+import { useUserActions } from '@store/user/action';
+import { getGenericPassword } from 'react-native-keychain';
 
 const bgImage = require('@assets/imgs/login/login-register-bg.png');
 
@@ -18,13 +20,11 @@ const Verification = () => {
     | ScreenNavigationProp<'AuthenticationSex'>
     | ScreenNavigationProp<'OldUser'>
   >();
-  const setUserAtom = useSetRecoilState(userAtom);
   const mobile = route.params.phone;
-
-
   const [isResend, setIsResend] = useState(false);
   const { count, start, stop } = useCountdown(60);
   const [code, setCode] = useState('1234');
+  const userActions = useUserActions();
 
   const sendVerification = async () => {
     setIsResend(true);
@@ -34,17 +34,22 @@ const Verification = () => {
 
   };
 
+  const test = async () => {
+    const data = await getGenericPassword();
+    console.log(data);
+
+  };
+
   const codeChange = useCallback((value: string) => {
     // setCode(value);
   }, []);
 
   const handleLogin = async () => {
     try {
-      const { data } = await loginApi({ mobile, code });
-      setUserAtom({
-        token: data.access_token,
-        userInfo: data.user_info,
-      });
+
+      const data = await userActions.login({ code, mobile });
+      console.log(data,'handleLogin');
+
       //没有人脸去人脸识别
       if (!data.checkFace) {
         navigation.navigate('AuthenticationSex');
@@ -69,7 +74,7 @@ const Verification = () => {
   const ResendRender = (
     <Text className="text-center text-[#ffffff7f]">
       没收到验证码？
-      <Text className="text-white font-semibold" onPress={sendVerification}>
+      <Text className="text-white font-semibold" onPress={test}>
         重新发送
       </Text>
     </Text>

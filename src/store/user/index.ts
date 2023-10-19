@@ -2,12 +2,11 @@ import { atom, selector } from 'recoil';
 import { IUserType } from './type';
 import { loginApi } from '@api/login';
 import { setGenericPassword } from 'react-native-keychain';
-const TOKENKEY = 'TOKENKEY';
+export const TOKENKEY = 'TOKENKEY';
 
 const userAtom = atom({
   key: 'userAtom', // unique ID (with respect to other atoms/selectors)
   default: {
-    token: '',
     userInfo: {
 
     },
@@ -15,7 +14,7 @@ const userAtom = atom({
   effects: [
     ({ node, onSet }) => {
       onSet((oldValue, newValue) => {
-        console.log(oldValue, newValue);
+        console.log(oldValue, newValue, 111111111111111);
       });
     },
   ],
@@ -31,18 +30,9 @@ const userAtomType = atom<IUserType>({
 
 const userSelector = selector({
   key: 'userSelector',
-  get: async ({ get }) => {
-    const type = get(userAtomType);
-    const user = get(userAtom);
-    switch (type) {
-      case IUserType.loginIn:
-        await setGenericPassword(TOKENKEY, user.token);
+  get: async ({ get, getCallback }) => {
 
-      case IUserType.loginOut:
-
-      default:
-        return type;
-    }
+    await loginApi({});
   },
 
 });

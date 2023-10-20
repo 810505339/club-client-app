@@ -8,6 +8,9 @@ import useSysLanguage from '@hooks/useSysLanguage';
 import HomeTabs from './HomeTabs';
 import { RootStackParamList } from './type';
 import LoginGroup from './LoginGroup';
+import Demo from '@pages/demoScreen/index';
+
+const initialRouteName:keyof RootStackParamList = 'Demo';
 
 export const Stack = createNativeStackNavigator<RootStackParamList>();
 const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: DefaultTheme });
@@ -15,11 +18,12 @@ const AppNavigator = () => {
   useSysLanguage();
   return (
     <NavigationContainer theme={DarkTheme}>
-      <Stack.Navigator initialRouteName="Login" screenOptions={{
+      <Stack.Navigator initialRouteName={initialRouteName} screenOptions={{
         header: props => <CustomNavigationBar {...props} />,
         headerTransparent: true,
       }}>
         {LoginGroup()}
+        <Stack.Screen name="Demo" component={Demo} />
         <Stack.Screen
           name="HomeTab"
           component={HomeTabs}

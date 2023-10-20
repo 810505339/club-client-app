@@ -43,6 +43,8 @@ const Authentication = () => {
 
 
 
+
+
   return (
     <BaseLayout source={bgImage} >
       <View className="pt-24 ">
@@ -61,7 +63,7 @@ const Authentication = () => {
           }}
           labelStyle={{ fontSize: 18, color: '#FFFFFF', fontWeight: '600' }}
           contentStyle={{ height: 50 }}
-          onPress={test}
+          onPress={checkPermission}
 
         >
           拍照

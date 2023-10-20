@@ -14,6 +14,7 @@ export type RootStackParamList = {
   Authentication: undefined,
   AuthenticationCamera: undefined,
   HomeTab: undefined,
+  Demo:undefined
 };
 
 export type TabParamList = {

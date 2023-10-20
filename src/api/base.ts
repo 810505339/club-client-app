@@ -28,13 +28,13 @@ const service = axios.create({
  * 3. 自动适配单体、微服务架构不同的URL
  * @param config AxiosRequestConfig对象，包含请求配置信息
  */
-service.interceptors.request.use(async(config) => {
+service.interceptors.request.use(async (config) => {
 	// 统一增加Authorization请求头, skipToken 跳过增加token
-	const a = await getGenericPassword();
-	console.log(a,'aaaaa');
-	const token = 'token';
-
-
+	const generic = await getGenericPassword();
+	let token = null;
+	if (generic) {
+		token = generic.password;
+	}
 	if (token && !config.headers?.skipToken) {
 		config.headers![CommonHeaderEnum.AUTHORIZATION] = `Bearer ${token}`;
 	}

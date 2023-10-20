@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import { useCameraDevice, Camera } from 'react-native-vision-camera';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useAppState } from '@react-native-community/hooks';
@@ -26,6 +26,10 @@ const AuthenticationCamera = () => {
     const photo = await camera.current!.takePhoto();
     console.log(photo);
   };
+
+  if (Platform.OS === 'android' && !isFocused) {
+    return <View />;
+}
 
 
   if (!device) {
@@ -56,7 +60,7 @@ const AuthenticationCamera = () => {
       isActive={isActive} //是否打开相机， 可以缓存相机，加快打开速度
       photo={true} //拍照功能是否打开
     />}
-    <TouchableOpacity className=" w-16 h-16 rounded-full bg-slate-500 mt-[100%] mb-[20%]" onPress={takePhoto} />
+    {/* <TouchableOpacity className=" w-16 h-16 rounded-full bg-slate-500 mt-[100%] mb-[20%]" onPress={takePhoto} /> */}
   </View>;
 
 };

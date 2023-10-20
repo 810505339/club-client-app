@@ -13,8 +13,12 @@ export type RootStackParamList = {
   AuthenticationPower: undefined,
   Authentication: undefined,
   AuthenticationCamera: undefined,
+  AuthenticationFacestatus: {
+    status: number
+  },
+  UserInfo: undefined,
   HomeTab: undefined,
-  Demo:undefined
+  Demo: undefined
 };
 
 export type TabParamList = {

@@ -8,6 +8,8 @@ import AuthenticationSex from '@pages/loginScreen/authentication/sex';
 import AuthenticationPower from '@pages/loginScreen/authentication/power';
 import Authentication from '@pages/loginScreen/authentication';
 import AuthenticationCamera from '@pages/loginScreen/authentication/camera';
+import AuthenticationFacestatus from '@pages/loginScreen/authentication/facestatus';
+import UserInfo from '@pages/loginScreen/userinfo/index';
 
 const LoginGroup = () => {
   return <Stack.Group>
@@ -54,6 +56,19 @@ const LoginGroup = () => {
     <Stack.Screen
       name="AuthenticationCamera"
       component={AuthenticationCamera}
+
+      options={{ title: '输入验证码', headerShown: false }}
+    />
+    <Stack.Screen
+      name="AuthenticationFacestatus"
+      component={AuthenticationFacestatus}
+
+      options={{ title: '输入验证码', headerShown: false }}
+    />
+
+    <Stack.Screen
+      name="UserInfo"
+      component={UserInfo}
 
       options={{ title: '输入验证码', headerShown: false }}
     />

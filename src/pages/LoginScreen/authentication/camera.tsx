@@ -59,6 +59,7 @@ const AuthenticationCamera = () => {
       // supportsVideoHDR={true}
       isActive={isActive} //是否打开相机， 可以缓存相机，加快打开速度
       photo={true} //拍照功能是否打开
+
     />}
     {/* <TouchableOpacity className=" w-16 h-16 rounded-full bg-slate-500 mt-[100%] mb-[20%]" onPress={takePhoto} /> */}
   </View>;

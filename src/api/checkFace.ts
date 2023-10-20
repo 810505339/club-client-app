@@ -8,7 +8,11 @@ export interface CheckFaceParams {
 }
 
 // 响应接口
-export interface CheckFaceRes {}
+export interface CheckFaceRes {
+  data: {
+    success: boolean
+  }
+}
 
 /**
  * 人脸识别

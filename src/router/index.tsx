@@ -10,7 +10,7 @@ import { RootStackParamList } from './type';
 import LoginGroup from './LoginGroup';
 import Demo from '@pages/demoScreen/index';
 
-const initialRouteName:keyof RootStackParamList = 'Demo';
+const initialRouteName:keyof RootStackParamList = 'UserInfo';
 
 export const Stack = createNativeStackNavigator<RootStackParamList>();
 const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: DefaultTheme });

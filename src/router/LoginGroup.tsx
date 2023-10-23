@@ -56,7 +56,6 @@ const LoginGroup = () => {
     <Stack.Screen
       name="AuthenticationCamera"
       component={AuthenticationCamera}
-
       options={{ title: '输入验证码', headerShown: false }}
     />
     <Stack.Screen

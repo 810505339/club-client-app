@@ -1,7 +1,6 @@
 import axios from 'axios';
 import qs from 'qs';
 import { getGenericPassword } from 'react-native-keychain';
-import { TOKENKEY } from '@store/user';
 
 const baseUrl = 'http://114.67.231.163:9999';
 

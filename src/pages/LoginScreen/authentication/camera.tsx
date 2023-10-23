@@ -5,6 +5,10 @@ import { useAppState } from '@react-native-community/hooks';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 
+
+const switchIcon = require('@assets/imgs/login/camera/switch.png');
+
+
 const AuthenticationCamera = () => {
   //front
   const device = useCameraDevice('back');
@@ -53,7 +57,7 @@ const AuthenticationCamera = () => {
       style={{ position: 'absolute', left: 0, right: 0, bottom: 0, top: 0 }}
       //https://github.com/mrousavy/react-native-vision-camera/issues/1988  不然会崩溃
       fps={60}
-
+      key={device.id}
       device={device} //此相机设备包含的物理设备类型列表。
       // video={true} //录像功能打开关闭
       // supportsVideoHDR={true}

@@ -35,3 +35,33 @@ export const sendYzmApi = (mobile: string) => {
 	});
 };
 
+
+// 参数接口
+export interface EditSelfParams {
+	/*头像文件id */
+	avatarFileId: number;
+
+	/*昵称 */
+	nickname: string;
+
+	/*生日 */
+	birthday:string;
+}
+
+
+/**
+ * 修改个人信息（用户操作）
+ * @param {object} params 修改个人信息（用户操作）
+ * @param {number} params.avatarFileId 头像文件id
+ * @param {string} params.nickname 昵称
+ * @param {object} params.birthday 生日
+ * @returns
+ */
+export const editUserInfoApi = (data: EditSelfParams) => {
+	return service({
+		url: '/admin/customer/edit-self',
+		method: 'put',
+		data,
+	});
+};
+

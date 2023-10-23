@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity, Platform } from 'react-native';
-import { useCameraDevice, Camera } from 'react-native-vision-camera';
+import { View, Text, TouchableOpacity, Platform, Image } from 'react-native';
+import { useCameraDevice, Camera, CameraPosition } from 'react-native-vision-camera';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useAppState } from '@react-native-community/hooks';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -7,11 +7,14 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 
 const switchIcon = require('@assets/imgs/login/camera/switch.png');
+const quitIcon = require('@assets/imgs/login/camera/quit.png');
 
 
 const AuthenticationCamera = () => {
+
+  const [cameraPosition, setcameraPosition] = useState<CameraPosition>('back');
   //front
-  const device = useCameraDevice('back');
+  const device = useCameraDevice(cameraPosition);
   const camera = useRef<Camera>(null);
   const isFocused = useIsFocused();
   const navigation = useNavigation();
@@ -31,9 +34,17 @@ const AuthenticationCamera = () => {
     console.log(photo);
   };
 
+  const handlequit = () => {
+    navigation.goBack();
+  };
+
+  const changecamera = () => {
+    setcameraPosition(cameraPosition == 'back' ? 'front' : 'back');
+  };
+
   if (Platform.OS === 'android' && !isFocused) {
     return <View />;
-}
+  }
 
 
   if (!device) {
@@ -65,7 +76,18 @@ const AuthenticationCamera = () => {
       photo={true} //拍照功能是否打开
 
     />}
-    {/* <TouchableOpacity className=" w-16 h-16 rounded-full bg-slate-500 mt-[100%] mb-[20%]" onPress={takePhoto} /> */}
+    <View className="  flex-row w-full items-center justify-around mb-[20%]">
+      <TouchableOpacity className="p-2 rounded-full bg-[#D51D1D99]" onPress={changecamera}>
+        <Image source={switchIcon} />
+      </TouchableOpacity>
+      <TouchableOpacity className=" w-16 h-16 rounded-full  border-2 border-white justify-center items-center" onPress={takePhoto} >
+        <View className="bg-white w-14 h-14 rounded-full" />
+      </TouchableOpacity>
+      <TouchableOpacity className="p-2 rounded-full bg-[#00000099]" onPress={handlequit}>
+        <Image source={quitIcon} />
+      </TouchableOpacity>
+    </View>
+
   </View>;
 
 };

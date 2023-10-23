@@ -11,11 +11,14 @@ import { Keyboard } from 'react-native';
 import { updateFile } from '@api/common';
 import Toast from 'react-native-toast-message';
 import { editUserInfoApi } from '@api/login';
+import { useNavigation } from '@react-navigation/native';
+import { ScreenNavigationProp } from '@router/type';
 
 const bgImage = require('@assets/imgs/login/login-register-bg.png');
 
 
 const UserInfo = () => {
+  const navigation = useNavigation<ScreenNavigationProp<'HomeTab'>>();
   //选择头像
   const [selectImage, setSelectImage] = useState<Asset>({ uri: '' });
   //选择日期
@@ -59,8 +62,7 @@ const UserInfo = () => {
         const { data: userInfo } = await editUserInfoApi({ avatarFileId: data.data.id, nickname, birthday: formatDay });
         if (userInfo.data) {
           //修改用户信息成功
-          
-          
+          navigation.navigate('HomeTab');
         }
 
       }

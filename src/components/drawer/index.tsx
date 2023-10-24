@@ -1,11 +1,11 @@
-import { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetBackgroundProps, BottomSheetModal, BottomSheetProps, BottomSheetBackground } from "@gorhom/bottom-sheet"
-import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
-import { FC, useCallback, useMemo, useRef, forwardRef } from "react";
-import { View } from "react-native";
-import { Text } from "react-native-paper";
+import { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetBackgroundProps, BottomSheetModal, BottomSheetProps, BottomSheetBackground } from '@gorhom/bottom-sheet';
+import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { FC, useCallback, useMemo, useRef, forwardRef } from 'react';
+import { View } from 'react-native';
+import { Text } from 'react-native-paper';
 
 import LinearGradient from 'react-native-linear-gradient';
-import Animated, { useAnimatedStyle, interpolateColor } from "react-native-reanimated";
+import Animated, { useAnimatedStyle, interpolateColor } from 'react-native-reanimated';
 
 
 const CustomBackground: FC<BottomSheetBackgroundProps> = ({
@@ -18,7 +18,7 @@ const CustomBackground: FC<BottomSheetBackgroundProps> = ({
     backgroundColor: interpolateColor(
       animatedIndex.value,
       [0, 1],
-      ["#a8b5eb", "#a8b5eb"]
+      ['#a8b5eb', '#a8b5eb']
     ),
   }));
   const containerStyle = useMemo(
@@ -51,7 +51,7 @@ const Drawer = forwardRef<BottomSheetModalMethods, BottomSheetProps>(({ children
       />
     ),
     []
-  )
+  );
   return (
     <BottomSheetModal
       ref={ref}
@@ -60,15 +60,17 @@ const Drawer = forwardRef<BottomSheetModalMethods, BottomSheetProps>(({ children
       keyboardBlurBehavior="restore"
       enableContentPanningGesture={false}
       backdropComponent={renderBackdrop}
-      handleComponent={null}
-      backgroundComponent={null}
+
+      backgroundStyle={{
+        backgroundColor: 'red',
+        }}
       onChange={handleSheetChanges}   {...props}>
       <View className="bg-[#282c34]">
       {children}
       </View>
     </BottomSheetModal>
-  )
-})
+  );
+});
 
 
-export default Drawer
+export default Drawer;

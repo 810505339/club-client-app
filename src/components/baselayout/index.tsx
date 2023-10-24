@@ -8,8 +8,6 @@ type IProps = {
 };
 const BaseLayout: FC<PropsWithChildren<IProps>> = ({ source, className = '', children }) => {
   const classNames = `flex-1 ${className}`;
-
-
   return (
     <View className={classNames}>
       {source && <ImageBackground source={source} className="absolute left-0 right-0 top-0 bottom-0" />}

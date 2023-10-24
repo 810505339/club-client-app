@@ -1,4 +1,5 @@
-import { View, FlatList, ImageBackground, ImageSourcePropType } from 'react-native';
+import { FC, PropsWithChildren } from 'react';
+import { View, FlatList, ImageBackground, ImageSourcePropType, StyleProp, ViewStyle } from 'react-native';
 import { Text } from 'react-native-paper';
 
 type IData = {
@@ -17,21 +18,31 @@ const data: IData[] = [
 ];
 
 const Item = ({ text, source, color }: IData) => (
-  <View className="mx-1.5  w-[72px] h-[102px]  rounded-md relative">
+  <View className="mx-1.5  w-24 h-32  rounded-XL relative">
     <ImageBackground source={source as ImageSourcePropType} className="w-full h-full" />
     <Text className="text-xs   absolute bottom-2 text-center w-full" style={{ color: color }}>{text}</Text>
   </View>
 );
-const HorizontalFlatList = () => (
-  <View className="">
-    <FlatList
-      data={data}
-      renderItem={({ item }) => <Item  {...item} />}
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      keyExtractor={item => item.key}
-    />
-  </View>
-);
+
+
+type IProps = {
+  style?: any,
+  className?: string
+}
+
+const HorizontalFlatList: FC<PropsWithChildren<IProps>> = ({ style }) => {
+
+  return (
+    <View style={style} >
+      <FlatList
+        data={data}
+        renderItem={({ item }) => <Item  {...item} />}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={item => item.key}
+      />
+    </View>
+  );
+};
 
 export default HorizontalFlatList;

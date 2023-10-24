@@ -1,17 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, ScrollView, Image, StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
 import { TabParamList } from '@router/type';
 import Header from './components/header';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { useCallback, useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import BaseLayout from '@components/baselayout';
 import SwiperView from './components/swiperView';
 import HorizontalFlatList from './components/HorizontalFlatList';
-import Drawer from '@components/drawer';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import LinearGradient from 'react-native-linear-gradient';
-import Animated, { useSharedValue } from 'react-native-reanimated';
 
 // const HOMEBG = require('@assets/imgs/home/bg.png')
 
@@ -28,7 +22,7 @@ const HomeScreen = () => {
   }, [navigation]);
   return (
     <BaseLayout className="bg-[#0B0B0BE6]">
-      <HorizontalFlatList />
+      <HorizontalFlatList className="mt-7" />
       <SwiperView />
     </BaseLayout>
   );

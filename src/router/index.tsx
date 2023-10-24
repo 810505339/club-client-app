@@ -9,8 +9,9 @@ import HomeTabs from './HomeTabs';
 import { RootStackParamList } from './type';
 import LoginGroup from './LoginGroup';
 import Demo from '@pages/demoScreen/index';
+import IM from '@pages/demoScreen/im/index';
 
-const initialRouteName:keyof RootStackParamList = 'HomeTab';
+const initialRouteName: keyof RootStackParamList = 'IM';
 
 export const Stack = createNativeStackNavigator<RootStackParamList>();
 const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: DefaultTheme });
@@ -23,7 +24,8 @@ const AppNavigator = () => {
         headerTransparent: true,
       }}>
         {LoginGroup()}
-        <Stack.Screen name="Demo" component={Demo}  />
+        <Stack.Screen name="Demo" component={Demo} />
+        <Stack.Screen name="IM" component={IM} />
         <Stack.Screen
           name="HomeTab"
           component={HomeTabs}

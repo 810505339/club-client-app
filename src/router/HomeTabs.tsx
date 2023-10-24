@@ -9,10 +9,11 @@ import { Image } from 'react-native';
 
 
 
-const HOMEICON = require('@assets/imgs/bottombar/user.png')
-const FIGHTWINEICON = require('@assets/imgs/bottombar/fightwine.png')
-const TICKETCICON = require('@assets/imgs/bottombar/ticket.png')
-const USERICON = require('@assets/imgs/bottombar/user.png')
+const HOMEICON = require('@assets/imgs/bottombar/user.png');
+const HOMEICONACTIVE = require('@assets/imgs/bottombar/home_active.png');
+const FIGHTWINEICON = require('@assets/imgs/bottombar/fightwine.png');
+const TICKETCICON = require('@assets/imgs/bottombar/ticket.png');
+const USERICON = require('@assets/imgs/bottombar/user.png');
 
 
 
@@ -25,47 +26,48 @@ const HomeTabs = () => {
 
       return {
         headerTransparent: true,
-        
+        tabBarShowLabel: false,
         tabBarActiveTintColor: '#E6A055FF',
         tabBarIconStyle: {
-          position:'absolute',
-          top:20,
+          position: 'absolute',
+          top: 24,
         },
         tabBarLabelStyle: {
-         
-          position:'absolute',
-          top:34,
+
+          position: 'absolute',
+          top: 34,
         },
         tabBarItemStyle: {
           display: 'flex',
-          position:'relative',
+          position: 'relative',
 
         },
         tabBarStyle: {
-          backgroundColor: '#000000B3',
+          backgroundColor: '#0B0B0BE6',
           height: 54,
-          justifyContent:'center',
-          alignItems:'center',
-        
+          justifyContent: 'center',
+          alignItems: 'center',
+
+
         },
         tabBarIcon: ({ focused }) => {
           let image;
           if (route.name == 'Home') {
-            image = focused ? HOMEICON : HOMEICON
+            image = focused ? HOMEICONACTIVE : HOMEICON;
           }
 
           if (route.name == 'Fightwine') {
-            image = focused ? FIGHTWINEICON : FIGHTWINEICON
+            image = focused ? FIGHTWINEICON : FIGHTWINEICON;
           }
           if (route.name == 'Ticket') {
-            image = focused ? TICKETCICON : TICKETCICON
+            image = focused ? TICKETCICON : TICKETCICON;
           }
           if (route.name == 'User') {
-            image = focused ? USERICON : USERICON
+            image = focused ? USERICON : USERICON;
           }
-          return (image && <Image style={{ width: 28, height: 28,}} source={image} />)
-        }
-      }
+          return (image && <Image style={{ width: 28, height: 28 }} source={image} />);
+        },
+      };
     }}>
       <Screen name="Home" component={HomeScreen} />
       <Screen name="Fightwine" component={FightwineScreen} />

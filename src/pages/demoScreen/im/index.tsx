@@ -1,6 +1,5 @@
 import BaseLayout from '@components/baselayout';
 import { useEffect } from 'react';
-import { View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { TencentImSDKPlugin, LogLevelEnum, V2TimSDKListener, V2TimValueCallback } from 'react-native-tim-js';
 

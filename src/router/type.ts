@@ -17,10 +17,15 @@ export type RootStackParamList = {
     status: number
   },
   UserInfo: undefined,
-  HomeTab: undefined,
+  HomeTabs: undefined,
   Demo: undefined,
-  IM: undefined
-};
+  IM: undefined,
+
+} & UsertackParamList;
+
+export type UsertackParamList = {
+  SystemMessage: undefined
+}
 
 export type TabParamList = {
   Home: undefined,

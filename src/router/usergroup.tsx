@@ -1,5 +1,6 @@
 import { Stack } from './index';
 import SystemMessage from '@pages/mainScreen/user/systemmessage';
+import SystemMessageInfo from '@pages/mainScreen/user/systemmessage/info';
 
 const LoginGroup = () => {
   return <Stack.Group>
@@ -10,11 +11,11 @@ const LoginGroup = () => {
     />
 
 
-    {/* <Stack.Screen
-      name="Camera"
-      component={Camera}
-      options={{ title: 'Camera' }}
-    /> */}
+    <Stack.Screen
+      name="SystemMessageInfo"
+      component={SystemMessageInfo}
+
+    />
   </Stack.Group>;
 };
 

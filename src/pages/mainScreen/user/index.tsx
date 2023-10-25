@@ -5,7 +5,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { RefreshControl, Text, View } from 'react-native';
 import { Divider, List } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
-import { UsertackParamList } from 'router/type';
+import { UsertackParamList } from '@router/type';
 const wait = (timeout: number) => {
   return new Promise(resolve => {
     setTimeout(resolve, timeout);

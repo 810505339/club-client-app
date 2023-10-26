@@ -25,7 +25,8 @@ export type RootStackParamList = {
 
 export type UsertackParamList = {
   SystemMessage: undefined,
-  SystemMessageInfo:undefined
+  SystemMessageInfo:undefined,
+  Account:undefined
 }
 
 export type TabParamList = {

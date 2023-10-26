@@ -62,8 +62,8 @@ const HomeScreen = () => {
 
   const cells = useMemo(() => {
     return ([
-      { id: 1, title: '系统消息', left: '', right: '' },
-      { id: 2, title: '账号与安全', left: '', right: '' },
+      { id: 'SystemMessage', title: '系统消息', left: '', right: '' },
+      { id: 'Account', title: '账号与安全', left: '', right: '' },
       { id: 3, title: '0.2 L&C 门店', left: '', right: '' },
       { id: 4, title: '服务协议', left: '', right: '' },
       { id: 5, title: '联系客服', left: '', right: '' },
@@ -80,13 +80,13 @@ const HomeScreen = () => {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
-  const handleItemPress = () => {
-    navigation.navigate('SystemMessage');
+  const handleItemPress = (item) => {
+    navigation.navigate(item.id);
 
   };
 
   const renderItem = ({ item }) => {
-    return (<List.Item title={item.title} right={props => <List.Icon {...props} icon="chevron-right" />} onPress={handleItemPress} />);
+    return (<List.Item title={item.title} right={props => <List.Icon {...props} icon="chevron-right" />} onPress={() => handleItemPress(item)} />);
   };
 
   return (<BaseLayout className="bg-[#0B0B0BFF]">

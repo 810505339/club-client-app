@@ -20,13 +20,18 @@ export type RootStackParamList = {
   HomeTabs: undefined,
   Demo: undefined,
   IM: undefined,
+  Animated: undefined
 
 } & UsertackParamList;
 
 export type UsertackParamList = {
+  Orders: undefined,
   SystemMessage: undefined,
-  SystemMessageInfo:undefined,
-  Account:undefined
+  SystemMessageInfo: undefined,
+  Account: undefined,
+  AccountPhone: undefined,
+  AccountSetPhone: undefined,
+  OrdersInfo: undefined
 }
 
 export type TabParamList = {

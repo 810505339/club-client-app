@@ -11,8 +11,8 @@ import LoginGroup from './logingroup';
 import Demo from '@pages/demoScreen/index';
 import IM from '@pages/demoScreen/im/index';
 import UserGroup from './usergroup';
-
-const initialRouteName: keyof RootStackParamList = 'HomeTabs';
+import AnimatedScreen from '@pages/demoScreen/animated';
+const initialRouteName: keyof RootStackParamList = 'OrdersInfo';
 
 export const Stack = createNativeStackNavigator<RootStackParamList>();
 const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: DefaultTheme });
@@ -28,6 +28,7 @@ const AppNavigator = () => {
         {UserGroup()}
         <Stack.Screen name="Demo" component={Demo} />
         <Stack.Screen name="IM" component={IM} />
+        <Stack.Screen name="Animated" component={AnimatedScreen} />
         <Stack.Screen
           name="HomeTabs"
           component={HomeTabs}

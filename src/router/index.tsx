@@ -12,7 +12,7 @@ import Demo from '@pages/demoScreen/index';
 import IM from '@pages/demoScreen/im/index';
 import UserGroup from './usergroup';
 import AnimatedScreen from '@pages/demoScreen/animated';
-const initialRouteName: keyof RootStackParamList = 'OrdersInfo';
+const initialRouteName: keyof RootStackParamList = 'HomeTabs';
 
 export const Stack = createNativeStackNavigator<RootStackParamList>();
 const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: DefaultTheme });

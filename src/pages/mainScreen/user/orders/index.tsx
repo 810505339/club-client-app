@@ -32,10 +32,10 @@ const renderItem = ({ item, handleItemPress }) => {
           可继续支付
         </Text>
         <View className="flex-row">
-          <View className="w-16 border border-[#EE2737FF] py-2 px-1 rounded-2xl mr-2.5">
+          <View className="w-16 border border-[#EE2737FF] py-2 px-1 rounded-2xl mr-2.5 items-center justify-center">
             <Text className="text-[#EE2737FF] text-xs">取消订单</Text>
           </View>
-          <View className="w-16 border border-[#ffffff] py-2 px-1 rounded-2xl">
+          <View className="w-16 border border-[#ffffff] py-2 px-1 rounded-2xl items-center justify-center">
             <Text className="text-[#ffffff] text-xs">继续支付</Text>
           </View>
         </View>

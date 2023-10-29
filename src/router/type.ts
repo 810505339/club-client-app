@@ -31,7 +31,8 @@ export type UsertackParamList = {
   Account: undefined,
   AccountPhone: undefined,
   AccountSetPhone: undefined,
-  OrdersInfo: undefined
+  OrdersInfo: undefined,
+  Coupons:undefined
 }
 
 export type TabParamList = {

@@ -2,7 +2,7 @@ import BaseLayout from '@components/baselayout';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCallback, useMemo, useState } from 'react';
-import { RefreshControl, Text, View } from 'react-native';
+import { RefreshControl, Text, TouchableOpacity, View } from 'react-native';
 import { Divider, List } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import { UsertackParamList } from '@router/type';
@@ -14,7 +14,11 @@ const wait = (timeout: number) => {
 const image = 'https://avatars.githubusercontent.com/u/15199031?v=4';
 
 
-const ListHeader = () => {
+
+type IListHeader = {
+  balancePress: (name: string) => void
+}
+const ListHeader = ({ balancePress }: IListHeader) => {
   const fontText = 'text-xs text-[#ffffff7f]';
   const box = 'items-center border border-red-500 h-28 pb-3 justify-end mb-2';
 
@@ -39,18 +43,18 @@ const ListHeader = () => {
       </View>
     </View>
     <View className="flex flex-row  gap-3  border-[#ffffff7f] pb-4 px-5">
-      <View className={`${box}  flex-grow`}>
+      <TouchableOpacity className={`${box}  flex-grow`} >
         <Text className="text-[#FF4DCEFF]  text-2xl">1</Text>
         <Text className={fontText}>账户余额</Text>
-      </View>
-      <View className={`${box} w-20`}>
+      </TouchableOpacity>
+      <TouchableOpacity className={`${box} w-20`} onPress={() => balancePress('Coupons')} >
         <Text className="text-[#FF4DCEFF]  text-2xl">1</Text>
         <Text className={fontText}>优惠券</Text>
-      </View>
-      <View className={`${box} w-20`}>
+      </TouchableOpacity>
+      <TouchableOpacity className={`${box} w-20`} onPress={() => balancePress('Orders')}>
         <Text className="text-[#2ECFFFFF] text-2xl ">1</Text>
         <Text className={fontText}>订单</Text>
-      </View>
+      </TouchableOpacity>
     </View>
   </View >;
 };
@@ -80,6 +84,10 @@ const HomeScreen = () => {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
+  const balancePress = (name: string) => {
+    navigation.navigate(name);
+  };
+
   const handleItemPress = (item) => {
     navigation.navigate(item.id);
 
@@ -93,7 +101,7 @@ const HomeScreen = () => {
     <Animated.View>
 
       <Animated.FlatList
-        ListHeaderComponent={ListHeader}
+        ListHeaderComponent={() => <ListHeader balancePress={balancePress} />}
         ItemSeparatorComponent={Divider}
         renderItem={renderItem}
         keyExtractor={item => item.id}

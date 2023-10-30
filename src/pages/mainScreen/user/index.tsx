@@ -43,7 +43,7 @@ const ListHeader = ({ balancePress }: IListHeader) => {
       </View>
     </View>
     <View className="flex flex-row  gap-3  border-[#ffffff7f] pb-4 px-5">
-      <TouchableOpacity className={`${box}  flex-grow`} >
+      <TouchableOpacity className={`${box}  flex-grow`}onPress={() => balancePress('Information')} >
         <Text className="text-[#FF4DCEFF]  text-2xl">1</Text>
         <Text className={fontText}>账户余额</Text>
       </TouchableOpacity>

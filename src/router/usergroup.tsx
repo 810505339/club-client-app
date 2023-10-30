@@ -6,6 +6,7 @@ import AccountPhone from '@pages/mainScreen/user/account/phone';
 import Orders from '@pages/mainScreen/user/orders';
 import OrdersInfo from '@pages/mainScreen/user/orders/info';
 import Coupons from '@pages/mainScreen/user/coupons';
+import Information from '@pages/mainScreen/user/information';
 
 const LoginGroup = () => {
   return <Stack.Group>
@@ -32,10 +33,10 @@ const LoginGroup = () => {
       component={AccountPhone}
 
     />
-
     <Stack.Screen name="Orders" component={Orders} />
     <Stack.Screen name="OrdersInfo" component={OrdersInfo} />
     <Stack.Screen name="Coupons" component={Coupons} />
+    <Stack.Screen name="Information" component={Information} />
   </Stack.Group>;
 };
 

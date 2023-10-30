@@ -1,63 +1,183 @@
-import { FC } from 'react';
-import { StyleSheet, View } from 'react-native';
+import * as React from 'react';
+import type { ImageSourcePropType } from 'react-native';
+import { Dimensions, LogBox, TouchableOpacity, View } from 'react-native';
+import Animated, {
+  Extrapolate,
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
+import Carousel from 'react-native-reanimated-carousel';
 import { Text } from 'react-native-paper';
-import SwiperFlatList, { Pagination, PaginationProps } from 'react-native-swiper-flatlist';
+import { PropsWithChildren } from 'react';
+export const ImageItems = [
+  require('@assets/imgs/demo/carousel-0.jpg'),
+  require('@assets/imgs/demo/carousel-1.jpg'),
+  require('@assets/imgs/demo/carousel-2.jpg'),
+];
+const PAGE_WIDTH = Dimensions.get('window').width;
+export interface ISButtonProps {
+  visible?: boolean
+  onPress?: () => void
+}
 
-const colors = ['tomato', 'thistle', 'skyblue', 'teal'];
+function Index() {
+  const pressAnim = useSharedValue<number>(0);
+  const progressValue = useSharedValue<number>(0);
+  const animationStyle = React.useCallback(
+    (value: number) => {
+      'worklet';
 
-const styles = StyleSheet.create({
-  paginationContainer: {
-    bottom:14,
-  },
-  pagination: {
-    width:50,
-    height:6,
-    borderRadius:3,
+      const zIndex = interpolate(value, [-1, 0, 1], [-1000, 0, 1000]);
+      const translateX = interpolate(
+        value,
+        [-1, 0, 1],
+        [-PAGE_WIDTH, 0, PAGE_WIDTH],
+      );
 
-  },
-  activePagination:{
-    width:50,
-  },
-});
+      return {
+        transform: [{ translateX }],
+        zIndex,
+      };
+    },
+    [],
+  );
 
-export const CustomPagination = (props: JSX.IntrinsicAttributes & PaginationProps) => {
+  React.useEffect(() => {
+    console.log(pressAnim.value);
+
+  }, [pressAnim.value]);
+
   return (
-    <Pagination
-      {...props}
-      paginationStyle={styles.paginationContainer}
-      paginationStyleItem={styles.pagination}
-      paginationDefaultColor="rgba(255,255,255,0.25)"
-      paginationActiveColor="white"
-      paginationStyleItemActive={styles.activePagination}
-    />
+    <View className="flex-auto  relative">
+      <Carousel
+        loop={true}
+        autoPlay={true}
+        pagingEnabled={true}
+        className="h-full"
+        style={{ width: PAGE_WIDTH }}
+        width={PAGE_WIDTH}
+        data={[...ImageItems]}
+        //并且当数据长度小于 3 时，您还需要添加 prop
+        // autoFillData={false}
+        onSnapToItem={(index) => console.log('current index:', index)}
+        onScrollBegin={() => {
+          pressAnim.value = withTiming(1);
+        }}
+        onScrollEnd={() => {
+          pressAnim.value = withTiming(0);
+        }}
+        onProgressChange={(offsetProgress, absoluteProgress) => {
+
+
+
+          progressValue.value = absoluteProgress;
+        }}
+        renderItem={({ index, item }) => {
+          return (
+            <CustomItem
+              source={item}
+              key={index}
+              pressAnim={pressAnim}
+            />
+          );
+        }}
+        customAnimation={animationStyle}
+        scrollAnimationDuration={1200}
+
+      />
+
+      <View className="flex-row absolute bottom-10 left-0 right-0 justify-center items-center">
+        {ImageItems.map((item, index) => (
+          <PaginationItem animValue={progressValue} length={ImageItems.length}
+            index={index}
+            key={index} />
+        ))}
+      </View>
+    </View>
+  );
+}
+
+interface ItemProps {
+  pressAnim: Animated.SharedValue<number>
+  source: ImageSourcePropType
+}
+
+const CustomItem: React.FC<ItemProps> = ({ pressAnim, source }) => {
+  const animStyle = useAnimatedStyle(() => {
+    const scale = interpolate(pressAnim.value, [0, 1], [1, 0.9]);
+    const borderRadius = interpolate(pressAnim.value, [0, 1], [0, 30]);
+
+    return {
+      transform: [{ scale }],
+      borderRadius,
+    };
+  }, []);
+
+  return (
+    <Animated.View style={[{ flex: 1, overflow: 'hidden' }, animStyle]}>
+      <Animated.Image
+        source={source}
+
+        style={{ width: '100%', height: '100%' }}
+      />
+
+    </Animated.View>
   );
 };
 
-type IProps = {
-  className?: string,
-  classNames?:string
-}
 
+const PaginationItem: React.FC<{
+  index: number
+  length: number
+  animValue: Animated.SharedValue<number>
+  isRotate?: boolean
+}> = (props) => {
+  const { animValue, index, length, isRotate } = props;
+  const width = 10;
 
-const SwiperView:FC<IProps> = ({className}) => {
-  console.log(className,'SwiperView');
+  const animStyle = useAnimatedStyle(() => {
+    let inputRange = [index - 1, index, index + 1];
+    let outputRange = [-width, 0, width];
 
-  return (<View className={className}>
-    <SwiperFlatList
-      autoplay
-      autoplayDelay={2}
-      autoplayLoop
-      index={2}
-      showPagination
-      data={colors}
-      PaginationComponent={CustomPagination}
-      renderItem={({ item }) => (
-        <View className="w-[100vw] h-[65vh] border  border-red-500  flex-1">
-          <Text className="flex-1">{item}</Text>
-        </View>
-      )}
-    />
-  </View>);
+    if (index === 0 && animValue?.value > length - 1) {
+      inputRange = [length - 1, length, length + 1];
+      outputRange = [-width, 0, width];
+    }
+    return {
+      transform: [
+        {
+          translateX: interpolate(
+            animValue?.value,
+            inputRange,
+            outputRange,
+            Extrapolate.CLAMP,
+          ),
+        },
+      ],
+    };
+  }, [animValue, index, length]);
+  return (
+    <View
+      className="w-2.5 h-2.5 rounded-xl overflow-hidden bg-[#ffffff19] mx-1"
+      style={{
+        transform: [
+          {
+            rotateZ: isRotate ? '90deg' : '0deg',
+          },
+        ],
+      }}
+    >
+      <Animated.View
+        className={'w-2.5 h-2.5 bg-white  rounded'}
+
+        style={[
+          animStyle,
+        ]}
+      />
+    </View>
+  );
 };
 
-export default SwiperView;
+export default Index;

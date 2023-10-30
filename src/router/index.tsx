@@ -12,6 +12,9 @@ import Demo from '@pages/demoScreen/index';
 import IM from '@pages/demoScreen/im/index';
 import UserGroup from './usergroup';
 import AnimatedScreen from '@pages/demoScreen/animated';
+import Homegroup from './homegroup';
+import Carouseldemo from '@pages/demoScreen/carousel';
+
 const initialRouteName: keyof RootStackParamList = 'HomeTabs';
 
 export const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -26,9 +29,11 @@ const AppNavigator = () => {
       }}>
         {LoginGroup()}
         {UserGroup()}
+        {Homegroup()}
         <Stack.Screen name="Demo" component={Demo} />
         <Stack.Screen name="IM" component={IM} />
         <Stack.Screen name="Animated" component={AnimatedScreen} />
+        <Stack.Screen name="Carouseldemo" component={Carouseldemo} />
         <Stack.Screen
           name="HomeTabs"
           component={HomeTabs}

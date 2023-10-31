@@ -16,7 +16,7 @@ const data: IData[] = [
   { key: '3', navigation: 'Preset', text: '预定卡座', source: require('@assets/imgs/home/deck.png'), color: '#91F2FFFF' },
   { key: '4', navigation: '', text: '发广播', source: require('@assets/imgs/home/radio.png'), color: '#FF8383FF' },
   { key: '5', navigation: '', text: '消费排行', source: require('@assets/imgs/home/consumption.png'), color: '#99FFA2FF' },
-  { key: '6', navigation: '', text: '0.2 动态', source: require('@assets/imgs/home/dynamic.png'), color: '#C7C2FFFF' },
+  { key: '6', navigation: 'Dynamic', text: '0.2 动态', source: require('@assets/imgs/home/dynamic.png'), color: '#C7C2FFFF' },
 
 ];
 

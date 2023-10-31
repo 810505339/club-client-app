@@ -21,7 +21,7 @@ export type RootStackParamList = {
   Demo: undefined,
   IM: undefined,
   Animated: undefined,
-  Carouseldemo:undefined
+  Carouseldemo: undefined
 
 } & UsertackParamList & HomeParamList;
 
@@ -38,7 +38,8 @@ export type UsertackParamList = {
 }
 
 export type HomeParamList = {
-  Preset: undefined
+  Preset: undefined,
+  Dynamic: undefined
 }
 
 export type TabParamList = {

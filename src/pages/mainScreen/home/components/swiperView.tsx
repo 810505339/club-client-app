@@ -53,7 +53,7 @@ function Index() {
     <View className="flex-auto  relative">
       <Carousel
         loop={true}
-        autoPlay={true}
+        autoPlay={false}
         pagingEnabled={true}
         className="h-full"
         style={{ width: PAGE_WIDTH }}

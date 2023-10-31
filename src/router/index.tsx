@@ -15,7 +15,7 @@ import AnimatedScreen from '@pages/demoScreen/animated';
 import Homegroup from './homegroup';
 import Carouseldemo from '@pages/demoScreen/carousel';
 
-const initialRouteName: keyof RootStackParamList = 'HomeTabs';
+const initialRouteName: keyof RootStackParamList = 'Dynamic';
 
 export const Stack = createNativeStackNavigator<RootStackParamList>();
 const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: DefaultTheme });

@@ -39,7 +39,10 @@ export type UsertackParamList = {
 
 export type HomeParamList = {
   Preset: undefined,
-  Dynamic: undefined
+  Dynamic: undefined,
+  DynamicInfo: {
+    id: string
+  }
 }
 
 export type TabParamList = {

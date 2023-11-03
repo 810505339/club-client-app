@@ -1,15 +1,18 @@
 import { Stack } from './index';
-import Login from '@pages/loginScreen/login';
-import NewUser from '@pages/loginScreen/set-password/newUser';
-import OldUser from '@pages/loginScreen/set-password/oldUser';
-import LoginOrRegister from '@pages/loginScreen/login/loginOrRegister';
-import Verification from '@pages/loginScreen/verification';
-import AuthenticationSex from '@pages/loginScreen/authentication/sex';
-import AuthenticationPower from '@pages/loginScreen/authentication/power';
-import Authentication from '@pages/loginScreen/authentication';
-import AuthenticationCamera from '@pages/loginScreen/authentication/camera';
-import AuthenticationFacestatus from '@pages/loginScreen/authentication/facestatus';
-import UserInfo from '@pages/loginScreen/userinfo/index';
+import Login from '@pages/LoginScreen/login/index';
+import NewUser from '@pages/LoginScreen/set-password/newUser';
+import OldUser from '@pages/LoginScreen/set-password/oldUser';
+import LoginOrRegister from '@pages/LoginScreen/login/loginOrRegister';
+import Verification from '@pages/LoginScreen/verification/index';
+import AuthenticationSex from '@pages/LoginScreen/authentication/sex';
+import AuthenticationPower from '@pages/LoginScreen/authentication/power';
+import Authentication from '@pages/LoginScreen/authentication/index';
+import AuthenticationCamera from '@pages/LoginScreen/authentication/camera';
+import UserInfo from '@pages/LoginScreen/userinfo';
+import AuthenticationFacestatus from '@pages/LoginScreen/authentication/facestatus';
+// import AuthenticationCamera from '@pages/loginScreen/authentication/camera';
+// import AuthenticationFacestatus from '@pages/loginScreen/authentication/facestatus';
+// import UserInfo from '@pages/loginScreen/userinfo/index';
 
 const LoginGroup = () => {
   return <Stack.Group>

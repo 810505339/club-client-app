@@ -3,19 +3,20 @@ import { getGenericPassword } from 'react-native-keychain';
 import { useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { adaptNavigationTheme } from 'react-native-paper';
-import CustomNavigationBar from '@components/appbar/customNavigationBar';
 import useSysLanguage from '@hooks/useSysLanguage';
-import HomeTabs from './hometabs';
 import { RootStackParamList } from './type';
-import LoginGroup from './logingroup';
 import Demo from '@pages/demoScreen/index';
 import IM from '@pages/demoScreen/im/index';
-import UserGroup from './usergroup';
 import AnimatedScreen from '@pages/demoScreen/animated';
-import Homegroup from './homegroup';
 import Carouseldemo from '@pages/demoScreen/carousel';
+import CustomNavigationBar from '@components/appBar/customNavigationBar';
+import HomeTabs from './HomeTabs';
+import LoginGroup from './LoginGroup';
+import Homegroup from './homegroup';
+import UserGroup from './usergroup';
 
-const initialRouteName: keyof RootStackParamList = 'Dynamic';
+const initialRouteName: keyof RootStackParamList = 'HomeTabs';
+
 
 export const Stack = createNativeStackNavigator<RootStackParamList>();
 const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: DefaultTheme });

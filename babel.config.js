@@ -8,7 +8,7 @@ module.exports = {
         root: ['./'],
         extensions: ['.ios.js', '.android.js', '.js', '.ts', '.tsx', '.json'],
         alias: {
-          '@components': './src/components',
+          '@': './src/',
           '@router': './src/router',
           '@storage': './src/storage',
           '@store': './src/store',
@@ -18,6 +18,7 @@ module.exports = {
           '@hooks': './src/hooks',
           '@assets': './assets',
           '@api': './src/api',
+          '@components': './src/components',
         },
       },
       'import-glob',

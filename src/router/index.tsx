@@ -15,6 +15,8 @@ import LoginGroup from './LoginGroup';
 import Homegroup from './homegroup';
 import UserGroup from './usergroup';
 
+import BlurviewDEmo from '@pages/demoScreen/blurview';
+
 const initialRouteName: keyof RootStackParamList = 'HomeTabs';
 
 
@@ -23,23 +25,29 @@ const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: DefaultTheme }
 const AppNavigator = () => {
   useSysLanguage();
   return (
-    <NavigationContainer theme={DarkTheme}>
+    <NavigationContainer theme={DarkTheme} >
       <Stack.Navigator initialRouteName={initialRouteName} screenOptions={{
         header: props => <CustomNavigationBar {...props} />,
         headerTransparent: true,
+        animation: 'none',
+
+
       }}>
-        {LoginGroup()}
-        {UserGroup()}
-        {Homegroup()}
+
         <Stack.Screen name="Demo" component={Demo} />
         <Stack.Screen name="IM" component={IM} />
         <Stack.Screen name="Animated" component={AnimatedScreen} />
         <Stack.Screen name="Carouseldemo" component={Carouseldemo} />
+        <Stack.Screen name="BlurviewDEmo" component={BlurviewDEmo} />
+        {LoginGroup()}
+        {Homegroup()}
+        {UserGroup()}
         <Stack.Screen
           name="HomeTabs"
           component={HomeTabs}
           options={{ headerShown: false }}
         />
+
 
       </Stack.Navigator>
     </NavigationContainer>

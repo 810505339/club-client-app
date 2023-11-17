@@ -5,6 +5,7 @@ import { TabsProvider, Tabs, TabScreen } from 'react-native-paper-tabs';
 import { ScreenNavigationProp } from '@router/type';
 import { useImmer } from 'use-immer';
 import { BlurView } from '@react-native-community/blur';
+import { useEffect, useState } from 'react';
 
 
 
@@ -39,12 +40,13 @@ const DynamicItem = (props: IProps) => {
   return <TouchableOpacity onPress={() => onPress(id)} className={`m-5  rounded-2xl relative ${boxClass}   overflow-hidden flex-col justify-end bg-[#5E3C18FF]`}>
     {img && <ImageBackground key={'blurryImage'} source={img} className="absolute  left-0 right-0 bottom-0 top-0" style={{ flex: 1 }} />}
     {img && <Type />}
-    <View className=" p-2.5   overflow-hidden ">
+    <View className=" p-2.5 overflow-hidden">
       <BlurView
-        style={{ position: 'absolute', height: 112, bottom: 0, left: 0, right: 0 }}
+        style={{ position: 'absolute', bottom: 0, left: 0, right: 0, top: 0 }}
         blurType="dark"
         blurAmount={5}
-        reducedTransparencyFallbackColor="white"
+        reducedTransparencyFallbackColor="transparent"
+
       />
       <View className="flex-row items-center justify-start ">
         {!img && <Type />}
@@ -64,6 +66,10 @@ const DynamicItem = (props: IProps) => {
     </View>
   </TouchableOpacity>;
 };
+
+
+
+
 
 
 const Dynamic = () => {
@@ -86,13 +92,16 @@ const Dynamic = () => {
 
   };
   const handleItemPress = (id: string) => {
+    console.log(id);
 
-    navigation.navigate('DynamicInfo',{
-      id
+
+    navigation.navigate('DynamicInfo', {
+      id,
     });
   };
 
   return (<BaseLayout>
+
     <TabsProvider
       defaultIndex={0}
     // onChangeIndex={handleChangeIndex} optional
@@ -116,7 +125,6 @@ const Dynamic = () => {
               ListFooterComponent={<Text className="text-center pb-5">没有更多</Text>}
               keyExtractor={item => (item.id)}
               data={data.cells}
-
               refreshControl={<RefreshControl refreshing={data.refreshing} onRefresh={onRefresh} />}
             />
           </View>
@@ -159,19 +167,7 @@ const Dynamic = () => {
   </BaseLayout>);
 };
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  absolute: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-  },
-});
+
 
 
 export default Dynamic;

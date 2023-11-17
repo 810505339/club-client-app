@@ -1,26 +1,16 @@
 import { BottomTabHeaderProps } from '@react-navigation/bottom-tabs';
 import { Appbar, Text } from 'react-native-paper';
 import { Image, View } from 'react-native';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { initList, store } from '@store/shopStore';
 import Drawer from '@components/drawer';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import Animated from 'react-native-reanimated';
+import { useSnapshot } from 'valtio';
+
 const LOGO = require('@assets/imgs/home/logo.png');
 
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-];
+
 
 const Item = ({ title }) => {
   return (
@@ -33,13 +23,16 @@ const Item = ({ title }) => {
 
 const Header = ({ layout, options }: BottomTabHeaderProps) => {
 
+  const snap = useSnapshot(store);
+
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const renderItem = ({ item }) => (
     <Item title={item.title} />
   );
 
-  const handlePresentModalPress = useCallback(() => {
+  const handlePresentModalPress = useCallback(async () => {
     console.log(bottomSheetModalRef.current);
+    await initList();
     bottomSheetModalRef.current?.present();
   }, []);
   return (<Appbar.Header style={{ backgroundColor: 'transparent' }}>
@@ -52,8 +45,8 @@ const Header = ({ layout, options }: BottomTabHeaderProps) => {
         <Text className="text-white">选择门店</Text>
       </View>
 
-      {/* <Animated.FlatList data={DATA}
-        keyExtractor={item => item.id} /> */}
+      <Animated.FlatList data={store} renderItem={renderItem}
+        keyExtractor={item => item.id} />
     </Drawer>
   </Appbar.Header>);
 };

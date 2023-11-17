@@ -1,1 +1,0 @@
-export { userAtom } from './user';

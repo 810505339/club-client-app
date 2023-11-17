@@ -23,7 +23,7 @@ const data: IData[] = [
 const Item = ({ navigation, text, source, color, onPress }: IData & {
   onPress: (navigation: string) => void
 }) => {
-  console.log(navigation);
+
 
   return (
     <TouchableOpacity className="mx-1.5  w-24 h-32  rounded-XL relative" onPress={() => onPress(navigation)}>
@@ -43,7 +43,9 @@ const HorizontalFlatList: FC<PropsWithChildren<IProps>> = ({ style }) => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const onPress = (nav: unknown) => {
-    navigation.navigate(nav);
+    console.log(navigation);
+
+    navigation.navigate('Dynamic');
 
   };
 

@@ -6,8 +6,8 @@ import DynamicInfo from '@pages/mainScreen/home/dynamic/info';
 
 const Homegroup = () => {
   return <Stack.Group>
-    <Stack.Screen name="Preset" component={Preset} />
     <Stack.Screen name="Dynamic" component={Dynamic} />
+    <Stack.Screen name="Preset" component={Preset} />
     <Stack.Screen name="DynamicInfo" component={DynamicInfo} />
   </Stack.Group>;
 };

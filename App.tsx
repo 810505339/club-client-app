@@ -1,6 +1,6 @@
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppNavigator from '@router/index';
-import { RecoilRoot } from 'recoil';
+
 import '@utils/i18next';
 import { PaperProvider, MD3DarkTheme, MD3LightTheme } from 'react-native-paper';
 import { useColorScheme } from 'react-native';
@@ -31,19 +31,17 @@ const App = () => {
       : { ...MD3LightTheme, colors: colors };
   return (
 
-    <RecoilRoot>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <BottomSheetModalProvider>
-          <PaperProvider theme={paperTheme}>
-            <SafeAreaProvider>
-              <StatusBar backgroundColor="transparent" translucent={true} />
-              <AppNavigator />
-              <Toast  config={toastConfig} bottomOffset={200} position="bottom"  />
-            </SafeAreaProvider>
-          </PaperProvider>
-        </BottomSheetModalProvider>
-      </GestureHandlerRootView>
-    </RecoilRoot>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+    <BottomSheetModalProvider>
+      <PaperProvider theme={paperTheme}>
+        <SafeAreaProvider>
+          <StatusBar backgroundColor="transparent" translucent={true} />
+          <AppNavigator />
+          <Toast  config={toastConfig} bottomOffset={200} position="bottom"  />
+        </SafeAreaProvider>
+      </PaperProvider>
+    </BottomSheetModalProvider>
+  </GestureHandlerRootView>
   );
 };
 

@@ -6,10 +6,7 @@ import BaseLayout from '@components/baselayout';
 import { useCountdown } from '@hooks/useCountdown';
 import { useCallback, useEffect, useState } from 'react';
 import VerificationCodeField from './component/VerificationCodeField';
-import { loginApi, sendYzmApi } from '@api/login';
-import { useSetRecoilState } from 'recoil';
-import { userAtom } from '@store/index';
-import { useUserActions } from '@store/user/action';
+import {  sendYzmApi } from '@api/login';
 import { getGenericPassword } from 'react-native-keychain';
 
 const bgImage = require('@assets/imgs/login/login-register-bg.png');
@@ -24,7 +21,6 @@ const Verification = () => {
   const [isResend, setIsResend] = useState(false);
   const { count, start, stop } = useCountdown(60);
   const [code, setCode] = useState('1234');
-  const userActions = useUserActions();
 
   const sendVerification = async () => {
     setIsResend(true);
@@ -47,19 +43,19 @@ const Verification = () => {
   const handleLogin = async () => {
     try {
 
-      const data = await userActions.login({ code, mobile });
-      console.log(data,'handleLogin');
+      // const data = await userActions.login({ code, mobile });
+      // console.log(data,'handleLogin');
 
-      //没有人脸去人脸识别
-      if (!data.checkFace) {
-        navigation.navigate('AuthenticationSex');
-        return;
-      }
+      // //没有人脸去人脸识别
+      // if (!data.checkFace) {
+      //   navigation.navigate('AuthenticationSex');
+      //   return;
+      // }
 
-      //设置信息
-      if (!data.setPersonalInfo) {
-        return;
-      }
+      // //设置信息
+      // if (!data.setPersonalInfo) {
+      //   return;
+      // }
     } catch (err) {
 
     }

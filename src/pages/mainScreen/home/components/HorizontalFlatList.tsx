@@ -4,7 +4,7 @@ import { View, FlatList, ImageBackground, ImageSourcePropType, TouchableOpacity 
 import { Text } from 'react-native-paper';
 import { RootStackParamList } from '@router/type';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-i
+import { useTranslation } from 'react-i18next';
 
 
 type IData = {
@@ -12,15 +12,6 @@ type IData = {
 
 }
 
-const data: IData[] = [
-  { key: '1', navigation: '', text: '拼酒局', source: require('@assets/imgs/home/fightwine.png'), color: '#ED8EFFFF' },
-  { key: '2', navigation: 'Preset', text: '预定门票', source: require('@assets/imgs/home/tickets.png'), color: '#FFBF65FF' },
-  { key: '3', navigation: 'Preset', text: '预定卡座', source: require('@assets/imgs/home/deck.png'), color: '#91F2FFFF' },
-  { key: '4', navigation: '', text: '发广播', source: require('@assets/imgs/home/radio.png'), color: '#FF8383FF' },
-  { key: '5', navigation: '', text: '消费排行', source: require('@assets/imgs/home/consumption.png'), color: '#99FFA2FF' },
-  { key: '6', navigation: 'Dynamic', text: '0.2 动态', source: require('@assets/imgs/home/dynamic.png'), color: '#C7C2FFFF' },
-
-];
 
 const Item = ({ navigation, text, source, color, onPress }: IData & {
   onPress: (navigation: string) => void
@@ -43,13 +34,23 @@ type IProps = {
 
 const HorizontalFlatList: FC<PropsWithChildren<IProps>> = ({ style }) => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const { t, i18n } = useTranslation();
 
+  const data: IData[] = [
+    { key: '1', navigation: 'Preset', text: t('home.nav1'), source: require('@assets/imgs/home/fightwine.png'), color: '#ED8EFFFF' },
+    { key: '2', navigation: 'Preset', text: t('home.nav2'), source: require('@assets/imgs/home/tickets.png'), color: '#FFBF65FF' },
+    { key: '3', navigation: 'Preset', text: t('home.nav3'), source: require('@assets/imgs/home/deck.png'), color: '#91F2FFFF' },
+    { key: '4', navigation: 'Preset', text: t('home.nav4'), source: require('@assets/imgs/home/radio.png'), color: '#FF8383FF' },
+    { key: '5', navigation: 'Preset', text: t('home.nav5'), source: require('@assets/imgs/home/consumption.png'), color: '#99FFA2FF' },
+    { key: '6', navigation: 'Dynamic', text: t('home.nav6'), source: require('@assets/imgs/home/dynamic.png'), color: '#C7C2FFFF' },
+
+  ];
 
 
   const onPress = (nav: unknown) => {
-    console.log(navigation);
+    console.log(nav);
 
-    navigation.navigate('Dynamic');
+    navigation.navigate(nav);
 
   };
 

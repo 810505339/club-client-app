@@ -13,6 +13,7 @@ const HOMEICON = require('@assets/imgs/bottombar/user.png');
 const HOMEICONACTIVE = require('@assets/imgs/bottombar/home_active.png');
 const FIGHTWINEICON = require('@assets/imgs/bottombar/fightwine.png');
 const TICKETCICON = require('@assets/imgs/bottombar/ticket.png');
+const TICKETCICONACTIVE = require('@assets/imgs/bottombar/ticket_active.png');
 const USERICON = require('@assets/imgs/bottombar/user.png');
 
 
@@ -60,7 +61,7 @@ const HomeTabs = () => {
             image = focused ? FIGHTWINEICON : FIGHTWINEICON;
           }
           if (route.name == 'Ticket') {
-            image = focused ? TICKETCICON : TICKETCICON;
+            image = focused ? TICKETCICONACTIVE : TICKETCICON;
           }
           if (route.name == 'User') {
             image = focused ? USERICON : USERICON;

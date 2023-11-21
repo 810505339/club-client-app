@@ -12,11 +12,13 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import Toast from 'react-native-toast-message';
 import toastConfig from '@components/toast/customToast';
+import { getFileUrl } from '@store/getfileurl';
 
 const App = () => {
   useEffect(() => {
     /* 这是启动页 */
     SplashScreen.hide();
+    getFileUrl();
   }, []);
   const colorScheme = useColorScheme();
   const { theme } = useMaterial3Theme();
@@ -32,16 +34,16 @@ const App = () => {
   return (
 
     <GestureHandlerRootView style={{ flex: 1 }}>
-    <BottomSheetModalProvider>
-      <PaperProvider theme={paperTheme}>
-        <SafeAreaProvider>
-          <StatusBar backgroundColor="transparent" translucent={true} />
-          <AppNavigator />
-          <Toast  config={toastConfig} bottomOffset={200} position="bottom"  />
-        </SafeAreaProvider>
-      </PaperProvider>
-    </BottomSheetModalProvider>
-  </GestureHandlerRootView>
+      <BottomSheetModalProvider>
+        <PaperProvider theme={paperTheme}>
+          <SafeAreaProvider>
+            <StatusBar backgroundColor="transparent" translucent={true} />
+            <AppNavigator />
+            <Toast config={toastConfig} bottomOffset={200} position="bottom" />
+          </SafeAreaProvider>
+        </PaperProvider>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   );
 };
 

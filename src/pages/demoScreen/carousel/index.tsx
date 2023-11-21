@@ -16,7 +16,7 @@ const Carouseldemo = () => {
       autoPlayInterval={2000}
       data={data}
       pagingEnabled={true}
-      onSnapToItem={index => console.log('current index:', index)}
+      // onSnapToItem={index => console.log('current index:', index)}
       renderItem={({ index }) => <View key={index}  className="border w-5 h-5"/>}
     />
   </BaseLayout>);

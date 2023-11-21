@@ -2,85 +2,63 @@ import { useNavigation } from '@react-navigation/native';
 import { TabParamList } from '@router/type';
 import Header from './components/header';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import BaseLayout from '@components/baselayout';
 import SwiperView from './components/swiperView';
 import HorizontalFlatList from './components/HorizontalFlatList';
-
+import { getcarouselList } from '@api/common';
+import { useImmer } from 'use-immer';
+import { fileStore } from '@store/getfileurl';
 // const HOMEBG = require('@assets/imgs/home/bg.png')
+
+type IData = {
+  id: string;
+  swiperList: any[]
+}
 
 const HomeScreen = () => {
   const navigation =
     useNavigation<BottomTabNavigationProp<TabParamList, 'Home'>>();
 
+  const [data, setData] = useImmer<IData>({
+    id: '',
+    swiperList: [],
+  });
+  function onChange(value: any) {
+    setData((draft: IData) => {
+      draft.id = value.id;
+    });
+  }
+
+  async function getcarouselListApi() {
+    const res = await getcarouselList({ storeId: data.id, type: '0', limitNum: '5' });
+    setData((draft: IData) => {
+      draft.swiperList = res;
+    });
+
+  }
+
+
+  useEffect(() => {
+    if (data.id) {
+      getcarouselListApi();
+    }
+  }, [data.id]);
 
 
   useEffect(() => {
     navigation.setOptions({
-      header: props => <Header {...props} />,
+      header: props => <Header {...props} onChange={onChange} />,
     });
   }, [navigation]);
   return (
     <BaseLayout className="bg-[#0B0B0BE6]">
       <HorizontalFlatList className="mt-7" />
-      <SwiperView  />
+      <SwiperView swiperList={data.swiperList}  />
     </BaseLayout>
   );
 };
 
-
-
-// const HomeScreen = () => {
-//   // ref
-//   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
-//   // variables
-//   const snapPoints = useMemo(() => ['50%', '50%'], []);
-
-//   // callbacks
-//   const handlePresentModalPress = useCallback(() => {
-//     bottomSheetModalRef.current?.present();
-//   }, []);
-//   const handleSheetChanges = useCallback((index: number) => {
-//     console.log('handleSheetChanges', index);
-//   }, []);
-
-//   // renders
-//   return (
-//     <BottomSheetModalProvider>
-//       <View style={styles.container}>
-//         <Button
-//           onPress={handlePresentModalPress}
-//           title="Present Modal"
-//           color="black"
-//         />
-//         <BottomSheetModal
-//           ref={bottomSheetModalRef}
-//           index={1}
-//           snapPoints={snapPoints}
-//           onChange={handleSheetChanges}
-//         >
-//           <View style={styles.contentContainer}>
-//             <Text>Awesome 🎉</Text>
-//           </View>
-//         </BottomSheetModal>
-//       </View>
-//     </BottomSheetModalProvider>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     padding: 24,
-//     justifyContent: 'center',
-//     backgroundColor: 'grey',
-//   },
-//   contentContainer: {
-//     flex: 1,
-//     alignItems: 'center',
-//   },
-// });
 
 export default HomeScreen;
 

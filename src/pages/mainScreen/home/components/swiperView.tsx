@@ -10,21 +10,32 @@ import Animated, {
 } from 'react-native-reanimated';
 import Carousel from 'react-native-reanimated-carousel';
 import { Text } from 'react-native-paper';
-import { PropsWithChildren } from 'react';
-export const ImageItems = [
-  require('@assets/imgs/demo/carousel-0.jpg'),
-  require('@assets/imgs/demo/carousel-1.jpg'),
-  require('@assets/imgs/demo/carousel-2.jpg'),
-];
+import { FC, PropsWithChildren } from 'react';
+// export const ImageItems = [
+//   require('@assets/imgs/demo/carousel-0.jpg'),
+//   require('@assets/imgs/demo/carousel-1.jpg'),
+//   require('@assets/imgs/demo/carousel-2.jpg'),
+// ];
 const PAGE_WIDTH = Dimensions.get('window').width;
 export interface ISButtonProps {
   visible?: boolean
   onPress?: () => void
 }
 
-function Index() {
+export interface IProps {
+  swiperList: {
+    pictureFile: any[]
+  }[]
+}
+
+
+
+function Index({ swiperList }: IProps) {
   const pressAnim = useSharedValue<number>(0);
   const progressValue = useSharedValue<number>(0);
+
+  const ImageItems = swiperList.map(item => item.pictureFile);
+
   const animationStyle = React.useCallback(
     (value: number) => {
       'worklet';
@@ -50,18 +61,18 @@ function Index() {
   }, [pressAnim.value]);
 
   return (
-    <View className="flex-auto  relative">
+    <View className="flex-auto p-5  relative">
       <Carousel
         loop={true}
-        autoPlay={false}
+        autoPlay={true}
         pagingEnabled={true}
         className="h-full"
-        style={{ width: PAGE_WIDTH }}
-        width={PAGE_WIDTH}
+        style={{ width: PAGE_WIDTH - 40 }}
+        width={PAGE_WIDTH - 40}
         data={[...ImageItems]}
         //并且当数据长度小于 3 时，您还需要添加 prop
         // autoFillData={false}
-        onSnapToItem={(index) => console.log('current index:', index)}
+        // onSnapToItem={(index) => console.log('current index:', index)}
         onScrollBegin={() => {
           pressAnim.value = withTiming(1);
         }}
@@ -84,7 +95,7 @@ function Index() {
           );
         }}
         customAnimation={animationStyle}
-        scrollAnimationDuration={1200}
+        scrollAnimationDuration={3000}
 
       />
 
@@ -118,8 +129,7 @@ const CustomItem: React.FC<ItemProps> = ({ pressAnim, source }) => {
   return (
     <Animated.View style={[{ flex: 1, overflow: 'hidden' }, animStyle]}>
       <Animated.Image
-        source={source}
-
+        source={{ uri: source }}
         style={{ width: '100%', height: '100%' }}
       />
 

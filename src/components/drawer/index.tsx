@@ -55,19 +55,20 @@ const Drawer = forwardRef<BottomSheetModalMethods, BottomSheetProps>(({ children
   return (
     <BottomSheetModal
       ref={ref}
+      onDismiss={props.onDismiss}
       enablePanDownToClose
       snapPoints={snapPointsMemo}
       keyboardBlurBehavior="restore"
       enableContentPanningGesture={false}
       backdropComponent={renderBackdrop}
-
+      handleHeight={0}
+      handleComponent={null}
       backgroundStyle={{
-        backgroundColor: 'red',
-        }}
+        backgroundColor: '#0B0B0BFF',
+      }}
+      style={{ borderRadius: 20, overflow: 'hidden' }}
       onChange={handleSheetChanges}   {...props}>
-      <View className="bg-[#282c34]">
       {children}
-      </View>
     </BottomSheetModal>
   );
 });

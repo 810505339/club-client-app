@@ -5,6 +5,7 @@ import { Text } from 'react-native-paper';
 import { RootStackParamList } from '@router/type';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
+
 type IData = {
   [key in string]: string;
 
@@ -41,6 +42,8 @@ type IProps = {
 
 const HorizontalFlatList: FC<PropsWithChildren<IProps>> = ({ style }) => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+
 
   const onPress = (nav: unknown) => {
     console.log(navigation);

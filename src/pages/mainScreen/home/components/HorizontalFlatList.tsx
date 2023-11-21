@@ -4,6 +4,7 @@ import { View, FlatList, ImageBackground, ImageSourcePropType, TouchableOpacity 
 import { Text } from 'react-native-paper';
 import { RootStackParamList } from '@router/type';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+i
 
 
 type IData = {

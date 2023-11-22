@@ -6,6 +6,7 @@ import { RefreshControl, Text, TouchableOpacity, View } from 'react-native';
 import { Divider, List } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import { UsertackParamList } from '@router/type';
+import CheckAuthLayout from '@components/baselayout/checkLayout';
 const wait = (timeout: number) => {
   return new Promise(resolve => {
     setTimeout(resolve, timeout);
@@ -43,7 +44,7 @@ const ListHeader = ({ balancePress }: IListHeader) => {
       </View>
     </View>
     <View className="flex flex-row  gap-3  border-[#ffffff7f] pb-4 px-5">
-      <TouchableOpacity className={`${box}  flex-grow`}onPress={() => balancePress('Information')} >
+      <TouchableOpacity className={`${box}  flex-grow`} onPress={() => balancePress('Information')} >
         <Text className="text-[#FF4DCEFF]  text-2xl">1</Text>
         <Text className={fontText}>账户余额</Text>
       </TouchableOpacity>
@@ -61,9 +62,7 @@ const ListHeader = ({ balancePress }: IListHeader) => {
 
 
 const HomeScreen = () => {
-
   const navigation = useNavigation<NativeStackNavigationProp<UsertackParamList>>();
-
   const cells = useMemo(() => {
     return ([
       { id: 'SystemMessage', title: '系统消息', left: '', right: '' },
@@ -98,6 +97,7 @@ const HomeScreen = () => {
   };
 
   return (<BaseLayout className="bg-[#0B0B0BFF]">
+    <CheckAuthLayout />
     <Animated.View>
 
       <Animated.FlatList

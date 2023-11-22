@@ -15,7 +15,7 @@ type IData = {
 
 export const loginApi = async ({ code, grant_type = 'mobile', scope = 'server', mobile }: IData) => {
 	const basicAuth = 'Basic ' + btoa(BASICAUTH);
-	return await service({
+	const { data } = await service({
 		url: '/auth/oauth2/token',
 		method: 'post',
 		params: { code: code, grant_type: grant_type, scope: scope, mobile: mobile },
@@ -25,6 +25,8 @@ export const loginApi = async ({ code, grant_type = 'mobile', scope = 'server', 
 			Authorization: basicAuth,
 		},
 	});
+	console.log(data);
+
 };
 
 
@@ -45,7 +47,7 @@ export interface EditSelfParams {
 	nickname: string;
 
 	/*生日 */
-	birthday:string;
+	birthday: string;
 }
 
 

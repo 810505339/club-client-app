@@ -7,7 +7,8 @@ import CustomNavigationBar from '@components/appbar/customNavigationBar';
 import { TabParamList } from './type';
 import { Image } from 'react-native';
 
-
+import { getGenericPassword } from 'react-native-keychain';
+import { useEffect, useState } from 'react';
 
 const HOMEICON = require('@assets/imgs/bottombar/user.png');
 const HOMEICONACTIVE = require('@assets/imgs/bottombar/home_active.png');
@@ -24,7 +25,6 @@ const { Navigator, Screen } = createBottomTabNavigator<TabParamList>();
 const HomeTabs = () => {
   return (
     <Navigator initialRouteName="Home" screenOptions={({ route }) => {
-
       return {
         headerTransparent: true,
         tabBarShowLabel: false,

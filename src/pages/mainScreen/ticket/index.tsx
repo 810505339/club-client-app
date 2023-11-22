@@ -15,7 +15,10 @@ import { useHeaderHeight } from '@react-navigation/elements';
 import BaseLayout from '@components/baselayout';
 import Animated from 'react-native-reanimated';
 import { useImmer } from 'use-immer';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
+import { checkAuth } from '@utils/checkAuth';
+import { useNavigation } from '@react-navigation/native';
+import CheckAuthLayout from '@components/baselayout/checkLayout';
 
 
 
@@ -44,6 +47,8 @@ const renderItem = ({ item, handleItemPress }) => {
 };
 
 const TicketScreen = () => {
+
+  const navigation = useNavigation();
   const [data, setData] = useImmer({
     refreshing: false,
     cells: [1, 2, 3, 4, 5, 6, 7],
@@ -71,8 +76,11 @@ const TicketScreen = () => {
 
   }, [data]);
 
+
+
   return (
     <BaseLayout className="relative">
+      <CheckAuthLayout />
       <TabsProvider
         defaultIndex={0}
       // onChangeIndex={handleChangeIndex} optional

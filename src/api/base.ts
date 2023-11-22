@@ -1,7 +1,7 @@
 import axios from 'axios';
 import qs from 'qs';
 import { getGenericPassword } from 'react-native-keychain';
-
+import Toast from 'react-native-toast-message';
 const baseUrl = 'http://114.67.231.163:9999';
 
 /**
@@ -34,6 +34,8 @@ service.interceptors.request.use(async (config) => {
 	if (generic) {
 		token = generic.password;
 	}
+	console.log(token, 'token');
+
 	if (token && !config.headers?.skipToken) {
 		config.headers![CommonHeaderEnum.AUTHORIZATION] = `Bearer ${token}`;
 	}
@@ -44,6 +46,8 @@ service.interceptors.request.use(async (config) => {
 },
 	(error) => {
 		// 对请求错误进行处理
+		console.log(error, 'error');
+
 		return Promise.reject(error);
 	}
 );
@@ -73,13 +77,21 @@ service.interceptors.request.use(async (config) => {
 /**
  * 添加 Axios 的响应拦截器，用于全局响应结果处理
  */
-// service.interceptors.response.use(handleResponse, (error) => {
-// 	const status = Number(error.response.status) || 200;
-// 	if (status === 424) {
+service.interceptors.response.use((response) => {
+	const status = Number(response.status);
 
-// 	}
-// 	return Promise.reject(error.response.data);
-// });
+	console.log('响应拦截成功');
+
+	return response;
+
+}, (error) => {
+	const data = error.response.data;
+
+	if (data) {
+		Toast.show({ text1: data?.msg });
+	}
+
+});
 
 // 常用header
 export enum CommonHeaderEnum {

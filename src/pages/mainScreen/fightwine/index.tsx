@@ -1,10 +1,21 @@
-import {View, Text} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { View, Text } from 'react-native';
+import { Button } from 'react-native-paper';
+import { RootStackParamList } from '@router/type';
+import BaseLayout from '@components/baselayout';
+import CheckLayout from '@components/baselayout/checkLayout';
 
 const FightwineScreen = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const Next = () => {
+
+    navigation.navigate('LoginOrRegister');
+  };
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text className="text-red-500">fightwine</Text>
-    </View>
+    <BaseLayout>
+      <CheckLayout />
+    </BaseLayout>
   );
 };
 export default FightwineScreen;

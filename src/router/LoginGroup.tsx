@@ -15,7 +15,8 @@ import AuthenticationFacestatus from '@pages/LoginScreen/authentication/facestat
 // import UserInfo from '@pages/loginScreen/userinfo/index';
 
 const LoginGroup = () => {
-  return <Stack.Group>
+
+  return <Stack.Group screenOptions={{presentation:'modal'}}>
     <Stack.Screen
       name="Login"
       options={{ headerShown: false }}

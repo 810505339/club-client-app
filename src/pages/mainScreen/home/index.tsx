@@ -43,6 +43,7 @@ const HomeScreen = () => {
     if (data.id) {
       getcarouselListApi();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.id]);
 
 

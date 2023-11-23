@@ -1,7 +1,7 @@
 import Drawer from '@components/drawer';
-import { FC, forwardRef, useEffect, useState } from 'react';
+import { FC, forwardRef, useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetFooter, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Button, RadioButton, Text } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 const headerIcon = require('@assets/imgs/base/header.png');
@@ -36,7 +36,7 @@ const ListHeaderComponent: FC<{ headerText?: string }> = ({ headerText = '标 �
 };
 
 const ListFooterComponent: FC<{ btnText?: string, onPress: () => void }> = ({ btnText = '确定', onPress }) => {
-  return <View className="px-5" >
+  return <View className="px-5">
     <Button
       mode="outlined"
       style={{ borderColor: '#EE2737', backgroundColor: '#EE2737', height: 50, borderRadius: 33 }}
@@ -66,7 +66,7 @@ export type IModalProp = {
 
 
 const CustomModal = forwardRef<BottomSheetModal, IModalProp>((props, ref) => {
-  const { btnText, headerText, data, onPress, selectValue,snapPoints } = props;
+  const { btnText, headerText, data, onPress, selectValue, snapPoints } = props;
   const [value, setValue] = useState<string>(selectValue);
   useEffect(() => {
     setValue(selectValue);
@@ -75,14 +75,26 @@ const CustomModal = forwardRef<BottomSheetModal, IModalProp>((props, ref) => {
     setValue(selectValue);
   }
 
+  // renders
+  const renderFooter = useCallback(
+    props => {
+      return (
+        <BottomSheetFooter {...props} bottomInset={24}>
+          <ListFooterComponent btnText={btnText} onPress={() => onPress(data?.find(d => d.id == value))} />
+        </BottomSheetFooter>
+      );
+    },
+    [btnText, data, onPress, value]
+  );
+
   //['33.3%']
-  return <Drawer snapPoints={snapPoints} ref={ref} onDismiss={onDismiss} >
+  return <Drawer snapPoints={snapPoints} ref={ref} onDismiss={onDismiss} footerComponent={renderFooter} >
     <View className="h-full pb-5">
       <ListHeaderComponent headerText={headerText} />
       <RadioButton.Group onValueChange={(value) => setValue(value)} value={value}>
         {data.map((item) => <Item key={item.id} {...item} />)}
       </RadioButton.Group>
-      <ListFooterComponent btnText={btnText} onPress={() => onPress(data?.find(d => d.id == value))} />
+
     </View>
   </Drawer>;
 });

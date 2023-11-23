@@ -1,10 +1,13 @@
 import BaseLayout from '@components/baselayout';
 import { checkFace } from '@api/checkFace';
-import { useState } from 'react';
-import { Button } from 'react-native-paper';
-import Animated from 'react-native-reanimated';
+import { useCallback, useRef, useState } from 'react';
+import { Button, Text } from 'react-native-paper';
+
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNavigationProp } from '@router/type';
+import { BottomSheetFooter, BottomSheetModal } from '@gorhom/bottom-sheet';
+import { View } from 'react-native';
+import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 
 
 const image = 'https://avatars.githubusercontent.com/u/15199031?v=4';
@@ -43,9 +46,54 @@ const DemoScreen = () => {
 
   return (
     <BaseLayout>
-      <Button onPress={getImage}>Image</Button>
-      <Animated.Image source={{ uri: base64Data }} className="h-80" />
+
+      <TestDrawer />
+      {/* <Animated.Image source={{ uri: base64Data }} className="h-80" /> */}
     </BaseLayout>
   );
 };
+
+
+
+const TestDrawer = () => {
+  const ref = useRef<BottomSheetModalMethods>(null);
+  const handleClick = () => {
+    console.log(ref.current);
+    ref.current?.present();
+  };
+  // renders
+  const renderFooter = useCallback(
+    props => (
+      <BottomSheetFooter {...props} bottomInset={24}>
+        <View >
+          <Text>Footer</Text>
+        </View>
+      </BottomSheetFooter>
+    ),
+    []
+  );
+  return <View>
+    <Button onPress={handleClick}>弹窗</Button>
+    <BottomSheetModal
+      ref={ref}
+      enablePanDownToClose
+      snapPoints={['50%']}
+      keyboardBlurBehavior="restore"
+      enableContentPanningGesture={false}
+      handleHeight={0}
+      handleComponent={null}
+      backgroundStyle={{
+
+      }}
+      style={{ borderRadius: 20, overflow: 'hidden' }}
+      footerComponent={renderFooter}
+    >
+      <View>
+        <Text>你好</Text>
+      </View>
+    </BottomSheetModal>
+  </View>;
+};
+
+
 export default DemoScreen;

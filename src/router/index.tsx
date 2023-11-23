@@ -31,11 +31,11 @@ const AppNavigator = () => {
         // animation: 'none',
       }}>
 
-        {/* <Stack.Screen name="Demo" component={Demo} />
-        <Stack.Screen name="IM" component={IM} />
+        <Stack.Screen name="Demo" component={Demo} />
+         <Stack.Screen name="IM" component={IM} />
         <Stack.Screen name="Animated" component={AnimatedScreen} />
         <Stack.Screen name="Carouseldemo" component={Carouseldemo} />
-        <Stack.Screen name="BlurviewDEmo" component={BlurviewDEmo} /> */}
+       <Stack.Screen name="BlurviewDEmo" component={BlurviewDEmo} />
 
         {LoginGroup()}
         {Homegroup()}

@@ -63,7 +63,7 @@ const Header = ({ layout, options, onChange }: BottomTabHeaderProps & { onChange
     <Image source={LOGO} className="w-16 h-8 ml-5" />
     <Appbar.Content onPress={handlePresentModalPress} title={(<Text numberOfLines={1} className="text-right w-36   absolute top-[-10]   items-center justify-center right-0">{data.select.name}</Text>)} tvParallaxTiltAngle={1} />
     <Appbar.Action icon="chevron-down" />
-    <CustomModal ref={bottomSheetModalRef} data={snap.shopList} selectValue={data.select.id} onPress={onPress} headerText="选择门店" snapPoints={['33.3%']} />
+    <CustomModal ref={bottomSheetModalRef} data={snap.shopList} selectValue={data.select.id} onPress={onPress} headerText="选择门店" snapPoints={['50%']} />
   </Appbar.Header>);
 };
 

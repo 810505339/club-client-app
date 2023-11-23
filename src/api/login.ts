@@ -1,5 +1,6 @@
 import service from './base';
 import { btoa } from 'js-base64';
+import { setGenericPassword } from 'react-native-keychain';
 /**
  * https://www.ietf.org/rfc/rfc6749.txt
  * OAuth 协议 4.3.1 要求格式为 form 而不是 JSON 注意！
@@ -25,7 +26,15 @@ export const loginApi = async ({ code, grant_type = 'mobile', scope = 'server', 
 			Authorization: basicAuth,
 		},
 	});
+
+
 	console.log(data);
+	if (data) {
+		//sub 手机号 token //登录token
+		await setGenericPassword(data?.sub, data?.access_token);
+	}
+	return data
+
 
 };
 

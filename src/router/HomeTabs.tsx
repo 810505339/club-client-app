@@ -11,12 +11,14 @@ import { getGenericPassword } from 'react-native-keychain';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const HOMEICON = require('@assets/imgs/bottombar/user.png');
+const HOMEICON = require('@assets/imgs/bottombar/home.png');
 const HOMEICONACTIVE = require('@assets/imgs/bottombar/home_active.png');
 const FIGHTWINEICON = require('@assets/imgs/bottombar/fightwine.png');
+const FIGHTWINEICONACTIVE = require('@assets/imgs/bottombar/fightwine_active.png');
 const TICKETCICON = require('@assets/imgs/bottombar/ticket.png');
 const TICKETCICONACTIVE = require('@assets/imgs/bottombar/ticket_active.png');
 const USERICON = require('@assets/imgs/bottombar/user.png');
+const USERICONACTIVE = require('@assets/imgs/bottombar/user_active.png');
 
 
 
@@ -62,13 +64,13 @@ const HomeTabs = () => {
           }
 
           if (route.name == 'Fightwine') {
-            image = focused ? FIGHTWINEICON : FIGHTWINEICON;
+            image = focused ? FIGHTWINEICONACTIVE : FIGHTWINEICON;
           }
           if (route.name == 'Ticket') {
             image = focused ? TICKETCICONACTIVE : TICKETCICON;
           }
           if (route.name == 'User') {
-            image = focused ? USERICON : USERICON;
+            image = focused ? USERICONACTIVE : USERICON;
           }
           return (image && <Image style={{ width: 28, height: 28 }} source={image} />);
         },

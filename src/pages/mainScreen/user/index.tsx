@@ -2,11 +2,17 @@ import BaseLayout from '@components/baselayout';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCallback, useMemo, useState } from 'react';
-import { RefreshControl, Text, TouchableOpacity, View } from 'react-native';
+import { ImageBackground, RefreshControl, Text, TouchableOpacity, View } from 'react-native';
 import { Divider, List } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import { UsertackParamList } from '@router/type';
 import CheckAuthLayout from '@components/baselayout/checkLayout';
+import { BlurView } from '@react-native-community/blur';
+
+const bg1Icon = require('@assets/imgs/user/bg_1.png');
+const bg2Icon = require('@assets/imgs/user/bg_2.png');
+const bg3Icon = require('@assets/imgs/user/bg_3.png');
+
 const wait = (timeout: number) => {
   return new Promise(resolve => {
     setTimeout(resolve, timeout);
@@ -21,7 +27,7 @@ type IListHeader = {
 }
 const ListHeader = ({ balancePress }: IListHeader) => {
   const fontText = 'text-xs text-[#ffffff7f]';
-  const box = 'items-center border border-red-500 h-28 pb-3 justify-end mb-2';
+  const box = 'items-center  h-28 pb-3 justify-end mb-2 relative';
 
   return <View className=" rounded-t-3xl">
     <View className="mb-8 px-5 flex   flex-row border border-rose-500  box-border">
@@ -32,11 +38,25 @@ const ListHeader = ({ balancePress }: IListHeader) => {
           <Text numberOfLines={1} ellipsizeMode="tail">个性签名asdasd asdasd asdasdasd Personal signatPersonal </Text>
         </View>
         <View className="flex-row mt-4">
-          <View className="w-24  h-6 rounded-xl bg-[#ffffff7f] mr-2 items-end justify-center">
-            <Text className=" text-[#ffffff19]  text-xs pr-2">已性别认证</Text>
+          <View className="w-24  h-6 rounded-xl  mr-2 items-end justify-center overflow-hidden">
+            <BlurView
+              style={{ position: 'absolute', bottom: 0, left: 0, right: 0, top: 0 }}
+              blurType="dark"
+              blurAmount={5}
+              reducedTransparencyFallbackColor="transparent"
+
+            />
+            <Text className=" text-xs pr-2">已性别认证</Text>
           </View>
-          <View className="w-12  h-6 rounded-xl bg-[#ffffff7f] items-end justify-center">
-            <Text className=" text-[#ffffff19]   text-xs pr-2">男</Text>
+          <View className="w-12  h-6 rounded-xl items-end justify-center overflow-hidden">
+          <BlurView
+              style={{ position: 'absolute', bottom: 0, left: 0, right: 0, top: 0 }}
+              blurType="dark"
+              blurAmount={5}
+              reducedTransparencyFallbackColor="transparent"
+
+            />
+            <Text className="    text-xs pr-2">男</Text>
           </View>
 
 
@@ -45,14 +65,17 @@ const ListHeader = ({ balancePress }: IListHeader) => {
     </View>
     <View className="flex flex-row  gap-3  border-[#ffffff7f] pb-4 px-5">
       <TouchableOpacity className={`${box}  flex-grow`} onPress={() => balancePress('Information')} >
-        <Text className="text-[#FF4DCEFF]  text-2xl">1</Text>
+        <ImageBackground source={bg1Icon} className="absolute inset-0 w-full h-full" />
+        <Text className="text-[#E6A055FF]  text-2xl">1</Text>
         <Text className={fontText}>账户余额</Text>
       </TouchableOpacity>
-      <TouchableOpacity className={`${box} w-20`} onPress={() => balancePress('Coupons')} >
+      <TouchableOpacity className={`${box} w-20 `} onPress={() => balancePress('Coupons')} >
+        <ImageBackground source={bg2Icon} className="absolute inset-0 w-full h-full" />
         <Text className="text-[#FF4DCEFF]  text-2xl">1</Text>
         <Text className={fontText}>优惠券</Text>
       </TouchableOpacity>
       <TouchableOpacity className={`${box} w-20`} onPress={() => balancePress('Orders')}>
+        <ImageBackground source={bg3Icon} className="absolute inset-0 w-full h-full" />
         <Text className="text-[#2ECFFFFF] text-2xl ">1</Text>
         <Text className={fontText}>订单</Text>
       </TouchableOpacity>

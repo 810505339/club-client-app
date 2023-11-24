@@ -11,6 +11,7 @@ export default function CustomNavigationBar({
   options,
   back,
 }: NativeStackHeaderProps) {
+
   const title = getHeaderTitle(options, route.name);
   const Right = options.headerRight || (() => null);
   const insets = useSafeAreaInsets();

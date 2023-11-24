@@ -1,4 +1,8 @@
 export default {
-  hello: '你好',
-  welcome: '欢迎你',
+  titleList: {
+    user: '我的',
+    fightwine: '拼酒局',
+    ticket: '门票',
+    bookTickets: '订票',
+  },
 };

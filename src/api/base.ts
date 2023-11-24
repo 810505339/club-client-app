@@ -78,9 +78,11 @@ service.interceptors.request.use(async (config) => {
  * 添加 Axios 的响应拦截器，用于全局响应结果处理
  */
 service.interceptors.response.use((response) => {
-	const status = Number(response.status);
+	const data = response.data;
 
-	console.log('响应拦截成功');
+	if (!data.success) {
+		Toast.show({ text1: data?.msg });
+	}
 
 	return response;
 

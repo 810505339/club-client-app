@@ -15,6 +15,7 @@ files.keys().forEach((key: string) => {
   }
   if (key.includes('zh-CN')) {
     zhTarget = Object.assign(zhTarget, files(key).default);
+
   }
 
 });
@@ -28,7 +29,7 @@ const resources: Resource = {
   },
 };
 
-console.log(resources);
+
 const lngKey = '@lng';
 const languageDetector = {
   type: 'languageDetector' as ModuleType,

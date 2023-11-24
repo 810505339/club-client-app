@@ -1,0 +1,52 @@
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { IItemProp } from 'components/custom-modal';
+import { useEffect, useRef } from 'react';
+import { load, save } from '@storage/shop/action';
+import { useImmer } from 'use-immer';
+import { initList, store } from '@store/shopStore';
+import { useSnapshot } from 'valtio';
+
+export default (isStore = true) => {
+
+  const [shop, setShop] = useImmer({
+    select: {
+      name: '',
+      id: '',
+    },
+  });
+  //store中拿到门店渲染
+  const snap = useSnapshot(store);
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  //点击确定按钮
+  const onPress = (value: IItemProp | undefined) => {
+    bottomSheetModalRef.current?.dismiss();
+    setShop((draft) => {
+      draft.select = value!;
+    });
+  };
+  //初始化 判断是否存在已选择的门店id 如果没有的话就把默认选择第一个门店
+  const init = async () => {
+    let data = await load();
+    const shopList = isStore ? store.shopList : await initList();
+    if (!data?.selectId) {
+      data = await save(shopList[0]);
+    }
+    setShop((draft) => {
+      draft.select = { id: data.selectId, name: data.selectName };
+    });
+  };
+
+  useEffect(() => {
+    (init)();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return {
+    bottomSheetModalRef,
+    onPress,
+    shop,
+    init,
+    setShop,
+    snap,
+  };
+};

@@ -5,25 +5,29 @@ import { useImmer } from 'use-immer';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import dayjs from 'dayjs';
 import AreaList from './components/areaList';
+import useSelectShop from '@hooks/useSelectShop';
+import CustomModal from '@components/custom-modal';
+import { onSaleNum } from '@api/store';
+
+
 const tickerBg = require('@assets/imgs/home/preset/ticket-header.png');
 
 const Preset = () => {
 
+  const { snap, bottomSheetModalRef, shop, onPress } = useSelectShop();
+
   const [data, setData] = useImmer({
-    store: 'xxxxx店铺',
     time: new Date(),
     showTime: false,
     ticketNumber: '1',
+    selectAreaId: '',
   });
   const formatDay = dayjs(data.time).format('YYYY-MM-DD');
-
-
   const setShowTime = (showTime: boolean) => {
     setData(draft => {
       draft.showTime = showTime;
     });
   };
-
   const onChange = (event: DateTimePickerEvent, selectDate?: Date) => {
     const currentDate = selectDate || data.time;
     console.log(event.type);
@@ -32,6 +36,20 @@ const Preset = () => {
       draft.time = currentDate;
       draft.showTime = false;
     });
+  };
+  //当选择的区域变化的时候
+  const changeArea = async (list: any, index: number) => {
+
+    setData(draft => {
+      draft.selectAreaId == list[index].id;
+    });
+
+    const { data: res } = await onSaleNum({
+      'storeId': shop.select.id,
+      'areaId': list[index].id,
+      'entranceDate': formatDay,
+    });
+    console.log(res);
   };
 
 
@@ -56,14 +74,22 @@ const Preset = () => {
     });
   };
 
+  const showShop = () => {
+    bottomSheetModalRef.current?.present();
+  };
+
+
+
   return (<BaseLayout className="bg-[#0B0B0BFF]">
+    <CustomModal ref={bottomSheetModalRef} data={snap.shopList} selectValue={shop.select.id} onPress={onPress} headerText="选择门店" snapPoints={['50%']} />
+
     <View className="absolute w-52 h-28 right-3 top-16 z-20">
       <Image source={tickerBg} resizeMode="contain" className="w-full h-full" />
     </View>
-    <View className="mt-10 flex-auto bg-[#222222FF] rounded-t-2xl overflow-hidden p-5">
+    <View className="mt-10 flex-auto bg-[#101010FF] rounded-t-2xl overflow-hidden p-5">
       <View className="">
         <Text className="text-xs text-white font-semibold opacity-50">选择门店</Text>
-        <TextInput mode="outlined" className="flex-auto bg-transparent mt-4" value={data.store} showSoftInputOnFocus={false} outlineStyle={{ borderRadius: 16 }} right={<TextInput.Icon icon="chevron-down" />} />
+        <TextInput mode="outlined" className="flex-auto bg-transparent mt-4" value={shop.select.name} showSoftInputOnFocus={false} outlineStyle={{ borderRadius: 16 }} right={<TextInput.Icon icon="chevron-down" />} onPressIn={showShop} />
       </View>
       <View className="mt-7">
         <Text className="text-xs text-white font-semibold opacity-50">选择日期</Text>
@@ -72,7 +98,7 @@ const Preset = () => {
       </View>
       <View className="mt-7">
         <Text className="text-xs text-white font-semibold opacity-50 mb-4">选择区域</Text>
-        <AreaList />
+        <AreaList id={shop.select.id} date={formatDay} onChange={changeArea} />
       </View>
       <View className="mt-7">
         <Text className="text-xs text-white font-semibold opacity-50 mb-4">选择数量</Text>

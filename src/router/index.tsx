@@ -16,6 +16,7 @@ import Homegroup from './homegroup';
 import UserGroup from './usergroup';
 
 import BlurviewDEmo from '@pages/demoScreen/blurview';
+import { useTranslation } from 'react-i18next';
 
 const initialRouteName: keyof RootStackParamList = 'HomeTabs';
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
@@ -23,6 +24,9 @@ export const Stack = createStackNavigator<RootStackParamList>();
 const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: DefaultTheme });
 const AppNavigator = () => {
   useSysLanguage();
+
+
+
   return (
     <NavigationContainer theme={DarkTheme} ref={navigationRef}>
       <Stack.Navigator initialRouteName={initialRouteName} screenOptions={{
@@ -32,10 +36,10 @@ const AppNavigator = () => {
       }}>
 
         <Stack.Screen name="Demo" component={Demo} />
-         <Stack.Screen name="IM" component={IM} />
+        <Stack.Screen name="IM" component={IM} />
         <Stack.Screen name="Animated" component={AnimatedScreen} />
         <Stack.Screen name="Carouseldemo" component={Carouseldemo} />
-       <Stack.Screen name="BlurviewDEmo" component={BlurviewDEmo} />
+        <Stack.Screen name="BlurviewDEmo" component={BlurviewDEmo} />
 
         {LoginGroup()}
         {Homegroup()}

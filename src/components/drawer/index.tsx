@@ -38,7 +38,7 @@ const Drawer = forwardRef<BottomSheetModalMethods, BottomSheetProps>(({ children
   const snapPointsMemo = useMemo(() => snapPoints, [snapPoints]);
 
   const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
+    // console.log('handleSheetChanges', index);
   }, []);
 
   const renderBackdrop = useCallback(

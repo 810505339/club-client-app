@@ -9,6 +9,7 @@ import { Image } from 'react-native';
 
 import { getGenericPassword } from 'react-native-keychain';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const HOMEICON = require('@assets/imgs/bottombar/user.png');
 const HOMEICONACTIVE = require('@assets/imgs/bottombar/home_active.png');
@@ -23,6 +24,9 @@ const USERICON = require('@assets/imgs/bottombar/user.png');
 const { Navigator, Screen } = createBottomTabNavigator<TabParamList>();
 
 const HomeTabs = () => {
+  const { t } = useTranslation();
+
+
   return (
     <Navigator initialRouteName="Home" screenOptions={({ route }) => {
       return {
@@ -71,9 +75,9 @@ const HomeTabs = () => {
       };
     }}>
       <Screen name="Home" component={HomeScreen} />
-      <Screen name="Fightwine" component={FightwineScreen} />
-      <Screen name="Ticket" component={TicketScreen} />
-      <Screen name="User" component={UserScreen} />
+      <Screen name="Fightwine" options={{ title: t('default.titleList.fightwine') }} component={FightwineScreen} />
+      <Screen name="Ticket" options={{ title: t('default.titleList.ticket') }} component={TicketScreen} />
+      <Screen name="User" options={{ title: t('default.titleList.user') }} component={UserScreen} />
     </Navigator>
   );
 };

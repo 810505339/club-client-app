@@ -98,7 +98,7 @@ const Preset = () => {
       </View>
       <View className="mt-7">
         <Text className="text-xs text-white font-semibold opacity-50 mb-4">选择区域</Text>
-        <AreaList id={shop.select.id} date={formatDay} onChange={changeArea} />
+        <AreaList storeId={shop.select.id} date={formatDay} onChange={changeArea} />
       </View>
       <View className="mt-7">
         <Text className="text-xs text-white font-semibold opacity-50 mb-4">选择数量</Text>

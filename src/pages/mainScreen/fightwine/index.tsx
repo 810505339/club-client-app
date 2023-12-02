@@ -131,7 +131,7 @@ const FightwineScreen = () => {
 
   //发起酒局
   const onLaunch = () => {
-    navigation.push('Launch');
+    navigation.navigate('Launch');
   };
 
 

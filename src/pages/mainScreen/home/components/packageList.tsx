@@ -19,7 +19,7 @@ type IProps = {
 
 const AreaItem = (props: IProps) => {
   const { onPress, index, activeIndex, name, businessDateVOS, pictureFIleVOs } = props;
-  
+
   const border = index === activeIndex ? 'border-2 border-[#E6A055FF]' : '';
   return (<TouchableOpacity onPress={() => onPress(index)}>
     <View className={` w-24 h-16 mr-5 rounded-xl ${border} overflow-hidden`} >

@@ -10,7 +10,6 @@ export default (isStore = true) => {
 
   const [shop, setShop] = useImmer({
     select: {
-      name: '',
       id: '',
     },
   });
@@ -28,11 +27,14 @@ export default (isStore = true) => {
   const init = async () => {
     let data = await load();
     const shopList = isStore ? store.shopList : await initList();
-    if (!data?.selectId) {
+    const index = shopList.findIndex((item) => item.id === data?.selectId);
+
+
+    if (!data?.selectId || !~index) {
       data = await save(shopList[0]);
     }
     setShop((draft) => {
-      draft.select = { id: data.selectId, name: data.selectName };
+      draft.select = { id: data.selectId  };
     });
   };
 

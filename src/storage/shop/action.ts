@@ -3,13 +3,11 @@ import { KEY } from './key';
 
 type ISelectShop = {
   id: string,
-  name: string
 }
 export const save = async (selectShop: ISelectShop) => {
-  const { id, name } = selectShop;
+  const { id } = selectShop;
   const data = {
     selectId: id,
-    selectName: name,
   };
   await storage.save({
     key: KEY,

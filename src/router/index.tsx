@@ -14,11 +14,12 @@ import HomeTabs from './HomeTabs';
 import LoginGroup from './LoginGroup';
 import Homegroup from './homegroup';
 import UserGroup from './usergroup';
+import FightGroup from './fightgroup';
 
 import BlurviewDEmo from '@pages/demoScreen/blurview';
 import { useTranslation } from 'react-i18next';
 
-const initialRouteName: keyof RootStackParamList = 'HomeTabs';
+const initialRouteName: keyof RootStackParamList = 'Launch';
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 export const Stack = createStackNavigator<RootStackParamList>();
 const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: DefaultTheme });
@@ -44,6 +45,7 @@ const AppNavigator = () => {
         {LoginGroup()}
         {Homegroup()}
         {UserGroup()}
+        {FightGroup()}
         <Stack.Screen
           name="HomeTabs"
           component={HomeTabs}

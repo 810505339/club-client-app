@@ -69,7 +69,7 @@ const AreaList: FC<IAreaListProps> = (props) => {
   }, [id, date]);
 
   useEffect(() => {
-    if (data.cells.length > 0) {
+    if (data?.cells?.length > 0) {
       onChange(data.cells, data.activeIndex);
     }
 

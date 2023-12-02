@@ -22,6 +22,8 @@ export const initList = async () => {
   return data.data;
 };
 
-
+export const findIndex = (id: string) => {
+  return store.shopList.find(s => s.id == id);
+};
 
 

@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { View, RefreshControl, ImageBackground, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import { View, RefreshControl, ImageBackground, StyleSheet, StyleProp, ViewStyle, TouchableOpacity } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { RootStackParamList } from '@router/type';
 import BaseLayout from '@components/baselayout';
@@ -9,6 +9,8 @@ import Animated from 'react-native-reanimated';
 import { TabScreen, Tabs, TabsProvider } from 'react-native-paper-tabs';
 import { useImmer } from 'use-immer';
 
+
+const launch = require('@assets/imgs/base/launch.png');
 
 const ItemCard = ({ cards }: { cards: any[] }) => {
 
@@ -35,7 +37,10 @@ const ItemCard = ({ cards }: { cards: any[] }) => {
 
 const Item = ({ tags, boys, girls }) => {
   return <View className="bg-slate-500 p-2.5 m-2.5 rounded-lg">
-    <Text className="text-sm text-white font-bold">大家一起来快活~</Text>
+    <View className="flex flex-row items-center justify-between ">
+      <Text className="text-sm text-white font-bold">大家一起来快活~</Text>
+      <Text className="text-xs text-white border border-white rounded-xl px-1.5 py-1">拼局中</Text>
+    </View>
     <View className="flex-row mt-3.5">
       {tags.map((item, index) => (<Text className="py-1 px-1.5 mr-1.5 rounded-xl bg-[#FFFFFF26]" key={index} >{item.label}</Text>))}
     </View>
@@ -124,6 +129,11 @@ const FightwineScreen = () => {
 
   };
 
+  //发起酒局
+  const onLaunch = () => {
+    navigation.push('Launch');
+  };
+
 
 
   return (
@@ -162,6 +172,10 @@ const FightwineScreen = () => {
           </TabScreen>
         </Tabs>
       </TabsProvider>
+
+      <TouchableOpacity className="absolute z-50 w-16 h-16 bottom-1/4 right-0" onPress={onLaunch}>
+        <ImageBackground source={launch} className="w-16 h-16" />
+      </TouchableOpacity>
     </BaseLayout>
   );
 };

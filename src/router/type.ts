@@ -1,3 +1,5 @@
+import { Launch } from 'pages/mainScreen/fightwine/launch';
+
 import type { CompositeNavigationProp } from '@react-navigation/native';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -23,7 +25,7 @@ export type RootStackParamList = {
   Animated: undefined,
   Carouseldemo: undefined
 
-} & UsertackParamList & HomeParamList;
+} & UsertackParamList & HomeParamList & FightParamList;
 
 export type UsertackParamList = {
   Orders: undefined,
@@ -52,6 +54,12 @@ export type TabParamList = {
   User: undefined,
 };
 
+
+
+
+export type FightParamList = {
+  Launch: undefined
+}
 export type ScreenNavigationProp<T extends keyof RootStackParamList> = CompositeNavigationProp<
   BottomTabNavigationProp<TabParamList>,
   NativeStackNavigationProp<RootStackParamList, T>,

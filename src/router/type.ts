@@ -1,9 +1,9 @@
-import { Launch } from 'pages/mainScreen/fightwine/launch';
-
 import type { CompositeNavigationProp } from '@react-navigation/native';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ImageSourcePropType } from 'react-native';
 export type RootStackParamList = {
+  CouponsModal: undefined,
   LoginOrRegister: undefined,
   Login: undefined,
   NewUser: undefined,
@@ -28,13 +28,18 @@ export type RootStackParamList = {
 } & UsertackParamList & HomeParamList & FightParamList;
 
 export type UsertackParamList = {
-  Orders: undefined,
+  Orders: {
+
+  },
+  OrdersInfo: {
+    orderContext: { label: string, value: any }[]
+    headerImg?: ImageSourcePropType
+  },
   SystemMessage: undefined,
   SystemMessageInfo: undefined,
   Account: undefined,
   AccountPhone: undefined,
   AccountSetPhone: undefined,
-  OrdersInfo: undefined,
   Coupons: undefined,
   Information: undefined,
 }

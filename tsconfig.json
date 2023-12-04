@@ -14,7 +14,8 @@
       "@assets/*":["assets/*"],
       "@api/*":["src/api/*"],
     },
-    "types": ["webpack-env"]
+    "types": ["webpack-env"],
+    
   },
   "extends": "@tsconfig/react-native/tsconfig.json",
 }

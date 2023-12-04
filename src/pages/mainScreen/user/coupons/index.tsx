@@ -6,7 +6,7 @@ import Animated from 'react-native-reanimated';
 import { useImmer } from 'use-immer';
 
 
-const renderItem = ({ item }) => {
+export const renderItem = ({ item }) => {
   return <View className="my-2.5 mx-5 flex-row rounded-xl overflow-hidden h-24 ">
     <View className="bg-[#EE2737] w-32 justify-center items-center ">
       <Text className="font-bold text-white text-2xl">$1000</Text>
@@ -15,8 +15,8 @@ const renderItem = ({ item }) => {
     <View className=" flex-auto bg-[#151313FF] p-2.5">
       <Text className="text-xs font-bold">门票现金券</Text>
       <View className="flex-row  flex-auto mt-2">
-        <Text  style={{ fontSize: 10 }} className="bg-[#EE273733] rounded-2xl px-2 mr-2 h-5 leading-5">现金券</Text>
-        <Text  style={{ fontSize: 10 }}  className="bg-[#E6A05533] rounded-2xl px-2  h-5 leading-5">适用商品</Text>
+        <Text style={{ fontSize: 10 }} className="bg-[#EE273733] rounded-2xl px-2 mr-2 h-5 leading-5">现金券</Text>
+        <Text style={{ fontSize: 10 }} className="bg-[#E6A05533] rounded-2xl px-2  h-5 leading-5">适用商品</Text>
       </View>
       <Text style={{ fontSize: 10 }} className="font-light text-[#ffffff7f]">有效期至 2023/10/01</Text>
     </View>
@@ -64,7 +64,6 @@ const Coupons = () => {
         <TabScreen label="历史优惠券">
           <View className="bg-transparent">
             <Animated.FlatList
-
               renderItem={({ item }) => renderItem({ item })}
               ListFooterComponent={<Text className="text-center pb-5">没有更多</Text>}
               keyExtractor={item => item}

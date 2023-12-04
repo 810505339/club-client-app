@@ -1,0 +1,34 @@
+import BaseLayout from '@components/baselayout';
+import { ImageBackground, RefreshControl, View } from 'react-native';
+import { Text } from 'react-native-paper';
+import Animated from 'react-native-reanimated';
+
+const headerImg = require('@assets/imgs/base/coupons-header.png');
+
+
+const Header = () => {
+  return <View className="flex-row justify-center items-center">
+    <View className="flex-1 border">
+      <Text className="text-center">可用优惠券（4）</Text>
+    </View>
+    <View className="flex-1">
+      <Text>不可用优惠券(9)</Text>
+    </View>
+  </View>;
+};
+
+const CouponsModal = () => {
+
+  return (<BaseLayout source={false}>
+    <ImageBackground source={headerImg} resizeMode="stretch" className="absolute top-0 left-0 right-0 h-[181px]" />
+    <Animated.FlatList
+              renderItem={({ item }) => renderItem({ item })}
+              ListFooterComponent={<Text className="text-center pb-5">没有更多</Text>}
+              keyExtractor={item => item}
+              data={data.cells}
+              refreshControl={<RefreshControl refreshing={data.refreshing} onRefresh={onRefresh} />}
+  </BaseLayout>);
+
+};
+
+export default CouponsModal;

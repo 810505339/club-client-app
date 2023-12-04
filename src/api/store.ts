@@ -31,7 +31,7 @@ export const onSaleNum = async (body: any) => {
     data: body,
   });
 
-  return data;
+  return data?.data;
 };
 
 

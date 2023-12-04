@@ -17,9 +17,10 @@ import UserGroup from './usergroup';
 import FightGroup from './fightgroup';
 
 import BlurviewDEmo from '@pages/demoScreen/blurview';
+import CouponsModal from '@pages/mainScreen/user/coupons/modal';
 import { useTranslation } from 'react-i18next';
 
-const initialRouteName: keyof RootStackParamList = 'HomeTabs';
+const initialRouteName: keyof RootStackParamList = 'CouponsModal';
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 export const Stack = createStackNavigator<RootStackParamList>();
 const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: DefaultTheme });
@@ -51,6 +52,8 @@ const AppNavigator = () => {
           component={HomeTabs}
           options={{ headerShown: false }}
         />
+
+        <Stack.Screen name="CouponsModal" component={CouponsModal} options={{ presentation: 'modal' }} />
 
       </Stack.Navigator>
     </NavigationContainer>

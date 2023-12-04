@@ -33,9 +33,12 @@ const NumberInput = (props: Props) => {
       onChange?.(temp);
       return temp;
     });
-
-
   };
+
+  useEffect(() => {
+    onChangeText(`${num}`);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [num]);
 
 
 

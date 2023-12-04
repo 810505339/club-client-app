@@ -19,7 +19,7 @@ type IProps = {
 
 const AreaItem = (props: IProps) => {
   const { onPress, index, activeIndex, name, businessDateVOS, pictureFIleVOs } = props;
-  
+
   const border = index === activeIndex ? 'border-2 border-[#E6A055FF]' : '';
   return (<TouchableOpacity onPress={() => onPress(index)}>
     <View className={` w-24 h-16 mr-5 rounded-xl ${border} overflow-hidden`} >
@@ -47,41 +47,34 @@ const AreaList: FC<IAreaListProps> = (props) => {
     setData(draft => {
       draft.activeIndex = index;
     });
+    onChange(data.cells, index);
   };
 
 
   const getAreaByIdApi = async () => {
-    const { data } = await getAreaById(storeId, { date });
+    const { data: res } = await getAreaById(storeId, { date });
     const week = dayjs(date).day() == 0 ? 7 : dayjs(date).day();
     //获取今天的时间
     //数据里面找到今天的营业
 
-
     console.log(week, 'week');
     setData(draft => {
-      draft.cells = data;
-      draft.activeIndex = 0;
+      const list = res ?? [];
+      draft.cells = list;
+        draft.activeIndex = 0;
+      onChange(list, 0);
     });
+
   };
 
 
 
   useEffect(() => {
     if (storeId && date) {
-
       getAreaByIdApi();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storeId, date]);
-
-  useEffect(() => {
-    if (data?.cells?.length > 0) {
-      onChange(data.cells, data.activeIndex);
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data.activeIndex, storeId, date, data.cells]);
-
 
   return <Animated.FlatList horizontal showsHorizontalScrollIndicator={false} data={data.cells} keyExtractor={item => item.id} renderItem={({ index, item }) => <AreaItem {...item} index={index} activeIndex={data.activeIndex} onPress={onPress} />} />;
 

@@ -21,12 +21,7 @@ const CouponsModal = () => {
 
   return (<BaseLayout source={false}>
     <ImageBackground source={headerImg} resizeMode="stretch" className="absolute top-0 left-0 right-0 h-[181px]" />
-    <Animated.FlatList
-              renderItem={({ item }) => renderItem({ item })}
-              ListFooterComponent={<Text className="text-center pb-5">没有更多</Text>}
-              keyExtractor={item => item}
-              data={data.cells}
-              refreshControl={<RefreshControl refreshing={data.refreshing} onRefresh={onRefresh} />}
+   
   </BaseLayout>);
 
 };

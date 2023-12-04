@@ -19,7 +19,7 @@ import FightGroup from './fightgroup';
 import BlurviewDEmo from '@pages/demoScreen/blurview';
 import { useTranslation } from 'react-i18next';
 
-const initialRouteName: keyof RootStackParamList = 'LaunchWine';
+const initialRouteName: keyof RootStackParamList = 'Booths';
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 export const Stack = createStackNavigator<RootStackParamList>();
 const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: DefaultTheme });

@@ -8,7 +8,7 @@ type IProps = {
   showAppBar?: boolean
 };
 const BaseLayout: FC<PropsWithChildren<IProps>> = ({ source, className = '', children, showAppBar = true }) => {
-  const classNames = `flex-1 ${className}`;
+  const classNames = `flex-1 bg-[#101010FF] ${className}`;
   return (
     <View className={classNames}>
       {source && <ImageBackground source={source} className="fixed inset-0" />}

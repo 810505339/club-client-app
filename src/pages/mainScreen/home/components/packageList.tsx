@@ -6,6 +6,8 @@ import { useImmer } from 'use-immer';
 import { getAreaById } from '@api/store';
 import dayjs from 'dayjs';
 import { fileStore } from '@store/getfileurl';
+import { useRequest } from 'ahooks';
+import { getByBoothId } from '@api/booths';
 
 type IProps = {
   onPress: (index: number) => void
@@ -17,7 +19,7 @@ type IProps = {
 }
 
 
-const AreaItem = (props: IProps) => {
+const PackageItem = (props: IProps) => {
   const { onPress, index, activeIndex, name, businessDateVOS, pictureFIleVOs } = props;
 
   const border = index === activeIndex ? 'border-2 border-[#E6A055FF]' : '';
@@ -38,7 +40,7 @@ export type IAreaListProps = {
 
 }
 const AreaList: FC<IAreaListProps> = (props) => {
-  const { storeId, date, onChange } = props;
+  const { boothId, onChange } = props;
   const [data, setData] = useImmer({
     cells: [],
     activeIndex: 0,
@@ -49,41 +51,23 @@ const AreaList: FC<IAreaListProps> = (props) => {
     });
   };
 
-
-  const getAreaByIdApi = async () => {
-    const { data } = await getAreaById(storeId, { date });
-    const week = dayjs(date).day() == 0 ? 7 : dayjs(date).day();
-    //获取今天的时间
-    //数据里面找到今天的营业
-
-
-    console.log(week, 'week');
-    setData(draft => {
-      draft.cells = data;
-      draft.activeIndex = 0;
-    });
-  };
-
-
+  const { run } = useRequest(() => getByBoothId(boothId), {
+    manual: true,
+    onSuccess: (res) => {
+      
+    },
+  });
 
   useEffect(() => {
-    if (storeId && date) {
-
-      getAreaByIdApi();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [storeId, date]);
-
-  useEffect(() => {
-    if (data?.cells?.length > 0) {
-      onChange(data.cells, data.activeIndex);
+    if (boothId) {
+      run();
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data.activeIndex, storeId, date, data.cells]);
+  }, [boothId]);
 
 
-  return <Animated.FlatList horizontal showsHorizontalScrollIndicator={false} data={data.cells} keyExtractor={item => item.id} renderItem={({ index, item }) => <AreaItem {...item} index={index} activeIndex={data.activeIndex} onPress={onPress} />} />;
+  return <Animated.FlatList horizontal showsHorizontalScrollIndicator={false} data={data.cells} keyExtractor={item => item.id} renderItem={({ index, item }) => <PackageItem {...item} index={index} activeIndex={data.activeIndex} onPress={onPress} />} />;
 
 };
 

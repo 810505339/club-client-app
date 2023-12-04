@@ -59,7 +59,8 @@ export type TabParamList = {
 
 export type FightParamList = {
   Launch: undefined,
-  LaunchWine: undefined
+  LaunchWine: undefined,
+  Booths: undefined
 }
 export type ScreenNavigationProp<T extends keyof RootStackParamList> = CompositeNavigationProp<
   BottomTabNavigationProp<TabParamList>,

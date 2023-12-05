@@ -21,7 +21,7 @@ const CouponsModal = () => {
 
   return (<BaseLayout source={false}>
     <ImageBackground source={headerImg} resizeMode="stretch" className="absolute top-0 left-0 right-0 h-[181px]" />
-   
+    
   </BaseLayout>);
 
 };

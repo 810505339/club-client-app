@@ -34,7 +34,7 @@ const LoginGroup = () => {
 
     />
     <Stack.Screen name="Orders" component={Orders} />
-    <Stack.Screen name="OrdersInfo" component={OrdersInfo} />
+    <Stack.Screen name="OrdersInfo" component={OrdersInfo} initialParams={{ orderContext: [] }} />
     <Stack.Screen name="Coupons" component={Coupons} />
     <Stack.Screen name="Information" component={Information} />
   </Stack.Group>;

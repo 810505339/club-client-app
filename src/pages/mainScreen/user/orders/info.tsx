@@ -29,7 +29,7 @@ const OrdersInfo = () => {
   };
 
 
-  const { orderContext, headerImg } = route.params;
+  const { orderContext = [], headerImg } = route?.params;
   return <BaseLayout className="bg-[#0B0B0BE6]">
     <ScrollView>
       <View >
@@ -39,7 +39,7 @@ const OrdersInfo = () => {
         <Panel className="mt-44">
           <View>
             <Text className="text-xs text-white mb-5">订单内容</Text>
-            {orderContext.map((item, index) => (<View key={index} className="flex-row  items-center justify-between mb-2.5">
+            {orderContext && orderContext?.map((item, index) => (<View key={index} className="flex-row  items-center justify-between mb-2.5">
               <Text className="text-xs font-light text-[#ffffff7f]">{item.label}:</Text>
               <Text numberOfLines={2} className="w-56 text-right">{item.value}</Text>
             </View>))}

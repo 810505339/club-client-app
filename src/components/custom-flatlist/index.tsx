@@ -1,12 +1,17 @@
 import { useRequest } from 'ahooks';
 import React, { useState, useEffect } from 'react';
-import { FlatList, RefreshControl, ActivityIndicator, Text, View, RefreshControlProps } from 'react-native';
+import { FlatList, RefreshControl, Text, View, RefreshControlProps, Image } from 'react-native';
 import { useImmer } from 'use-immer';
+import { ActivityIndicator } from 'react-native-paper';
+
+
+
+
+const noData = require('@assets/imgs/base/noData.png');
 
 interface IPaginatedFlatListProps<T> {
   renderItem: (item: T, index: number) => React.ReactNode;
-  keyExtractor: (item: T, index: number) => string;
-  data: T[];
+  data?: T[];
   onFetchData: (page: number) => Promise<T[]>;
   initialPage?: number;
   size?: number;
@@ -14,6 +19,7 @@ interface IPaginatedFlatListProps<T> {
   errorComponent?: React.ReactNode;
   noDataComponent?: React.ReactNode;
   renderHeader?: React.ReactNode;
+  noMoreData?: React.ReactNode
   params?: any
 }
 
@@ -24,25 +30,29 @@ const INIT_STATE = {
   error: null,
 };
 
+
+
+const RenderNoData = () => {
+  return <View className="mt-40  justify-center items-center" >
+    <Image source={noData} resizeMode="contain" />
+    <Text className="mt-2 opacity-50 text-xs font-bold">没有数据</Text>
+  </View>;
+};
+
 function CustomFlatList<T>({
   renderItem,
-  keyExtractor,
-  data,
+  data = [],
   onFetchData,
   initialPage = 1,
-  size = 20,
+  size = 1,
   params,
   refreshControlProps,
   errorComponent = <Text>Oops! Something went wrong.</Text>,
-  noDataComponent = <Text>No data found.</Text>,
+  noMoreData = <Text>暂无更多数据</Text>,
+  noDataComponent = <RenderNoData />,
   renderHeader = <></>,
 }: IPaginatedFlatListProps<T>) {
-  // 初始化 state
-  // const [page, setPage] = useState(initialPage);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [isRefreshing, setIsRefreshing] = useState(false);
-  // const [hasMoreData, setHasMoreData] = useState(true);
-  // const [error, setError] = useState<Error | null>(null);
+
 
   const [allData, setAllData] = useImmer({
     current: initialPage,
@@ -54,79 +64,50 @@ function CustomFlatList<T>({
 
   const { run, runAsync } = useRequest(onFetchData, {
     manual: true,
+    onSuccess(res) {
+      const total = res?.data?.total ?? 0;
+      setAllData((draft) => {
+        draft.data = isRefreshing ? [...res?.data?.records ?? []] : [...draft?.data, ...res?.data?.records ?? []];
+        draft.hasMoreData = total > draft.data.length;
+      });
+    },
+    onBefore() {
+      //请求之前 loading
+      setAllData((draft) => {
+        draft.isLoading = true;
+      });
+    },
+    onFinally() {
+      //请求结束
+      setAllData((draft) => {
+        draft.isLoading = false;
+        draft.isRefreshing = false;
+
+      });
+    },
   });
 
   // 当 current 发生变化时，重新获取数据
   useEffect(() => {
     run({ ...params, current, size });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current]);
+  }, []);
 
-  // 获取数据
+  // 上拉请求分页
   const fetchData = async () => {
-    // 判断是否需要分页获取
     if (!hasMoreData || isLoading) {
       return;
     }
-    setAllData(draft => {
-      draft.isLoading = true;
-      draft.error = null;
-    });
-    try {
-      const newData = await runAsync({ ...params, current, size });
-      if (newData.length < size) {
-        // 如果返回的数据少于 pageSize，说明没有更多数据了
-
-        setAllData(draft => {
-          draft.hasMoreData = true;
-        });
-      }
-      // 将新数据添加到现有数据后面
-      setAllData(draft => {
-        draft.data = [...draft.data, ...newData];
-      });
-
-
-    } catch (error) {
-      setAllData(draft => {
-        draft.error = error;
-      });
-    }
-    setAllData(draft => {
-      draft.isLoading = false;
-    });
-
+    await runAsync({ ...params, current: current + 1, size });
   };
 
-  // 刷新数据
+  // 下拉刷新
   const refreshData = async () => {
-    if (isRefreshing) {
-      return;
-    }
-
-
-    setAllData(draft => {
-
-      Object.keys(INIT_STATE).forEach(item => {
-        draft[item] = INIT_STATE[item];
-      });
-      draft.current = initialPage;
+    setAllData((draft) => {
+      draft.isRefreshing = true;
+      draft.hasMoreData = true;
     });
-
-
-    try {
-      const newData = await runAsync({ ...params, current: initialPage, size });
-      setAllData(draft => {
-        draft.data = [...draft.data, ...newData];
-      });
-    } catch (error) {
-      setAllData(draft => {
-        draft.error = error;
-      });
-    }
-    setAllData(draft => {
-      draft.isRefreshing = false;
-    });
+    await runAsync({ ...params, current: 1, size });
   };
 
   // 渲染每个 item
@@ -136,21 +117,22 @@ function CustomFlatList<T>({
   return (
     <FlatList
       data={allData.data}
+      refreshing={isLoading}
       ListHeaderComponent={renderHeader}
       renderItem={({ item, index }) => renderItemWithIndex({ item, index })}
-      keyExtractor={keyExtractor}
+      keyExtractor={(item) => item.id}
       refreshControl={
-        <RefreshControl refreshing={isRefreshing} onRefresh={refreshData} {...refreshControlProps} />
+        < RefreshControl refreshing={isRefreshing} onRefresh={refreshData} {...refreshControlProps} />
       }
       onEndReachedThreshold={0.1}
       onEndReached={fetchData}
       ListFooterComponent={
         isLoading ? (
-          <ActivityIndicator size="large" />
+          <ActivityIndicator />
         ) : (
           !hasMoreData && (
             <View>
-              {!data.length ? noDataComponent : null}
+              {!allData.data.length ? noDataComponent : noMoreData}
               {error ? errorComponent : null}
             </View>
           )

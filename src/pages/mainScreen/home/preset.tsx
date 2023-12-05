@@ -2,13 +2,12 @@ import BaseLayout from '@components/baselayout';
 import { Image, ImageBackground, View } from 'react-native';
 import { Text, TextInput, IconButton, Divider, Button } from 'react-native-paper';
 import { useImmer } from 'use-immer';
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import dayjs from 'dayjs';
 import AreaList from './components/areaList';
 import useSelectShop from '@hooks/useSelectShop';
 import CustomModal from '@components/custom-modal';
 import { onSaleNum } from '@api/store';
-import { findIndex } from '@store/shopStore';
 import NumberInput from '@components/number-input';
 import { useRequest } from 'ahooks';
 import { useEffect } from 'react';
@@ -18,6 +17,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@router/type';
 import currency from 'currency.js';
 import Toast from 'react-native-toast-message';
+import useSelectTimer from '@hooks/useSelectTimer';
 
 
 const tickerBg = require('@assets/imgs/home/preset/ticket-header.png');
@@ -26,7 +26,12 @@ const card_1 = require('@assets/imgs/base/card_1.png');
 
 const Preset = () => {
 
-  const { snap, bottomSheetModalRef, shop, onPress } = useSelectShop();
+  const { snap, bottomSheetModalRef, shop, onPress, shopName, showShop } = useSelectShop();
+  const { time,
+    showTime,
+    onChange,
+    setShowTime } = useSelectTimer();
+
   const navgation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const { run, refresh } = useRequest(onSaleNum, {
@@ -47,8 +52,6 @@ const Preset = () => {
 
 
   const [data, setData] = useImmer({
-    time: new Date(),
-    showTime: false,
     remainingNum: 0, //剩余票数
     selectAreaId: '',
     total: 0,
@@ -57,21 +60,7 @@ const Preset = () => {
     ticketName: '',
     num: 0,//默认票数
   });
-  const formatDay = dayjs(data.time).format('YYYY-MM-DD');
-  const setShowTime = (showTime: boolean) => {
-    setData(draft => {
-      draft.showTime = showTime;
-    });
-  };
-  const onChange = (event: DateTimePickerEvent, selectDate?: Date) => {
-    const currentDate = selectDate || data.time;
-    console.log(event.type);
-
-    setData(draft => {
-      draft.time = currentDate;
-      draft.showTime = false;
-    });
-  };
+  const formatDay = dayjs(time).format('YYYY-MM-DD');
   //当选择的区域变化的时候
   const changeArea = async (list: any, index: number) => {
     setData(draft => {
@@ -80,9 +69,7 @@ const Preset = () => {
   };
 
 
-  const showShop = () => {
-    bottomSheetModalRef.current?.present();
-  };
+
   //数量改变
   const changeSum = (sum: number) => {
     setData(draft => {
@@ -112,12 +99,11 @@ const Preset = () => {
     });
   };
 
-  const shopName = findIndex(shop.select.id)?.name;
+
 
   useEffect(() => {
-    console.log(`shop:${shop.select.id}`, `time:${data.time}`, `areaId:${data.selectAreaId}`, '12345');
 
-    if (shop.select.id && data.time && data.selectAreaId) {
+    if (shop.select.id && time && data.selectAreaId) {
       run({
         'storeId': shop.select.id,
         'areaId': data.selectAreaId,
@@ -129,7 +115,7 @@ const Preset = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     shop.select.id,
-    data.time,
+    time,
     data.selectAreaId,
   ]);
 
@@ -149,7 +135,7 @@ const Preset = () => {
           <View className="mt-7">
             <Text className="text-xs text-white font-semibold opacity-50">选择日期</Text>
             <TextInput mode="outlined" className="flex-auto bg-transparent mt-4" showSoftInputOnFocus={false} value={formatDay} outlineStyle={{ borderRadius: 16 }} onPressIn={() => { setShowTime(true); }} right={<TextInput.Icon icon="calendar" />} />
-            {data.showTime && <DateTimePicker onChange={onChange} value={data.time} />}
+            {showTime && <DateTimePicker onChange={onChange} value={time} />}
           </View>
           <View className="mt-7">
             <Text className="text-xs text-white font-semibold opacity-50 mb-4">选择区域</Text>

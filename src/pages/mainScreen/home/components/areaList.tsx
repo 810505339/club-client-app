@@ -19,6 +19,8 @@ type IProps = {
 
 const AreaItem = (props: IProps) => {
   const { onPress, index, activeIndex, name, businessDateVOS, pictureFIleVOs } = props;
+  const beginTime = businessDateVOS[0].beginTime;
+  const endTime = businessDateVOS[0].endTime;
 
   const border = index === activeIndex ? 'border-2 border-[#E6A055FF]' : '';
   return (<TouchableOpacity onPress={() => onPress(index)}>
@@ -26,7 +28,7 @@ const AreaItem = (props: IProps) => {
       <ImageBackground source={{ uri: fileStore.fileUrl + '/' + pictureFIleVOs[0]?.fileName }} className="w-24 h-16 " />
     </View>
     <Text className="text-white text-xs font-semibold mt-2.5">{name}</Text>
-    <Text className="opacity-50 text-white" style={{ fontSize: 10 }}>18:00 - 1:00</Text>
+    <Text className="opacity-50 text-white" style={{ fontSize: 10 }}>{beginTime} - {endTime}</Text>
     <Text className="text-[#E6A055FF] text-xs font-semibold mt-1">$12.00</Text>
   </TouchableOpacity>);
 };

@@ -49,7 +49,8 @@ export type HomeParamList = {
   Dynamic: undefined,
   DynamicInfo: {
     id: string
-  }
+  },
+  ReserveBooth: undefined
 }
 
 export type TabParamList = {

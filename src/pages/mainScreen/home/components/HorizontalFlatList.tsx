@@ -39,7 +39,7 @@ const HorizontalFlatList: FC<PropsWithChildren<IProps>> = ({ style }) => {
   const data: IData[] = [
     { key: '1', navigation: 'Preset', text: t('home.nav1'), source: require('@assets/imgs/home/fightwine.png'), color: '#ED8EFFFF' },
     { key: '2', navigation: 'Preset', text: t('home.nav2'), source: require('@assets/imgs/home/tickets.png'), color: '#FFBF65FF' },
-    { key: '3', navigation: 'Preset', text: t('home.nav3'), source: require('@assets/imgs/home/deck.png'), color: '#91F2FFFF' },
+    { key: '3', navigation: 'ReserveBooth', text: t('home.nav3'), source: require('@assets/imgs/home/deck.png'), color: '#91F2FFFF' },
     { key: '4', navigation: 'Preset', text: t('home.nav4'), source: require('@assets/imgs/home/radio.png'), color: '#FF8383FF' },
     { key: '5', navigation: 'Preset', text: t('home.nav5'), source: require('@assets/imgs/home/consumption.png'), color: '#99FFA2FF' },
     { key: '6', navigation: 'Dynamic', text: t('home.nav6'), source: require('@assets/imgs/home/dynamic.png'), color: '#C7C2FFFF' },

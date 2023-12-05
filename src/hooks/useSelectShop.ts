@@ -3,7 +3,7 @@ import { IItemProp } from 'components/custom-modal';
 import { useEffect, useRef } from 'react';
 import { load, save } from '@storage/shop/action';
 import { useImmer } from 'use-immer';
-import { initList, store } from '@store/shopStore';
+import { findIndex, initList, store } from '@store/shopStore';
 import { useSnapshot } from 'valtio';
 
 export default (isStore = true) => {
@@ -34,8 +34,14 @@ export default (isStore = true) => {
       data = await save(shopList[0]);
     }
     setShop((draft) => {
-      draft.select = { id: data.selectId  };
+      draft.select = { id: data.selectId };
     });
+  };
+
+  const shopName = findIndex(shop.select.id)?.name;
+
+  const showShop = () => {
+    bottomSheetModalRef.current?.present();
   };
 
   useEffect(() => {
@@ -50,5 +56,7 @@ export default (isStore = true) => {
     init,
     setShop,
     snap,
+    shopName,
+    showShop,
   };
 };

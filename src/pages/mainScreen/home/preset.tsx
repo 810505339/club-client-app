@@ -37,7 +37,7 @@ const Preset = () => {
   const { run, refresh } = useRequest(onSaleNum, {
     manual: true,
     onSuccess: (res) => {
-      console.log(res, 'res');
+
       setData((draft) => {
         draft.remainingNum = res?.remainingNum ?? 0;
         draft.ticketId = res?.ticketId ?? '';

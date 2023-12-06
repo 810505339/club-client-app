@@ -1,7 +1,7 @@
 import service from './base';
 
-//通过区域ID查询卡座
-export const getBoothByAreaId = async (data: any) => {
+//获取可售卡座
+export const getOpenBooth = async (data: any) => {
   const { data: res } = await service({
     url: '/consumption/booth/getOpenBooth',
     method: 'post',

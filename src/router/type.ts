@@ -50,7 +50,14 @@ export type HomeParamList = {
   DynamicInfo: {
     id: string
   },
-  ReserveBooth: undefined
+  ReserveBooth: undefined,
+  ConfirmBooth: {
+    storeId: string,
+    areaId: string,
+    entranceDate: string
+    peopleNum: number,
+    latestArrivalTime: string
+  },
 }
 
 export type TabParamList = {

@@ -57,7 +57,14 @@ const ReserveBooth = () => {
   };
 
   const toUrl = () => {
-    navgation.navigate('');
+    navgation.navigate('ConfirmBooth', {
+
+      areaId: data.selectArea?.id,
+      storeId: shop.select.id,
+      entranceDate: formatDay,
+      latestArrivalTime: formatTimer,
+      peopleNum: data.num,
+    });
   };
 
   return (<BaseLayout>

@@ -54,6 +54,7 @@ export type HomeParamList = {
   ConfirmBooth: {
     storeId: string,
     areaId: string,
+    areaName: string,
     entranceDate: string
     peopleNum: number,
     latestArrivalTime: string

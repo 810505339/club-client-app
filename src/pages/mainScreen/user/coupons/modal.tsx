@@ -1,4 +1,6 @@
 import BaseLayout from '@components/baselayout';
+import { useRequest } from 'ahooks';
+import { getCustomerCoupon } from '@api/coupon';
 import { ImageBackground, RefreshControl, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
@@ -19,9 +21,11 @@ const Header = () => {
 
 const CouponsModal = () => {
 
+    useRequest(getCustomerCoupon);
   return (<BaseLayout source={false}>
     <ImageBackground source={headerImg} resizeMode="stretch" className="absolute top-0 left-0 right-0 h-[181px]" />
     
+
   </BaseLayout>);
 
 };

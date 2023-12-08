@@ -60,6 +60,7 @@ const ReserveBooth = () => {
     navgation.navigate('ConfirmBooth', {
 
       areaId: data.selectArea?.id,
+      areaName: data.selectArea?.name,
       storeId: shop.select.id,
       entranceDate: formatDay,
       latestArrivalTime: formatTimer,

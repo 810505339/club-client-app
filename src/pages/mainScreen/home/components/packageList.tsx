@@ -41,24 +41,26 @@ const PackageItem = (props: IProps) => {
       <Image resizeMode="cover" source={source} className="w-24 h-16 " />
     </View>
     <Text className="text-white text-xs font-semibold mt-2.5">{name}</Text>
-    <Text className="opacity-50 text-white" style={{ fontSize: 10 }} >{introduction}</Text>
+    <Text className="opacity-50 text-white w-24" style={{ fontSize: 10 }} >{introduction}</Text>
 
   </TouchableOpacity>);
 };
 
 export type IAreaListProps = {
   boothId: string,
+  onChange?:(list:any[],index:number|undefined)=>void
 }
 const PackageList: FC<IAreaListProps> = (props) => {
-  const { boothId } = props;
+  const { boothId,onChange } = props;
   const [data, setData] = useImmer({
     cells: initList,
-    activeIndex: 0,
+    activeIndex: undefined,
   });
   const onPress = (index: number) => {
     setData(draft => {
       draft.activeIndex = index;
     });
+    onChange?.(data.cells, index);
   };
 
   const { run } = useRequest(() => getByBoothId(boothId), {
@@ -69,6 +71,7 @@ const PackageList: FC<IAreaListProps> = (props) => {
 
       setData(draft => {
         draft.cells = [...res.data,...initList] ?? initList;
+        draft.activeIndex = undefined;
       });
     },
   });

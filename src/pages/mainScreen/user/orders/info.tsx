@@ -31,11 +31,14 @@ const OrdersInfo = () => {
 
   const { orderContext = [], headerImg } = route?.params;
   return <BaseLayout className="bg-[#0B0B0BE6]">
+    <View className="relative">
+    {headerImg && <View className=" absolute right-5 left-5  h-52  rounded-2xl overflow-hidden">
+          <Image source={headerImg} resizeMode="cover" className="h-52 w-full absolute left-0 right-0" />
+        </View>}
+    </View>
+
     <ScrollView>
       <View >
-        {headerImg && <View className=" absolute right-5 left-5 h-52 rounded-2xl overflow-hidden">
-          <ImageBackground source={headerImg} resizeMode="cover" className=" w-full absolute left-0 right-0 bottom-0 top-0" />
-        </View>}
         <Panel className="mt-44">
           <View>
             <Text className="text-xs text-white mb-5">订单内容</Text>
@@ -75,8 +78,6 @@ const OrdersInfo = () => {
             ))}
           </View>
         </Panel>
-
-
       </View>
     </ScrollView>
     <View className="flex-row justify-around items-center mt-2 h-14">

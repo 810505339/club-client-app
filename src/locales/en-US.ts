@@ -5,5 +5,8 @@ export default {
     fightwine: 'fightwine',
     ticket: 'ticket',
     bookTickets: 'book Tickets',
+    reserveBooth: 'Reserve a booth',
+    confirmBooth:'Select the deck',
+    ordersInfo:'orders Info',
   },
 };

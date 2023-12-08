@@ -60,9 +60,9 @@ function CustomFlatList<T>({
     data,
   });
 
-  const { current, isLoading, isRefreshing, hasMoreData, error } = allData;
+  const { isLoading, isRefreshing, hasMoreData, error } = allData;
 
-  const { run, runAsync } = useRequest(onFetchData, {
+  const { run } = useRequest(onFetchData, {
     manual: true,
     onSuccess(res) {
       const total = res?.data?.total ?? 0;
@@ -82,23 +82,30 @@ function CustomFlatList<T>({
       setAllData((draft) => {
         draft.isLoading = false;
         draft.isRefreshing = false;
-
       });
     },
   });
 
   // 当 current 发生变化时，重新获取数据
   useEffect(() => {
-    run({ ...params, current, size });
+    console.log(allData.isRefreshing, ' allData.isRefreshing');
+
+    run({ ...params, current: allData.current, size });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 上拉请求分页
-  const fetchData = async () => {
+  const fetchData =  () => {
     if (!hasMoreData || isLoading) {
       return;
     }
-    await runAsync({ ...params, current: current + 1, size });
+    setAllData(draft=>{
+      draft.current += 1;
+      run({ ...params, current: draft.current, size });
+    });
+
+
   };
 
   // 下拉刷新
@@ -106,8 +113,9 @@ function CustomFlatList<T>({
     setAllData((draft) => {
       draft.isRefreshing = true;
       draft.hasMoreData = true;
+      draft.current = 1;
     });
-    await runAsync({ ...params, current: 1, size });
+    run({ ...params, current: 1, size });
   };
 
   // 渲染每个 item

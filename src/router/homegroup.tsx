@@ -14,8 +14,8 @@ const Homegroup = () => {
     <Stack.Screen name="Dynamic" component={Dynamic} />
     <Stack.Screen name="Preset" options={{ title: t('default.titleList.bookTickets') }} component={Preset} />
     <Stack.Screen name="DynamicInfo" component={DynamicInfo} />
-    <Stack.Screen name="ReserveBooth" component={ReserveBooth} />
-    <Stack.Screen name="ConfirmBooth" component={ConfirmBooth} />
+    <Stack.Screen name="ReserveBooth" options={{ title: t('default.titleList.reserveBooth') }} component={ReserveBooth} />
+    <Stack.Screen name="ConfirmBooth"   options={{ title: t('default.titleList.confirmBooth') }} component={ConfirmBooth} />
   </Stack.Group>;
 };
 

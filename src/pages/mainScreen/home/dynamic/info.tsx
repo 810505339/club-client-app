@@ -6,6 +6,8 @@ import { BlurView } from '@react-native-community/blur';
 import React from 'react';
 import RenderHtml from 'react-native-render-html';
 import { useImmer } from 'use-immer';
+import { useRequest } from 'ahooks';
+import { getDynamicInfo } from '@api/dynamic';
 const IMAGE = require('@assets/imgs/demo/carousel-0.jpg');
 const source = {
   html: `
@@ -21,6 +23,8 @@ const DynamicInfo = () => {
     refreshing: false,
     list: ['公告', '#活动'],
   });
+
+  useRequest(getDynamicInfo)
 
   return (<BaseLayout showAppBar={false}>
     <ScrollView refreshControl={<RefreshControl refreshing={data.refreshing} />} >

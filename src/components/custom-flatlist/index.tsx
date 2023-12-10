@@ -42,7 +42,7 @@ const RenderNoData = () => {
 
 const RendernoMoreData = () => {
   const { t } = useTranslation();
-  return <Text className="text-center">{t('flatList.noMore1')}</Text>;
+  return <Text className="text-center pb-3">{t('flatList.noMore1')}</Text>;
 };
 
 function CustomFlatList<T>(props: IPaginatedFlatListProps<T>) {

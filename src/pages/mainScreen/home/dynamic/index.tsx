@@ -1,28 +1,66 @@
 import { useNavigation } from '@react-navigation/native';
 import BaseLayout from '@components/baselayout';
-import { View, Animated, Text, RefreshControl, Image, ImageSourcePropType, ImageBackground, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ImageSourcePropType, ImageBackground, TouchableOpacity } from 'react-native';
 import { TabsProvider, Tabs, TabScreen } from 'react-native-paper-tabs';
 import { ScreenNavigationProp } from '@router/type';
 import { useImmer } from 'use-immer';
 import { BlurView } from '@react-native-community/blur';
 
+import useGetDynamicType from './hooks/useGetDynamicType';
+import CustomFlatList from '@components/custom-flatlist';
+import { getDynamicList } from '@api/dynamic';
 
+import { fileStore } from '@store/getfileurl';
 
+const hot = require('@assets/imgs/base/hot.png');
 
 type IProps = {
   id: string
-  img?: ImageSourcePropType,
-  list?: string[],
+  type: string,
+  publishDate: string,
+  pageView: string,
+  pictureFile: any[]
   onPress: (id: string) => void
+  dynamicTitleCn: string,
+  dynamicTitleUk: string,
+  dynamicContentCn: string,
+  dynamicContentUk: string,
+  amount: string,
+  whetherSignUp: string // 是否报名 1:0
 }
 
 const DynamicItem = (props: IProps) => {
-  const { id, img, list, onPress } = props;
-  const boxClass = img != undefined ? 'h-[473]' : '';
-  const tagPostion = img != undefined ? 'absolute top-2.5 left-2.5' : 'mr-2.5';
+  const navigation = useNavigation<ScreenNavigationProp<'DynamicInfo'>>();
+  const { id, onPress, type, pageView, publishDate, pictureFile, dynamicTitleCn, dynamicTitleUk, dynamicContentCn, dynamicContentUk, whetherSignUp, amount } = props;
+  const source = pictureFile && { uri: fileStore.fileUrl + '/' + pictureFile[0]?.fileName };
+  const boxClass = source != undefined ? 'h-[473]' : '';
+  const tagPostion = source != undefined ? 'absolute top-2.5 left-2.5' : 'mr-2.5';
+  const title = dynamicTitleCn;
+  const Content = dynamicContentCn;
+  const signText = whetherSignUp == '1' ? '# 需报名' : '';
+  const amountText = amount == '0' ? '# 免费' : '# 收费';
+
+  const RenderList = () => {
+
+    const tempList = [signText, amountText].filter(s => s);
+
+    return tempList;
+  };
+  const list: string[] = RenderList();
+
+
+  const handleItemPress = (id: string) => {
+    console.log(id);
+
+
+    navigation.navigate('DynamicInfo', {
+      id,
+      tagList: [...list, type],
+    });
+  };
 
   const Type = () => <View className={`${tagPostion} w-12 h-8 rounded-2xl bg-[#00000066]  flex-row justify-center items-center`}>
-    <Text className="text-sm font-normal text-white">活动</Text>
+    <Text className="text-sm font-normal text-white">{type}</Text>
   </View>;
 
   const TagList = () => {
@@ -37,9 +75,9 @@ const DynamicItem = (props: IProps) => {
 
 
 
-  return <TouchableOpacity onPress={() => onPress(id)} className={`m-5  rounded-2xl relative ${boxClass}   overflow-hidden flex-col justify-end bg-[#5E3C18FF]`}>
-    {img && <ImageBackground key={'blurryImage'} source={img} className="absolute  left-0 right-0 bottom-0 top-0" style={{ flex: 1 }} />}
-    {img && <Type />}
+  return <TouchableOpacity onPress={() => handleItemPress(id)} className={`m-5  rounded-2xl relative ${boxClass}   overflow-hidden flex-col justify-end bg-[#5E3C18FF]`}>
+    {pictureFile && <ImageBackground key={'blurryImage'} source={source} className="absolute  left-0 right-0 bottom-0 top-0" style={{ flex: 1 }} />}
+    {pictureFile && <Type />}
     <View className=" p-2.5 overflow-hidden">
       <BlurView
         style={{ position: 'absolute', bottom: 0, left: 0, right: 0, top: 0 }}
@@ -49,18 +87,20 @@ const DynamicItem = (props: IProps) => {
 
       />
       <View className="flex-row items-center justify-start ">
-        {!img && <Type />}
-        <Text className="text-white text-base font-semibold flex-auto" numberOfLines={1}>F1 Singapore Grand Prix 2023</Text>
+        {!pictureFile && <Type />}
+        <Text className="text-white text-base font-semibold flex-auto" numberOfLines={1}>{title}</Text>
       </View>
-      {list && <TagList />}
+      {pictureFile && <TagList />}
       <View className="flex-auto mt-2.5 mb-5">
-        <Text numberOfLines={2} className="text-xs font-light">The iconic racing event of the 2023 Singapore Grand Prix will return to the Marina Bay circuit from …</Text>
+        <Text numberOfLines={2} className="text-xs font-light">{Content}</Text>
       </View>
       <View className="flex-row justify-between">
-        <Text className="text-[#ffffff59] text-xs font-semibold">2023/09/15</Text>
-        <View>
-          <View />
-          <Text className="text-[#ffffff59] text-xs font-semibold">1235465</Text>
+        <Text className="text-[#ffffff59] text-xs font-semibold">{publishDate}</Text>
+        <View className="flex-row">
+          <Image source={hot} />
+          <Text className="text-[#ffffff59] text-xs font-semibold">
+            {pageView}
+          </Text>
         </View>
       </View>
     </View>
@@ -74,35 +114,26 @@ const DynamicItem = (props: IProps) => {
 
 const Dynamic = () => {
 
-  const navigation = useNavigation<ScreenNavigationProp<'DynamicInfo'>>();
-  const [data, setData] = useImmer({
-    refreshing: false,
-    cells: Array.from({ length: 20 }, (_, index) => {
-      const img = index % 2 === 0 ? require('@assets/imgs/demo/carousel-2.jpg') : undefined;
-      const list = index % 3 === 0 ? ['#免费', '#需报名'] : undefined;
 
 
-      return ({ id: `${index}`, img: img, list });
-    }),
-    types: ['全部', '待支付', '已支付', '支付失败', '已取消'],
-    typeIndex: 0,
-  });
-
-  const onRefresh = () => {
-
-  };
-  const handleItemPress = (id: string) => {
-    console.log(id);
+  const { dynamicTypeList, storeId } = useGetDynamicType();
 
 
-    navigation.navigate('DynamicInfo', {
-      id,
-    });
-  };
+  // const [data, setData] = useImmer({
+  //   refreshing: false,
+  //   cells: Array.from({ length: 20 }, (_, index) => {
+  //     const img = index % 2 === 0 ? require('@assets/imgs/demo/carousel-2.jpg') : undefined;
+  //     const list = index % 3 === 0 ? ['#免费', '#需报名'] : undefined;
 
-  return (<BaseLayout>
 
-    <TabsProvider
+  //     return ({ id: `${index}`, img: img, list });
+  //   }),
+
+  // });
+
+
+  return (<BaseLayout showNoMore={dynamicTypeList?.length === 1}>
+    {storeId && dynamicTypeList?.length >= 2 && <TabsProvider
       defaultIndex={0}
     // onChangeIndex={handleChangeIndex} optional
     >
@@ -113,57 +144,24 @@ const Dynamic = () => {
         style={{ backgroundColor: 'transparent' }} // works the same as AppBar in react-native-paper
         dark={true} // works the same as AppBar in react-native-paper
         // theme={} // works the same as AppBar in react-native-paper
-        mode="scrollable" // fixed, scrollable | default=fixed
+        mode="fixed" // fixed, scrollable | default=fixed
         showLeadingSpace={false} //  (default=true) show leading space in scrollable tabs inside the header
         disableSwipe={false} // (default=false) disable swipe to left/right gestures
       >
-        <TabScreen label="全部">
-          <View className="bg-transparent">
-            <Animated.FlatList
-              showsVerticalScrollIndicator={false}
-              renderItem={({ item }) => <DynamicItem {...item} onPress={handleItemPress} />}
-              ListFooterComponent={<Text className="text-center pb-5">没有更多</Text>}
-              keyExtractor={item => (item.id)}
-              data={data.cells}
-              refreshControl={<RefreshControl refreshing={data.refreshing} onRefresh={onRefresh} />}
-            />
-          </View>
-        </TabScreen>
-        <TabScreen label="活动">
-          <View className="bg-transparent" />
-        </TabScreen>
-        <TabScreen
-          label="公告"
-        // optional props
-        // badge={true} // only show indicator
-        // badge="text"
-        // badge={1}
-        // onPressIn={() => {
-        //   console.log('onPressIn explore');
-        // }}
-        // onPress={() => {
-        //   console.log('onPress explore');
-        // }}
-        >
-          <View style={{ backgroundColor: 'red', flex: 1 }} />
-        </TabScreen>
-        <TabScreen
-          label="动态"
-        // optional props
-        // badge={true} // only show indicator
-        // badge="text"
-        // badge={1}
-        // onPressIn={() => {
-        //   console.log('onPressIn explore');
-        // }}
-        // onPress={() => {
-        //   console.log('onPress explore');
-        // }}
-        >
-          <View />
-        </TabScreen>
+        {dynamicTypeList.map((dynamicType) => {
+          const typeId = dynamicType.isAll ? '' : dynamicType.id;
+
+          return (<TabScreen label={dynamicType.name} key={dynamicType.id}>
+            <View className="bg-transparent">
+              <CustomFlatList renderItem={(item) => <DynamicItem {...item} />} params={{ typeId, storeId }} onFetchData={getDynamicList} key={dynamicType.id} />
+
+            </View>
+          </TabScreen>);
+        })}
+
       </Tabs>
-    </TabsProvider>
+    </TabsProvider>}
+
   </BaseLayout>);
 };
 

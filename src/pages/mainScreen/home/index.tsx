@@ -55,7 +55,7 @@ const HomeScreen = () => {
   return (
     <BaseLayout className="bg-[#0B0B0BE6]">
       <HorizontalFlatList className="mt-7" />
-      <SwiperView swiperList={data.swiperList}  />
+      {/* <SwiperView swiperList={data.swiperList}  /> */}
     </BaseLayout>
   );
 };

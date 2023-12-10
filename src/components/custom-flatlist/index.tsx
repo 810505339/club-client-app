@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { FlatList, RefreshControl, Text, View, RefreshControlProps, Image } from 'react-native';
 import { useImmer } from 'use-immer';
 import { ActivityIndicator } from 'react-native-paper';
-
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -33,25 +33,34 @@ const INIT_STATE = {
 
 
 const RenderNoData = () => {
+  const { t } = useTranslation();
   return <View className="mt-40  justify-center items-center" >
     <Image source={noData} resizeMode="contain" />
-    <Text className="mt-2 opacity-50 text-xs font-bold">没有数据</Text>
+    <Text className="mt-2 opacity-50 text-xs font-bold">{t('flatList.noMore')}</Text>
   </View>;
 };
 
-function CustomFlatList<T>({
-  renderItem,
-  data = [],
-  onFetchData,
-  initialPage = 1,
-  size = 1,
-  params,
-  refreshControlProps,
-  errorComponent = <Text>Oops! Something went wrong.</Text>,
-  noMoreData = <Text>暂无更多数据</Text>,
-  noDataComponent = <RenderNoData />,
-  renderHeader = <></>,
-}: IPaginatedFlatListProps<T>) {
+const RendernoMoreData = () => {
+  const { t } = useTranslation();
+  return <Text className="text-center">{t('flatList.noMore1')}</Text>;
+};
+
+function CustomFlatList<T>(props: IPaginatedFlatListProps<T>) {
+  const {
+    renderItem,
+    data = [],
+    onFetchData,
+    initialPage = 1,
+    size = 1,
+    params,
+    refreshControlProps,
+    errorComponent = <Text>Oops! Something went wrong.</Text>,
+    noMoreData = <RendernoMoreData />,
+    noDataComponent = <RenderNoData />,
+    renderHeader = <></>,
+  } = props;
+
+
 
 
   const [allData, setAllData] = useImmer({
@@ -96,11 +105,11 @@ function CustomFlatList<T>({
   }, []);
 
   // 上拉请求分页
-  const fetchData =  () => {
+  const fetchData = () => {
     if (!hasMoreData || isLoading) {
       return;
     }
-    setAllData(draft=>{
+    setAllData(draft => {
       draft.current += 1;
       run({ ...params, current: draft.current, size });
     });
@@ -114,6 +123,7 @@ function CustomFlatList<T>({
       draft.isRefreshing = true;
       draft.hasMoreData = true;
       draft.current = 1;
+      draft.data = [];
     });
     run({ ...params, current: 1, size });
   };

@@ -30,7 +30,7 @@ const ListHeader = () => {
 
 
 const renderItem = () => {
-  return <View className="mx-5 h-16 bg-[#16161680] rounded-2xl my-2.5 flex-row items-center justify-between rounded-xl">
+  return <View className="mx-5 h-16 bg-[#16161680]  my-2.5 flex-row items-center justify-between rounded-xl">
     <View>
       <Text className="text-white font-normal text-xs mb-1">取消拼酒局</Text>
       <Text className="text-[#ffffff7f] font-normal text-xs">2023-10-13 16:41:12</Text>

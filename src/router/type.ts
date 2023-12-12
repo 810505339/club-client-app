@@ -49,7 +49,14 @@ export type HomeParamList = {
   Dynamic: undefined,
   DynamicInfo: {
     id: string
-    tagList: string[]
+    tagList: string[],
+    title: string,
+    content: string,
+    publishDate: string,
+    pageView: string,
+    source: {
+      uri:string
+    }
   },
   ReserveBooth: undefined,
   ConfirmBooth: {

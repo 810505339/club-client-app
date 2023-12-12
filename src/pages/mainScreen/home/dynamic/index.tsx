@@ -14,6 +14,7 @@ import { fileStore } from '@store/getfileurl';
 
 const hot = require('@assets/imgs/base/hot.png');
 
+
 type IProps = {
   id: string
   type: string,
@@ -36,7 +37,7 @@ const DynamicItem = (props: IProps) => {
   const boxClass = source != undefined ? 'h-[473]' : '';
   const tagPostion = source != undefined ? 'absolute top-2.5 left-2.5' : 'mr-2.5';
   const title = dynamicTitleCn;
-  const Content = dynamicContentCn;
+  const content = dynamicContentCn;
   const signText = whetherSignUp == '1' ? '# 需报名' : '';
   const amountText = amount == '0' ? '# 免费' : '# 收费';
 
@@ -51,11 +52,15 @@ const DynamicItem = (props: IProps) => {
 
   const handleItemPress = (id: string) => {
     console.log(id);
-
-
     navigation.navigate('DynamicInfo', {
       id,
-      tagList: [...list, type],
+      tagList: [type, ...list],
+      title,
+      content,
+      publishDate,
+      pageView,
+      source,
+
     });
   };
 
@@ -92,7 +97,7 @@ const DynamicItem = (props: IProps) => {
       </View>
       {pictureFile && <TagList />}
       <View className="flex-auto mt-2.5 mb-5">
-        <Text numberOfLines={2} className="text-xs font-light">{Content}</Text>
+        <Text numberOfLines={2} className="text-xs font-light">{content}</Text>
       </View>
       <View className="flex-row justify-between">
         <Text className="text-[#ffffff59] text-xs font-semibold">{publishDate}</Text>
@@ -132,7 +137,7 @@ const Dynamic = () => {
   // });
 
 
-  return (<BaseLayout showNoMore={dynamicTypeList?.length === 1}>
+  return (<BaseLayout showNoMore={dynamicTypeList?.length === 1} source={false}>
     {storeId && dynamicTypeList?.length >= 2 && <TabsProvider
       defaultIndex={0}
     // onChangeIndex={handleChangeIndex} optional

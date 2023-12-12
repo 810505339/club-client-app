@@ -100,7 +100,7 @@ const DynamicItem = (props: IProps) => {
       </View>
       {pictureFile && <TagList />}
       <View className="flex-auto mt-2.5 mb-5">
-        <Text numberOfLines={2} className="text-xs font-light">{content}</Text>
+        {/* <Text numberOfLines={2} className="text-xs font-light">{content}</Text> */}
       </View>
       <View className="flex-row justify-between">
         <Text className="text-[#ffffff59] text-xs font-semibold">{publishDate}</Text>

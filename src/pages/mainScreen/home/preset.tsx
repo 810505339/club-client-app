@@ -18,6 +18,7 @@ import { RootStackParamList } from '@router/type';
 import currency from 'currency.js';
 import Toast from 'react-native-toast-message';
 import useSelectTimer from '@hooks/useSelectTimer';
+import { useTranslation } from 'react-i18next';
 
 
 const tickerBg = require('@assets/imgs/home/preset/ticket-header.png');
@@ -33,6 +34,7 @@ const Preset = () => {
     setShowTime } = useSelectTimer();
 
   const navgation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const { t } = useTranslation();
 
   const { run, refresh } = useRequest(onSaleNum, {
     manual: true,
@@ -89,11 +91,11 @@ const Preset = () => {
     }
     navgation.navigate('OrdersInfo', {
       orderContext: [
-        { label: '所选门店', value: shopName },
-        { label: '商品名称', value: data.ticketName },
-        { label: '商品数量', value: data.num },
-        { label: '入场时间', value: formatDay },
-        { label: '应付金额', value: data.total },
+        { label: t('orders.label1'), value: shopName },
+        { label: t('orders.label8'), value: data.ticketName },
+        { label: t('orders.label9'), value: data.num },
+        { label: t('orders.label4'), value: formatDay },
+        { label: t('orders.label7'), value: data.total },
       ],
       headerImg: card_1,
     });
@@ -129,22 +131,22 @@ const Preset = () => {
 
         <Panel className="mt-20">
           <View className="">
-            <Text className="text-xs text-white font-semibold opacity-50">选择门店</Text>
+            <Text className="text-xs text-white font-semibold opacity-50">{t('common.label1')}</Text>
             <TextInput mode="outlined" className="flex-auto bg-transparent mt-4" value={shopName} showSoftInputOnFocus={false} outlineStyle={{ borderRadius: 16 }} right={<TextInput.Icon icon="chevron-down" />} onPressIn={showShop} />
           </View>
           <View className="mt-7">
-            <Text className="text-xs text-white font-semibold opacity-50">选择日期</Text>
+            <Text className="text-xs text-white font-semibold opacity-50">{t('common.label2')}</Text>
             <TextInput mode="outlined" className="flex-auto bg-transparent mt-4" showSoftInputOnFocus={false} value={formatDay} outlineStyle={{ borderRadius: 16 }} onPressIn={() => { setShowTime(true); }} right={<TextInput.Icon icon="calendar" />} />
             {showTime && <DateTimePicker onChange={onChange} value={time} />}
           </View>
           <View className="mt-7">
-            <Text className="text-xs text-white font-semibold opacity-50 mb-4">选择区域</Text>
+            <Text className="text-xs text-white font-semibold opacity-50 mb-4">{t('common.label3')}</Text>
             <AreaList storeId={shop.select.id} date={formatDay} onChange={changeArea} />
           </View>
           <View className="mt-7">
-            <Text className="text-xs text-white font-semibold opacity-50 mb-4">选择数量</Text>
+            <Text className="text-xs text-white font-semibold opacity-50 mb-4">{t('common.label4')}</Text>
             <View className="flex-row items-center justify-between">
-              <Text className="text-[#FFFFFF]" style={{ fontSize: 10 }}>剩余<Text className="text-[#E6A055FF] text-xs">{data.remainingNum}</Text>张门票</Text>
+              <Text className="text-[#FFFFFF]" style={{ fontSize: 10 }}>{t('preset.label1')}<Text className="text-[#E6A055FF] text-xs">{data.remainingNum}</Text>{t('preset.label2')}</Text>
               <View className="flex-row items-center">
                 <NumberInput max={data.remainingNum} min={0} num={data.num} onChange={changeSum} />
               </View>
@@ -155,8 +157,8 @@ const Preset = () => {
       <View className="h-14  flex-col justify-center">
         <Divider />
         <View className="flex-row items-center justify-between px-5 mt-1">
-          <Text style={{ fontSize: 10 }}>总计：<Text className="text-[#E6A055FF]">$</Text><Text className="text-[#E6A055FF] text-2xl font-bold" >{data.total}</Text></Text>
-          <Button mode={'elevated'} className="bg-[#EE2737FF]" textColor="#0C0C0CFF" onPress={toUrl} >确定</Button>
+          <Text style={{ fontSize: 10 }}>{t('preset.label3')}<Text className="text-[#E6A055FF]">$</Text><Text className="text-[#E6A055FF] text-2xl font-bold" >{data.total}</Text></Text>
+          <Button mode={'elevated'} className="bg-[#EE2737FF]" textColor="#0C0C0CFF" onPress={toUrl} >{t('common.btn2')}</Button>
         </View>
       </View>
     </View>

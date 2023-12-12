@@ -51,7 +51,7 @@ function CustomFlatList<T>(props: IPaginatedFlatListProps<T>) {
     data = [],
     onFetchData,
     initialPage = 1,
-    size = 1,
+    size = 10,
     params,
     refreshControlProps,
     errorComponent = <Text>Oops! Something went wrong.</Text>,

@@ -7,6 +7,7 @@ import { fileStore } from '@store/getfileurl';
 import { useRequest } from 'ahooks';
 import { getByBoothId } from '@api/booths';
 import uuid from 'react-native-uuid';
+import { useTranslation } from 'react-i18next';
 type IProps = {
   onPress: (index: number) => void
   index: number
@@ -17,14 +18,7 @@ type IProps = {
 }
 const img = require('@assets/imgs/base/booth_card.png');
 
-const initList = [
-  {
-    id: uuid.v4(),
-    name: '到店自选',
-    introduction: '到店后自选酒水餐品',
 
-  },
-];/*  */
 
 
 const PackageItem = (props: IProps) => {
@@ -48,10 +42,20 @@ const PackageItem = (props: IProps) => {
 
 export type IAreaListProps = {
   boothId: string,
-  onChange?:(list:any[],index:number|undefined)=>void
+  onChange?: (list: any[], index: number | undefined) => void
 }
 const PackageList: FC<IAreaListProps> = (props) => {
-  const { boothId,onChange } = props;
+
+  const { t } = useTranslation();
+  const initList = [
+    {
+      id: uuid.v4(),
+      name: t('confirmBooth.label3'),
+      introduction: t('confirmBooth.label4'),
+
+    },
+  ];/*  */
+  const { boothId, onChange } = props;
   const [data, setData] = useImmer({
     cells: initList,
     activeIndex: undefined,
@@ -70,7 +74,7 @@ const PackageList: FC<IAreaListProps> = (props) => {
       console.log(res.data, '酒水套餐');
 
       setData(draft => {
-        draft.cells = [...res.data,...initList] ?? initList;
+        draft.cells = [...res.data, ...initList] ?? initList;
         draft.activeIndex = undefined;
       });
     },

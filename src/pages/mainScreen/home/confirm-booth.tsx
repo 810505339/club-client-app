@@ -7,8 +7,6 @@ import { Button, Divider, Icon, Text, TextInput } from 'react-native-paper';
 
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import Panel from '@components/panel';
-import { useRequest } from 'ahooks';
-import { getOpenBooth } from '@api/booths';
 import BoothsList from './components/boothList';
 import { RootStackParamList } from '@router/type';
 import { fileStore } from '@store/getfileurl';
@@ -17,6 +15,7 @@ import useSelectBooths from '@hooks/useSelectBooths';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import useSelectShop from '@hooks/useSelectShop';
 import { useImmer } from 'use-immer';
+import { useTranslation } from 'react-i18next';
 
 
 type IItem = {
@@ -31,21 +30,21 @@ const ConfirmBooth = () => {
 
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const route = useRoute<RouteProp<RootStackParamList, 'ConfirmBooth'>>();
-  const { areaId, entranceDate, peopleNum,latestArrivalTime,areaName } = route.params;
+  const { t } = useTranslation();
+  const { areaId, entranceDate, peopleNum, latestArrivalTime, areaName } = route.params;
 
 
   const { booths, itemPress } = useSelectBooths({ areaId, entranceDate, peopleNum });
-  const {shopName} = useSelectShop();
-  const [data,setData] = useImmer({
-    selectPackage:{},
+  const { shopName } = useSelectShop();
+  const [data, setData] = useImmer({
+    selectPackage: {},
   });
   const file = fileStore.fileUrl;
   const selectBooth = booths?.activeIndex != undefined ? booths.list[booths?.activeIndex] : {};
 
-  const changePackage = (list:any[],index:number|undefined)=>{
-    if (index != undefined)
-    {
-      setData((draft)=>{
+  const changePackage = (list: any[], index: number | undefined) => {
+    if (index != undefined) {
+      setData((draft) => {
         draft.selectPackage = list[index];
       });
     }
@@ -53,14 +52,14 @@ const ConfirmBooth = () => {
 
   const list: IItem[] = [
     {
-      label: '选择卡座', render: () => {
+      label: t('confirmBooth.label1'), render: () => {
         return <BoothsList itemPress={itemPress} {...booths} />;
       },
     },
     {
-      label: '选择套餐', render: () => (<View>
+      label: t('confirmBooth.label2'), render: () => (<View>
         <PackageList boothId={selectBooth?.boothId} onChange={changePackage} />
-        <Text className="text-[#E6A055FF] mt-5">*  卡座预订成功后，将会赠送您相同人数的门票</Text>
+        <Text className="text-[#E6A055FF] mt-5">*  {t('confirmBooth.label8')}</Text>
       </View>),
     },
   ];
@@ -71,15 +70,15 @@ const ConfirmBooth = () => {
 
     navigation.navigate('OrdersInfo', {
       orderContext: [
-        { label: '所选门店', value: shopName },
-        { label: '卡座位置', value:`${areaName} - ${selectBooth?.name}`},
-        { label: '已选套餐', value: data.selectPackage?.name },
-        { label: '入场时间', value: entranceDate },
-        { label: '到店人数', value: peopleNum },
-        { label: '最晚到场时间', value: latestArrivalTime },
-        { label: '应付金额', value:`${selectBooth?.minConsumption}` },
+        { label: t('orders.label1'), value: shopName },
+        { label: t('orders.label2'), value: `${areaName} - ${selectBooth?.name}` },
+        { label: t('orders.label3'), value: data.selectPackage?.name },
+        { label: t('orders.label4'), value: entranceDate },
+        { label: t('orders.label5'), value: peopleNum },
+        { label: t('orders.label6'), value: latestArrivalTime },
+        { label: t('orders.label7'), value: `${selectBooth?.minConsumption}` },
       ],
-      headerImg:card_2 ,
+      headerImg: card_2,
     });
   };
 
@@ -103,10 +102,10 @@ const ConfirmBooth = () => {
       <Divider />
       <View className="flex-row items-center justify-between  px-5 mt-2">
         <View>
-          <Text style={{ fontSize: 10 }}>该卡座最大可容纳 <Text className="text-[#E6A055FF]">{selectBooth?.maxAccommodate}</Text>人</Text>
-          <Text className="mt-2" style={{ fontSize: 10 }}>最低消费： <Text className="text-[#E6A055FF]">$ {selectBooth?.minConsumption}</Text></Text>
+          <Text style={{ fontSize: 10 }}>{t('confirmBooth.label5')} <Text className="text-[#E6A055FF]">{selectBooth?.maxAccommodate}</Text>{t('confirmBooth.label6')}</Text>
+          <Text className="mt-2" style={{ fontSize: 10 }}>{t('confirmBooth.label7')}： <Text className="text-[#E6A055FF]">$ {selectBooth?.minConsumption}</Text></Text>
         </View>
-        <Button mode={'elevated'} className="bg-[#EE2737FF]" textColor="#0C0C0CFF"  onPress={toUrl} >确 定</Button>
+        <Button mode={'elevated'} className="bg-[#EE2737FF]" textColor="#0C0C0CFF" onPress={toUrl} >{t('common.btn2')}</Button>
       </View>
     </View>
   </BaseLayout>);

@@ -41,9 +41,7 @@ const App = () => {
           <SafeAreaProvider>
             <StatusBar backgroundColor="transparent" translucent={true} />
             <AppNavigator />
-            <Portal>
             <Toast config={toastConfig} bottomOffset={200} position="bottom"  />
-            </Portal>
           </SafeAreaProvider>
         </PaperProvider>
       </BottomSheetModalProvider>

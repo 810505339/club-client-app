@@ -2,11 +2,10 @@ import BaseLayout from '@components/baselayout';
 import { useRequest } from 'ahooks';
 import { getCustomerCoupon } from '@api/coupon';
 import { ImageBackground, RefreshControl, TouchableOpacity, View, useWindowDimensions, Animated } from 'react-native';
-import { Button, RadioButton, Text } from 'react-native-paper';
-import { SharedValue, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
-import { TabScreen, Tabs, TabsProvider } from 'react-native-paper-tabs';
+import { Button, Checkbox, Text } from 'react-native-paper';
+
 import CustomFlatList from '@components/custom-flatlist';
-import { useImmer } from 'use-immer';
+
 import { useTranslation } from 'react-i18next';
 import { TabView, SceneMap, SceneRendererProps, NavigationState } from 'react-native-tab-view';
 import { useEffect, useState } from 'react';
@@ -74,7 +73,7 @@ export const Item = (item, index, t, checked, onChecked) => {
         <Text style={{ fontSize: 10 }} className="font-light text-[#ffffff7f]">{item.takeEffectTime} - {item.disabledTime}</Text>
       </View>
       <View className="items-center ">
-        <RadioButton status={checked === item.id ? 'checked' : 'unchecked'} onPress={() => onChecked(item.id)} value={item.id} />
+        <Checkbox status={checked === item.id ? 'checked' : 'unchecked'} onPress={() => onChecked(item.id)} value={item.id} />
       </View>
     </View>
 

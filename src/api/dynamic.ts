@@ -43,3 +43,11 @@ export const getDynamicInfo = async (params: getDynamicInfoIParams) => {
   return data;
 };
 
+//新增报名
+export const signUp = async (id: string) => {
+  const { data } = await service({
+    url: `/operation/dynamicState/saveActivity/signUp/${id}`,
+    method: 'POST',
+  });
+  return data;
+};

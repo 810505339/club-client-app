@@ -1,8 +1,7 @@
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppNavigator from '@router/index';
-
 import '@utils/i18next';
-import { PaperProvider, MD3DarkTheme, MD3LightTheme } from 'react-native-paper';
+import { PaperProvider, MD3DarkTheme, MD3LightTheme, Modal, Portal } from 'react-native-paper';
 import { useColorScheme } from 'react-native';
 import { useMaterial3Theme } from '@pchmn/expo-material3-theme';
 import SplashScreen from 'react-native-splash-screen';
@@ -13,8 +12,11 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import Toast from 'react-native-toast-message';
 import toastConfig from '@components/toast/customToast';
 import { getFileUrl } from '@store/getfileurl';
+import { useState } from 'react';
 
 const App = () => {
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
   useEffect(() => {
     /* 这是启动页 */
     SplashScreen.hide();
@@ -39,7 +41,9 @@ const App = () => {
           <SafeAreaProvider>
             <StatusBar backgroundColor="transparent" translucent={true} />
             <AppNavigator />
-            <Toast config={toastConfig} bottomOffset={200} position="bottom" />
+            <Portal>
+            <Toast config={toastConfig} bottomOffset={200} position="bottom"  />
+            </Portal>
           </SafeAreaProvider>
         </PaperProvider>
       </BottomSheetModalProvider>

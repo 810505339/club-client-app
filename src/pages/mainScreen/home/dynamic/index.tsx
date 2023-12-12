@@ -11,6 +11,8 @@ import CustomFlatList from '@components/custom-flatlist';
 import { getDynamicList } from '@api/dynamic';
 
 import { fileStore } from '@store/getfileurl';
+import { useTranslation } from 'react-i18next';
+
 
 const hot = require('@assets/imgs/base/hot.png');
 
@@ -31,6 +33,7 @@ type IProps = {
 }
 
 const DynamicItem = (props: IProps) => {
+  const { t } = useTranslation();
   const navigation = useNavigation<ScreenNavigationProp<'DynamicInfo'>>();
   const { id, onPress, type, pageView, publishDate, pictureFile, dynamicTitleCn, dynamicTitleUk, dynamicContentCn, dynamicContentUk, whetherSignUp, amount } = props;
   const source = pictureFile && { uri: fileStore.fileUrl + '/' + pictureFile[0]?.fileName };
@@ -38,8 +41,8 @@ const DynamicItem = (props: IProps) => {
   const tagPostion = source != undefined ? 'absolute top-2.5 left-2.5' : 'mr-2.5';
   const title = dynamicTitleCn;
   const content = dynamicContentCn;
-  const signText = whetherSignUp == '1' ? '# 需报名' : '';
-  const amountText = amount == '0' ? '# 免费' : '# 收费';
+  const signText = whetherSignUp == '1' ? t('dynamic.tagList.tag1') : '';
+  const amountText = amount == '0' ? t('dynamic.tagList.tag2') : t('dynamic.tagList.tag3');
 
   const RenderList = () => {
 
@@ -159,7 +162,6 @@ const Dynamic = () => {
           return (<TabScreen label={dynamicType.name} key={dynamicType.id}>
             <View className="bg-transparent">
               <CustomFlatList renderItem={(item) => <DynamicItem {...item} />} params={{ typeId, storeId }} onFetchData={getDynamicList} key={dynamicType.id} />
-
             </View>
           </TabScreen>);
         })}

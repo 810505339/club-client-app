@@ -3,6 +3,7 @@ import { useRequest } from 'ahooks';
 import { getDynamicTypeByStoreId } from '@api/dynamic';
 import useSelectShop from '@hooks/useSelectShop';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type DynamicTypeList = {
   name: string,
@@ -12,6 +13,7 @@ type DynamicTypeList = {
 
 export default (): { dynamicTypeList: Array<DynamicTypeList>, storeId: string } => {
   const { shop } = useSelectShop();
+  const { t } = useTranslation();
   console.log(shop.select.id, 'shop.select.id');
 
 
@@ -26,7 +28,7 @@ export default (): { dynamicTypeList: Array<DynamicTypeList>, storeId: string } 
   }, [shop.select.id]);
 
   return {
-    dynamicTypeList: data && [{ id: uuid.v4(), name: '全部', isAll: true }, ...data.data],
+    dynamicTypeList: data && [{ id: uuid.v4(), name: t('dynamic.tabs.text1'), isAll: true }, ...data.data],
     storeId: shop.select.id,
   };
 };

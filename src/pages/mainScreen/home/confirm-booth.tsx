@@ -40,7 +40,7 @@ const ConfirmBooth = () => {
     selectPackage: {},
   });
   const file = fileStore.fileUrl;
-  const selectBooth = booths?.activeIndex != undefined ? booths.list[booths?.activeIndex] : {};
+  const selectBooth: any = booths?.activeIndex != undefined ? booths.list[booths?.activeIndex] : {};
 
   const changePackage = (list: any[], index: number | undefined) => {
     if (index != undefined) {

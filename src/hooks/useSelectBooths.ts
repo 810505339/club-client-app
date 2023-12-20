@@ -6,7 +6,7 @@ import { useImmer } from 'use-immer';
 
 
 type IParams = {
-  peopleNum: number,
+  peopleNum?: number,
   areaId: string,
   entranceDate: string
 }

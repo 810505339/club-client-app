@@ -55,7 +55,7 @@ export type HomeParamList = {
     publishDate: string,
     pageView: string,
     source: {
-      uri:string
+      uri: string
     }
   },
   ReserveBooth: undefined,
@@ -81,8 +81,12 @@ export type TabParamList = {
 
 export type FightParamList = {
   Launch: undefined,
-  LaunchWine: undefined,
-  Booths: undefined
+  LaunchWine: {
+    winePartyMode: string
+  },
+  Booths: {
+    [propName: string]: string
+  }
 }
 export type ScreenNavigationProp<T extends keyof RootStackParamList> = CompositeNavigationProp<
   BottomTabNavigationProp<TabParamList>,

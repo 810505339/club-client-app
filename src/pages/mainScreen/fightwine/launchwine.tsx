@@ -3,7 +3,7 @@
 import BaseLayout from '@components/baselayout';
 import React, { ReactNode, useEffect } from 'react';
 import { View } from 'react-native';
-import { Button, Icon, Text, TextInput } from 'react-native-paper';
+import { Button, Divider, Icon, Text, TextInput } from 'react-native-paper';
 import { useImmer } from 'use-immer';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 
@@ -11,6 +11,9 @@ import AreaList from '../home/components/areaList';
 import dayjs from 'dayjs';
 import { load } from '@storage/shop/action';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '@router/type';
+import useSelectShop from '@hooks/useSelectShop';
 
 type IItem = {
   label: string,
@@ -21,26 +24,20 @@ type IItem = {
 
 const LaunchWine = () => {
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+  const { shop } = useSelectShop();
 
   const [data, setData] = useImmer({
     timershow: false,
     date: new Date(),
     lastDate: new Date(),
     lastDateShow: false,
-    storeId: '',
+    areaId: '',
+    partyName: '',
   });
 
-  const getStoreById = async () => {
-    const select = await load();
-    setData(draft => {
-      draft.storeId = select.selectId;
-    });
-  };
 
-  useEffect(() => {
-    getStoreById();
-  }, []);
 
 
 
@@ -48,7 +45,7 @@ const LaunchWine = () => {
   const dateFormat = dayjs(data.date).format('YYYY-MM-DD');
   const lastDateFormat = dayjs(data.lastDate).format('HH:mm');
   const list: IItem[] = [
-    { label: '设置名称', render: () => (<TextInput className="bg-[#221F1F80]" />) },
+    { label: '设置名称', render: () => (<TextInput className="bg-[#221F1F80]" value={data.partyName} onChangeText={(text) => setData(draft => { draft.partyName = text; })} />) },
     { label: '选择日期', render: () => (<TextInput value={dateFormat} className="bg-transparent" showSoftInputOnFocus={false} onFocus={() => setData((draft) => { draft.timershow = true; })} />) },
     {
       label: '最晚到场时间', render: () => (<View>
@@ -63,7 +60,7 @@ const LaunchWine = () => {
         </View>
       </View>),
     },
-    { label: '选择区域', render: () => (data.storeId != '' && <AreaList storeId={data.storeId} date={dateFormat} onChange={changeArea} />) },
+    { label: '选择区域', render: () => (shop.select.id != '' && <AreaList storeId={shop.select.id} date={dateFormat} onChange={changeArea} />) },
   ];
 
   //选择日期
@@ -87,16 +84,24 @@ const LaunchWine = () => {
 
   //changeArea
 
-  const changeArea = (list: any, index: number) => {
-
+  const changeArea = async (list: any, index: number) => {
+    setData(draft => {
+      draft.areaId = list[index]?.id;
+    });
   };
 
+
   const handleNext = () => {
-    navigation.navigate();
+    navigation.navigate('Booths', {
+      partyName: data.partyName,
+      areaId: data.areaId,
+      entranceDate: dateFormat, //入场日期
+      latestArrivalTime: lastDateFormat, //	最晚到场时间
+    });
   };
 
   return (<BaseLayout>
-    <View className="p-5">
+    <View className="p-5 flex-1">
       {list.map((item, i) => (
         <View className="mb-8" key={i}>
           <Text className="text-xs font-semibold mb-2.5">{item.label}</Text>
@@ -105,21 +110,21 @@ const LaunchWine = () => {
       ))}
       {data.timershow && <DateTimePicker onChange={onDateChange} value={data.date} />}
       {data.lastDateShow && <DateTimePicker onChange={onTimerChange} mode="time" value={data.lastDate} />}
-
-      <View>
-        <Button
-          mode="outlined"
-          style={{ borderColor: '#EE2737', height: 50, borderRadius: 33, backgroundColor: '#EE2737' }}
-          labelStyle={{
-            fontSize: 18,
-            color: '#0C0C0CFF',
-            fontWeight: '600',
-          }}
-          contentStyle={{ height: 50 }}
-          onPress={handleNext}>
-          下一步
-        </Button>
-      </View>
+    </View>
+    <View className="h-14  flex-col justify-center">
+      <Divider />
+      <Button
+        mode="outlined"
+        style={{ borderColor: '#EE2737', height: 50, borderRadius: 33, backgroundColor: '#EE2737' }}
+        labelStyle={{
+          fontSize: 18,
+          color: '#0C0C0CFF',
+          fontWeight: '600',
+        }}
+        contentStyle={{ height: 50 }}
+        onPress={handleNext}>
+        下一步
+      </Button>
     </View>
   </BaseLayout>);
 };

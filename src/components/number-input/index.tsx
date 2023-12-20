@@ -25,19 +25,22 @@ const NumberInput = (props: Props) => {
 
 
   const onChangeText = (text: string) => {
-    const newText = text.replace(/[^\d]/g, '');
-    const sum = Number(newText);
-    selectValue(() => {
-      let temp = sum > max ? max : sum;
-      temp = temp < min ? min : temp;
-      onChange?.(temp);
-      return temp;
-    });
+    if (/^\d+$/.test(text)) {
+      const newText = text.replace(/[^0-9]/g, '');
+      const sum = Number(newText);
+      selectValue(() => {
+        let temp = sum > max ? max : sum;
+        temp = temp < min ? min : temp;
+        onChange?.(temp);
+        return temp;
+      });
+    }
+
   };
 
   useEffect(() => {
     onChangeText(`${num}`);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [num]);
 
 

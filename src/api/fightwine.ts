@@ -11,3 +11,15 @@ export const selectableMode = async () => {
 
   return data;
 };
+
+
+//校验卡座占用
+export const checkBooth = async (data: any) => {
+  const { data: res } = await service({
+    url: '/consumption/wineParty/checkBooth',
+    method: 'POST',
+    data,
+  });
+
+  return res;
+};

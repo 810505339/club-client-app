@@ -6,14 +6,15 @@ type Props = {
   min?: number,
   max?: number,
   num?: number,
-  onChange?: (num: number) => void
+  onChange?: (num: number) => void,
+  onVerify?: (num: number) => boolean,
 }
 
 
 const NumberInput = (props: Props) => {
-  const { min = 0, max = 9999999999999, num = 0, onChange } = props;
+  const { min = 0, max = 9999999999999, num = 0, onChange, onVerify } = props;
   const [value, selectValue] = useState(num);
-  console.log(max, 'max');
+
 
   const onMinus = () => {
     onChangeText(`${value - 1}`);
@@ -25,23 +26,26 @@ const NumberInput = (props: Props) => {
 
 
   const onChangeText = (text: string) => {
+
+
+
     if (/^\d+$/.test(text)) {
       const newText = text.replace(/[^0-9]/g, '');
       const sum = Number(newText);
-      selectValue(() => {
-        let temp = sum > max ? max : sum;
-        temp = temp < min ? min : temp;
-        onChange?.(temp);
-        return temp;
-      });
+      if (!onVerify?.(sum)) {
+        selectValue(() => {
+          let temp = sum > max ? max : sum;
+          temp = temp < min ? min : temp;
+          onChange?.(temp);
+          return temp;
+        });
+      }
+
     }
 
   };
 
-  useEffect(() => {
-    onChangeText(`${num}`);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [num]);
+
 
 
 

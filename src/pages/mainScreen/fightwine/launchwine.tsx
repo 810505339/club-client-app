@@ -10,7 +10,7 @@ import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/dat
 import AreaList from '../home/components/areaList';
 import dayjs from 'dayjs';
 import { load } from '@storage/shop/action';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@router/type';
 import useSelectShop from '@hooks/useSelectShop';
@@ -25,7 +25,8 @@ type IItem = {
 const LaunchWine = () => {
 
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-
+  const route = useRoute<RouteProp<RootStackParamList, 'LaunchWine'>>();
+  const { winePartyMode, modeName } = route.params;
   const { shop } = useSelectShop();
 
   const [data, setData] = useImmer({
@@ -35,6 +36,7 @@ const LaunchWine = () => {
     lastDateShow: false,
     areaId: '',
     partyName: '',
+    areaName: '',
   });
 
 
@@ -87,6 +89,7 @@ const LaunchWine = () => {
   const changeArea = async (list: any, index: number) => {
     setData(draft => {
       draft.areaId = list[index]?.id;
+      draft.areaName = list[index]?.name;
     });
   };
 
@@ -96,7 +99,11 @@ const LaunchWine = () => {
       partyName: data.partyName,
       areaId: data.areaId,
       entranceDate: dateFormat, //入场日期
-      latestArrivalTime: lastDateFormat, //	最晚到场时间
+      latestArrivalTime: lastDateFormat,
+      winePartyMode,
+      storeId: shop.select.id,//	最晚到场时间
+      areaName: data.areaName,//	最晚到场时间
+      modeName,
     });
   };
 

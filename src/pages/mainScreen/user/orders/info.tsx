@@ -29,16 +29,16 @@ const OrdersInfo = () => {
   };
 
 
-  const { orderContext = [], headerImg } = route?.params;
+  const { orderContext = [], headerImg, submit } = route?.params;
   return <BaseLayout className="bg-[#0B0B0BE6]">
     <View className="relative">
-    {headerImg && <View className=" absolute right-5 left-5  h-52  rounded-2xl overflow-hidden">
-          <Image source={headerImg} resizeMode="cover" className="h-52 w-full absolute left-0 right-0" />
-        </View>}
+      {headerImg && <View className=" absolute right-5 left-5  h-52  rounded-2xl overflow-hidden">
+        <Image source={headerImg} resizeMode="cover" className="h-52 w-full absolute left-0 right-0" />
+      </View>}
     </View>
 
     <ScrollView>
-      <View >
+      <View>
         <Panel className="mt-44">
           <View>
             <Text className="text-xs text-white mb-5">订单内容</Text>
@@ -82,6 +82,7 @@ const OrdersInfo = () => {
     </ScrollView>
     <View className="flex-row justify-around items-center mt-2 h-14">
       <Divider className="absolute top-0 left-0 right-0" />
+      <Button mode={'elevated'} className="bg-[#EE2737FF]" textColor="#0C0C0CFF" onPress={submit}>确定</Button>
       <Button mode={'elevated'} textColor="#ffffff">取消订单</Button>
       <Button mode={'elevated'} className="bg-[#EE2737FF]" textColor="#0C0C0CFF">继续支付</Button>
     </View>

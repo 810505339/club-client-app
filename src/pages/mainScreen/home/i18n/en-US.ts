@@ -57,5 +57,9 @@ export default {
     label7: 'Amount due',
     label8: 'The title of the product',
     label9: 'Number of units',
+    label10: 'The name of the liquor bureau',
+    label11: 'Whether it is automatically locked',
+    label12: 'Number of men',
+    label13: 'Number of ladies',
   },
 };

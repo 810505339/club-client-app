@@ -6750,10 +6750,10 @@ react-native-tab-view@^3.5.2:
   dependencies:
     use-latest-callback "^0.1.5"
 
-react-native-tim-js@^0.1.29:
-  version "0.1.29"
-  resolved "https://registry.npmjs.org/react-native-tim-js/-/react-native-tim-js-0.1.29.tgz"
-  integrity sha512-pfFqqaq6lSp1GPPjrkOJJAxDswyRDmNKIvu28sRFWFmvMBx2nF+JabdvlcEyyxRuF37ycuAqJB9hkdXHtTSlkg==
+react-native-tim-js@^0.1.31:
+  version "0.1.31"
+  resolved "https://registry.yarnpkg.com/react-native-tim-js/-/react-native-tim-js-0.1.31.tgz#7d47c4c818c2fa19edde54f6c14468374f7669db"
+  integrity sha512-a2LfJwrsoq5vsyNdoCVF7XfYOFLYkYBKWZjrdOQCmANHmNSTYPO/wyqW+EpxLkPNA3zpo2YQu3/rvsUTaUQxzA==
 
 react-native-toast-message@^2.1.6:
   version "2.1.7"

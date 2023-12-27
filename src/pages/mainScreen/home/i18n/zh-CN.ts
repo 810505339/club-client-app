@@ -57,5 +57,11 @@ export default {
     label7: '应付金额',
     label8: '商品名称',
     label9: '商品数量',
+    label10: '酒局名称',
+    label11: '是否自动锁定',
+    label12: '男士人数',
+    label13: '女士人数',
+    label14: '酒局模式',
+
   },
 };

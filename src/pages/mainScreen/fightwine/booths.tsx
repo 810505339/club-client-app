@@ -13,17 +13,18 @@ import PackageList from '../home/components/packageList';
 import { useImmer } from 'use-immer';
 import Toast from 'react-native-toast-message';
 import { useEffect } from 'react';
-import { useRequest } from 'ahooks';
-import { checkBooth } from '@api/fightwine';
+import { checkBooth, calPayAmount, create } from '@api/fightwine';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import useSelectShop from '@hooks/useSelectShop';
 const boy = require('@assets/imgs/fightwine/boys.png');
 const girls = require('@assets/imgs/fightwine/girls.png');
 const width = Dimensions.get('window').width;
 const headerIcon = require('@assets/imgs/base/modalHeader.png');
+const orderHeader = require('@assets/imgs/base/fightwineBg.png');
 const Booths = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const route = useRoute<RouteProp<RootStackParamList, 'Booths'>>();
-  const { areaId, entranceDate, partyName, latestArrivalTime } = route.params;
+  const { areaId, entranceDate, partyName, latestArrivalTime, winePartyMode, storeId, areaName, modeName } = route.params;
   const { booths, itemPress } = useSelectBooths({ areaId, entranceDate });
   const file = fileStore.fileUrl;
   const { t } = useTranslation();
@@ -32,17 +33,19 @@ const Booths = () => {
     femaleNum: 0,
     autoLock: false,
     visible: true,
+    selectPackage: {},
+
   });
   const selectBooth: any = booths?.activeIndex != undefined ? booths.list[booths?.activeIndex] : {};
+  const { shopName } = useSelectShop();
 
 
-  const { runAsync } = useRequest(checkBooth, {
-    manual: true,
-  });
 
   const changePackage = (list: any[], index: number | undefined) => {
     if (index != undefined) {
-
+      setData((draft) => {
+        draft.selectPackage = list[index];
+      });
     }
   };
 
@@ -66,16 +69,77 @@ const Booths = () => {
   };
 
   const onSure = async () => {
-    await runAsync({
+    const res = await checkBooth({
       entranceDate,
       boothId: selectBooth?.boothId,
     });
-  };
-  const onNext = () => {
-    navigation.navigate('OrdersInfo', {
-      orderContext:[],
-      
+    setData(draft => {
+      draft.visible = res.data.inParty;
     });
+    if (!res.data.inParty) {
+      onNext();
+    }
+
+  };
+  const onNext = async () => {
+    // await create({
+    //   storeId: storeId,
+    //   areaId: areaId,
+    //   partyMode: winePartyMode,
+    //   partyType: 'BOOK',
+    //   partyName: partyName,
+    //   entranceDate: entranceDate,
+    //   latestArrivalTime: latestArrivalTime,
+    //   boothId: selectBooth?.boothId,
+    //   boothName: selectBooth?.name,
+    //   drinksMealId: data.selectPackage?.id,
+    //   ...data,
+    // });
+    const res = await calPayAmount({
+      boothId: selectBooth?.boothId,
+      partyMode: winePartyMode,
+      maleNum: data.maleNum,
+      femaleNum: data.femaleNum,
+      playerType: 'PROMOTER',
+    });
+
+
+    if (!res.code) {
+      navigation.navigate('OrdersInfo', {
+        orderContext: [
+          { label: t('orders.label1'), value: shopName },
+          { label: t('orders.label2'), value: `${areaName} - ${selectBooth?.name}` },
+          { label: t('orders.label3'), value: data.selectPackage?.name },
+          { label: t('orders.label4'), value: entranceDate },
+          { label: t('orders.label6'), value: latestArrivalTime },
+          { label: t('orders.label10'), value: partyName },
+          { label: t('orders.label14'), value: modeName },
+          { label: t('orders.label11'), value: latestArrivalTime },
+          { label: t('orders.label12'), value: data.maleNum },
+          { label: t('orders.label13'), value: data.femaleNum },
+          { label: t('orders.label7'), value: res.data.payAmount },
+
+        ],
+        headerImg: orderHeader,
+        submit: async () => {
+          const res = await create({
+            storeId: storeId,
+            areaId: areaId,
+            partyMode: winePartyMode,
+            partyType: 'BOOK',
+            partyName: partyName,
+            entranceDate: entranceDate,
+            latestArrivalTime: latestArrivalTime,
+            boothId: selectBooth?.boothId,
+            boothName: selectBooth?.name,
+            drinksMealId: data.selectPackage?.id,
+            ...data,
+          });
+          return res;
+        },
+      });
+    }
+
   };
 
   const onDismiss = () => {

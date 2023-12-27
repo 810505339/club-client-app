@@ -33,7 +33,8 @@ export type UsertackParamList = {
   },
   OrdersInfo: {
     orderContext: { label: string, value: any }[]
-    headerImg?: ImageSourcePropType
+    headerImg?: ImageSourcePropType,
+    submit?: () => void
   },
   SystemMessage: undefined,
   SystemMessageInfo: undefined,
@@ -83,6 +84,7 @@ export type FightParamList = {
   Launch: undefined,
   LaunchWine: {
     winePartyMode: string
+    modeName: string
   },
   Booths: {
     [propName: string]: string

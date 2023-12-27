@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@router/type';
+import useMode from './hooks/useMode';
 const bg1 = require('@assets/imgs/home/launch/bg1.png');
 const bg2 = require('@assets/imgs/home/launch/bg2.png');
 const bg3 = require('@assets/imgs/home/launch/bg3.png');
@@ -24,11 +25,11 @@ type Item = {
   modeName?: string
 }
 
-const Item = (props: Item & { onPress: (winePartyMode: string) => void }) => {
-  const { modeName, sub, bg, color, onPress, winePartyMode } = props;
+const Item = (props: Item & { onPress: (winePartyMode: string, modeName: string) => void }) => {
+  const { modeName = '', sub, bg, color, onPress, winePartyMode } = props;
 
 
-  return (<TouchableOpacity onPress={() => onPress(winePartyMode)}>
+  return (<TouchableOpacity onPress={() => onPress(winePartyMode, modeName)}>
     <View className="m-2.5 h-28 box-border relative px-5 py-8 rounded-2xl overflow-hidden  flex-row justify-between items-center">
       <ImageBackground source={bg} className="h-28   absolute -z-10 left-0 right-0 bottom-0 top-0" />
       <View>
@@ -52,28 +53,14 @@ const Launch = () => {
     { sub: '参与者中男性付费，女性免费', bg: bg4, color: '#EE76ADFF', winePartyMode: 'MALE_AA' },
   ];
 
-  const [data, setData] = useState<Item[]>([]);
 
 
-  useRequest(selectableMode, {
-    onSuccess: (res) => {
-      const temp = res.data.map(d => {
-        const index = list.findIndex(l => d.winePartyMode === l.winePartyMode);
-        if (~index) {
-          return {
-            ...list[index],
-            ...d,
-          };
-        }
-      });
-      setData(temp);
+  const { modeList } = useMode<Item[]>('selectableMode', list);
 
-    },
-  });
-
-  const itemClick = (winePartyMode: string) => {
-    navigation.navigate('LaunchWine',{
+  const itemClick = (winePartyMode: string, modeName: string) => {
+    navigation.navigate('LaunchWine', {
       winePartyMode,
+      modeName,
     });
   };
 
@@ -83,7 +70,7 @@ const Launch = () => {
 
 
   return (<BaseLayout>
-    {data.map(l => <Item key={l.winePartyMode} {...l} onPress={itemClick} />)}
+    {modeList.map(l => <Item key={l.winePartyMode} {...l} onPress={itemClick} />)}
   </BaseLayout>);
 };
 

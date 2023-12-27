@@ -3,9 +3,9 @@ import service from './base';
 
 //可选酒局模式
 
-export const selectableMode = async () => {
+export const selectableMode = async (url: string = 'allMode') => {
   const { data } = await service({
-    url: '/consumption/wineParty/selectableMode',
+    url: `/consumption/wineParty/${url}`,
     method: 'get',
   });
 
@@ -23,3 +23,44 @@ export const checkBooth = async (data: any) => {
 
   return res;
 };
+
+
+//发起酒局
+
+export const create = async (data: any) => {
+  const { data: res } = await service({
+    url: '/consumption/wineParty/create',
+    method: 'POST',
+    data,
+  });
+
+  return res;
+};
+
+
+
+///consumption/wineParty/calPayAmount
+
+export const calPayAmount = async (data: any) => {
+  const { data: res } = await service({
+    url: '/consumption/wineParty/calPayAmount',
+    method: 'POST',
+    data,
+  });
+
+  return res;
+};
+
+
+
+///酒局广场
+export const winePartyByAll = async (params: any) => {
+  const { data: res } = await service({
+    url: '/consumption/wineParty/page/all',
+    method: 'GET',
+    params,
+  });
+
+  return res;
+};
+

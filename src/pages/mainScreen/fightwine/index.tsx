@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { View, RefreshControl, ImageBackground, StyleSheet, StyleProp, ViewStyle, TouchableOpacity } from 'react-native';
+import { View, RefreshControl, ImageBackground, StyleSheet, StyleProp, ViewStyle, TouchableOpacity, ImageSourcePropType } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { RootStackParamList } from '@router/type';
 import BaseLayout from '@components/baselayout';
@@ -8,9 +8,36 @@ import CheckLayout from '@components/baselayout/checkLayout';
 import Animated from 'react-native-reanimated';
 import { TabScreen, Tabs, TabsProvider } from 'react-native-paper-tabs';
 import { useImmer } from 'use-immer';
+import CustomFlatList from '@components/custom-flatlist';
+import { winePartyByAll } from '@api/fightwine';
+import useMode from './hooks/useMode';
 
+const bg1 = require('@assets/imgs/fightwine/bg1.png');
+const bg2 = require('@assets/imgs/fightwine/bg2.png');
+const bg3 = require('@assets/imgs/fightwine/bg3.png');
+const bg4 = require('@assets/imgs/fightwine/bg4.png');
 
 const launch = require('@assets/imgs/base/launch.png');
+type Item = {
+  bg: ImageSourcePropType;
+  tagColor: string;
+  color: string;
+  winePartyMode: string;
+  modeName?: string
+}
+
+
+
+//这里业务接口
+const list: Item[] = [
+  { bg: bg1, tagColor: 'bg-[#1A5CC980]', color: 'text-[#1A5CC9FF]', winePartyMode: 'FEMALE_AA' },
+  { bg: bg2, tagColor: 'bg-[#C97B2480]', color: 'text-[#C97B24FF]', winePartyMode: 'AA' },
+  { bg: bg3, tagColor: 'bg-[#20C9C380]', color: 'text-[#069E98FF]', winePartyMode: 'PAY_SOLO' },
+  { bg: bg4, tagColor: 'bg-[#CA236F80]', color: 'text-[#CA236FFF]', winePartyMode: 'MALE_AA' },
+];
+
+
+
 
 const ItemCard = ({ cards }: { cards: any[] }) => {
 
@@ -35,20 +62,36 @@ const ItemCard = ({ cards }: { cards: any[] }) => {
 
 
 
-const Item = ({ tags, boys, girls }) => {
-  return <View className="bg-slate-500 p-2.5 m-2.5 rounded-lg">
+const Item = (props) => {
+  const { partyName, statusDesc, bg, tagColor, color, modeName, peopleNum, entranceDate, latestArrivalTime } = props;
+
+  const tags = [
+    { label: modeName },
+    { label: `${peopleNum}人局` },
+    { label: `${entranceDate} ${latestArrivalTime}入场` },
+  ];
+
+
+  const tagBg = (index: number) => {
+    return index === 0 ? tagColor : 'bg-[#FFFFFF26]';
+  };
+
+
+
+  return <View className=" h-32 p-2.5 m-2.5  relative rounded-2xl overflow-hidden">
+    <ImageBackground source={bg} className="absolute left-0 right-0 bottom-0 z-0 top-0" />
     <View className="flex flex-row items-center justify-between ">
-      <Text className="text-sm text-white font-bold">大家一起来快活~</Text>
-      <Text className="text-xs text-white border border-white rounded-xl px-1.5 py-1">拼局中</Text>
+      <Text className="text-sm text-white font-bold">{partyName}</Text>
+      <Text className="text-xs text-white border border-white rounded-xl px-1.5 py-1">{statusDesc}</Text>
     </View>
     <View className="flex-row mt-3.5">
-      {tags.map((item, index) => (<Text className="py-1 px-1.5 mr-1.5 rounded-xl bg-[#FFFFFF26]" key={index} >{item.label}</Text>))}
+      {tags.map((item, index) => (<Text className={`py-1 px-1.5 mr-1.5 rounded-xl ${tagBg(index)}`} key={index} >{item.label}</Text>))}
     </View>
-    <View className="mt-5 flex-row justify-between">
-      <ItemCard cards={girls} />
-      <ItemCard cards={boys} />
-      <View className="h-6 w-16 justify-center items-center bg-[#FFFFFFE6] rounded-2xl">
-        <Text className="text-xs font-normal text-[#C97B24FF]">查看详情</Text>
+    <View className="mt-5 flex-row ">
+      {/* <ItemCard cards={} />
+      <ItemCard cards={} /> */}
+      <View className="h-6 w-16 justify-self-end justify-center items-center bg-[#FFFFFFE6] rounded-2xl">
+        <Text className={`text-xs font-normal ${color}`}>查看详情</Text>
       </View>
     </View>
   </View>;
@@ -56,6 +99,9 @@ const Item = ({ tags, boys, girls }) => {
 
 const FightwineScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+  const { modeList } = useMode<Item[]>(undefined, list);
+
   const [data, setData] = useImmer({
     refreshing: false,
     cells: Array.from({ length: 10 }, (_, index) => {
@@ -134,6 +180,24 @@ const FightwineScreen = () => {
     navigation.navigate('Launch');
   };
 
+  const api = async (params: any) => {
+    const { data } = await winePartyByAll(params);
+
+    const tempList = data?.records?.map(item => {
+      const index = modeList.findIndex(l => l.winePartyMode === item.partyMode);
+      if (~index) {
+        return {
+          ...item,
+          ...modeList[index],
+        };
+      }
+    });
+    data.records = tempList;
+    return {
+      data,
+    };
+  };
+
 
 
   return (
@@ -154,22 +218,12 @@ const FightwineScreen = () => {
           showLeadingSpace={false} //  (default=true) show leading space in scrollable tabs inside the header
           disableSwipe={false} // (default=false) disable swipe to left/right gestures
         >
-          <TabScreen label="全部">
+
+          {modeList.map(m => (<TabScreen key={m.winePartyMode} label={m.modeName!}>
             <View className="bg-transparent">
-              <Animated.FlatList
-                renderItem={({ item }) => <Item {...item} />}
-                ListFooterComponent={<Text className="text-center pb-5">没有更多</Text>}
-                keyExtractor={item => item.id}
-                data={data.cells}
-
-                refreshControl={<RefreshControl refreshing={data.refreshing} onRefresh={onRefresh} />}
-              />
+              <CustomFlatList renderItem={(item) => <Item {...item} />} onFetchData={api} />
             </View>
-          </TabScreen>
-
-          <TabScreen label="全部">
-            <View className="bg-transparent" />
-          </TabScreen>
+          </TabScreen>))}
         </Tabs>
       </TabsProvider>
 

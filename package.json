@@ -52,7 +52,7 @@
     "react-native-storage": "^1.0.1",
     "react-native-svg": "^13.13.0",
     "react-native-tab-view": "^3.5.2",
-    "react-native-tim-js": "^0.1.29",
+    "react-native-tim-js": "^0.1.31",
     "react-native-toast-message": "^2.1.6",
     "react-native-uuid": "^2.0.1",
     "react-native-vector-icons": "^10.0.0",

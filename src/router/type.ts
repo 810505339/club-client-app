@@ -68,6 +68,9 @@ export type HomeParamList = {
     peopleNum: number,
     latestArrivalTime: string
   },
+  FightwineDetail: {
+    partyId: string
+  }
 }
 
 export type TabParamList = {

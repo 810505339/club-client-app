@@ -64,3 +64,13 @@ export const winePartyByAll = async (params: any) => {
   return res;
 };
 
+
+///酒局详情
+export const winePartyByDetail = async (partyId: string) => {
+  const { data: res } = await service({
+    url: `/consumption/wineParty/detail/${partyId}`,
+    method: 'GET',
+  });
+
+  return res;
+};

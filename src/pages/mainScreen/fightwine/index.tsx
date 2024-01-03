@@ -63,7 +63,7 @@ const ItemCard = ({ cards }: { cards: any[] }) => {
 
 
 const Item = (props) => {
-  const { partyName, statusDesc, bg, tagColor, color, modeName, peopleNum, entranceDate, latestArrivalTime } = props;
+  const { partyName, statusDesc, bg, tagColor, color, modeName, peopleNum, entranceDate, latestArrivalTime, onPress, id } = props;
 
   const tags = [
     { label: modeName },
@@ -75,6 +75,7 @@ const Item = (props) => {
   const tagBg = (index: number) => {
     return index === 0 ? tagColor : 'bg-[#FFFFFF26]';
   };
+
 
 
 
@@ -91,7 +92,7 @@ const Item = (props) => {
       {/* <ItemCard cards={} />
       <ItemCard cards={} /> */}
       <View className="h-6 w-16 justify-self-end justify-center items-center bg-[#FFFFFFE6] rounded-2xl">
-        <Text className={`text-xs font-normal ${color}`}>查看详情</Text>
+        <Text className={`text-xs font-normal ${color}`} onPress={() => onPress(id)} >查看详情</Text>
       </View>
     </View>
   </View>;
@@ -198,6 +199,10 @@ const FightwineScreen = () => {
     };
   };
 
+  const toUrl = (id: string) => {
+    navigation.navigate('FightwineDetail', { partyId: id });
+  };
+
 
 
   return (
@@ -221,7 +226,7 @@ const FightwineScreen = () => {
 
           {modeList.map(m => (<TabScreen key={m.winePartyMode} label={m.modeName!}>
             <View className="bg-transparent">
-              <CustomFlatList renderItem={(item) => <Item {...item} />} onFetchData={api} />
+              <CustomFlatList renderItem={(item) => <Item {...item} onPress={toUrl} />} onFetchData={api} />
             </View>
           </TabScreen>))}
         </Tabs>

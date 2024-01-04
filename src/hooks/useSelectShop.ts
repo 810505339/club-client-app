@@ -25,17 +25,25 @@ export default (isStore = true) => {
   };
   //初始化 判断是否存在已选择的门店id 如果没有的话就把默认选择第一个门店
   const init = async () => {
-    let data = await load();
-    const shopList = isStore ? store.shopList : await initList();
-    const index = shopList.findIndex((item) => item.id === data?.selectId);
+    let data = null;
+    try {
+       data = await load();
+    } finally {
+      const shopList = isStore ? store.shopList : await initList();
+      const index = shopList.findIndex((item) => item.id === data?.selectId);
 
 
-    if (!data?.selectId || !~index) {
-      data = await save(shopList[0]);
+      if (!data?.selectId || !~index) {
+        data = await save(shopList[0]);
+      }
+      setShop((draft) => {
+        draft.select = { id: data.selectId };
+      });
     }
-    setShop((draft) => {
-      draft.select = { id: data.selectId };
-    });
+
+
+
+
   };
 
   const shopName = findIndex(shop.select.id)?.name;
@@ -45,7 +53,9 @@ export default (isStore = true) => {
   };
 
   useEffect(() => {
-    (init)();
+
+
+    init();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

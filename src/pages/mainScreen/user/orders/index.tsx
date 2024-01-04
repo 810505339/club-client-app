@@ -7,6 +7,8 @@ import { useImmer } from 'use-immer';
 import ListHeaderComponent from './components/ListHeaderComponent';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNavigationProp } from '@router/type';
+import { useRequest } from 'ahooks';
+import { getOrderList,tempPay } from '@api/order';
 
 
 const renderItem = ({ item, handleItemPress }) => {
@@ -55,6 +57,8 @@ const renderItem = ({ item, handleItemPress }) => {
 const Orders = () => {
 
   const navigation = useNavigation<ScreenNavigationProp<'OrdersInfo'>>();
+
+  useRequest(()=>tempPay('1742429025592176641'));
   const [data, setData] = useImmer({
     refreshing: false,
     cells: [1, 2, 4, 5, 6],

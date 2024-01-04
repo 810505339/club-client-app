@@ -30,11 +30,11 @@ const ListHeader = ({ balancePress }: IListHeader) => {
   const box = 'items-center  h-28 pb-3 justify-end mb-2 relative';
 
   return <View className=" rounded-t-3xl">
-    <View className="mb-8 px-5 flex   flex-row border border-rose-500  box-border">
-      <Animated.Image className={' w-24 h-24   rounded-full'} style={{ borderColor: '#98000CFF', borderWidth: 2, resizeMode: 'contain' }} source={{ uri: image }} />
-      <View className=" ml-5 border border-blue-500 flex-auto" >
+    <View className="mb-8 px-5 flex   flex-row    box-border">
+      <Animated.Image className={' w-24 h-24   rounded-full'} style={{ resizeMode: 'contain' }} source={{ uri: image }} />
+      <View className=" ml-5   flex-auto" >
         <View><Text className="text-lg text-[#fff] font-bold">Romania Slovakiean</Text></View>
-        <View className="border">
+        <View className="">
           <Text numberOfLines={1} ellipsizeMode="tail">个性签名asdasd asdasd asdasdasd Personal signatPersonal </Text>
         </View>
         <View className="flex-row mt-4">

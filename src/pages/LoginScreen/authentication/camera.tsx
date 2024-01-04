@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Platform, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Platform, Image, StyleSheet } from 'react-native';
 import { useCameraDevice, Camera, CameraPosition } from 'react-native-vision-camera';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useAppState } from '@react-native-community/hooks';
@@ -42,10 +42,6 @@ const AuthenticationCamera = () => {
     setcameraPosition(cameraPosition == 'back' ? 'front' : 'back');
   };
 
-  if (Platform.OS === 'android' && !isFocused) {
-    return <View />;
-  }
-
 
   if (!device) {
     return (<View className="flex-1">
@@ -65,7 +61,7 @@ const AuthenticationCamera = () => {
     {isActive && <Camera
       ref={camera}
 
-      style={{ position: 'absolute', left: 0, right: 0, bottom: 0, top: 0 }}
+      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
       //https://github.com/mrousavy/react-native-vision-camera/issues/1988  不然会崩溃
       fps={60}
       key={device.id}
@@ -74,9 +70,10 @@ const AuthenticationCamera = () => {
       // supportsVideoHDR={true}
       isActive={isActive} //是否打开相机， 可以缓存相机，加快打开速度
       photo={true} //拍照功能是否打开
+      resizeMode="contain"
 
     />}
-    <View className="  flex-row w-full items-center justify-around mb-[20%]">
+    <View className="  flex-row w-full items-center justify-around mb-[25%]">
       <TouchableOpacity className="p-2 rounded-full bg-[#D51D1D99]" onPress={changecamera}>
         <Image source={switchIcon} />
       </TouchableOpacity>

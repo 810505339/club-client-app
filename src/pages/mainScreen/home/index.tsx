@@ -43,7 +43,7 @@ const HomeScreen = () => {
     if (data.id) {
       getcarouselListApi();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.id]);
 
 
@@ -55,7 +55,7 @@ const HomeScreen = () => {
   return (
     <BaseLayout className="bg-[#0B0B0BE6]">
       <HorizontalFlatList className="mt-7" />
-      {/* <SwiperView swiperList={data.swiperList}  /> */}
+      {data.swiperList && <SwiperView swiperList={data.swiperList} />}
     </BaseLayout>
   );
 };

@@ -25,6 +25,8 @@ const HomeScreen = () => {
     swiperList: [],
   });
   function onChange(value: any) {
+    console.log(value, 'value');
+
     setData((draft: IData) => {
       draft.id = value.id;
     });
@@ -33,17 +35,19 @@ const HomeScreen = () => {
   async function getcarouselListApi() {
     const res = await getcarouselList({ storeId: data.id, type: '0', limitNum: '5' });
     setData((draft: IData) => {
-      draft.swiperList = res;
+      draft.swiperList = res ?? [];
     });
 
   }
 
 
   useEffect(() => {
+
+
     if (data.id) {
       getcarouselListApi();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [data.id]);
 
 
@@ -55,7 +59,7 @@ const HomeScreen = () => {
   return (
     <BaseLayout className="bg-[#0B0B0BE6]">
       <HorizontalFlatList className="mt-7" />
-      {data.swiperList && <SwiperView swiperList={data.swiperList} />}
+      {data.swiperList && <SwiperView swiperList={data?.swiperList} />}
     </BaseLayout>
   );
 };

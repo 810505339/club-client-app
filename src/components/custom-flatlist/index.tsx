@@ -19,8 +19,9 @@ interface IPaginatedFlatListProps<T> {
   errorComponent?: React.ReactNode;
   noDataComponent?: React.ReactNode;
   renderHeader?: React.ReactNode;
-  noMoreData?: React.ReactNode
-  params?: any
+  noMoreData?: React.ReactNode;
+  params?: any,
+  disabled?: boolean
 }
 
 const INIT_STATE = {
@@ -58,6 +59,7 @@ function CustomFlatList<T>(props: IPaginatedFlatListProps<T>) {
     noMoreData = <RendernoMoreData />,
     noDataComponent = <RenderNoData />,
     renderHeader = <></>,
+
   } = props;
 
 
@@ -98,9 +100,7 @@ function CustomFlatList<T>(props: IPaginatedFlatListProps<T>) {
   // 当 current 发生变化时，重新获取数据
   useEffect(() => {
     console.log(allData.isRefreshing, ' allData.isRefreshing');
-
     run({ ...params, current: allData.current, size });
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

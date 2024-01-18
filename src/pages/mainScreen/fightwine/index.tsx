@@ -105,72 +105,7 @@ const FightwineScreen = () => {
 
   const [data, setData] = useImmer({
     refreshing: false,
-    cells: Array.from({ length: 10 }, (_, index) => {
-      if (index % 2 == 0) {
-        return ({
-          id: index,
-          tags: [{ color: '#CA236F80', label: '男A女A' }, { label: '6人局' }],
-          girls: [
-            'https://img.xjh.me/random_img.php',
-            'https://img.xjh.me/random_img.php',
-            'https://img.xjh.me/random_img.php',
-          ],
-          boys: [
-            'https://img.xjh.me/random_img.php',
-            'https://img.xjh.me/random_img.php',
-          ],
-        });
-      } else {
-        return ({
-          id: index, tags: [{ color: '#C97B2480', label: 'AA制' }, { label: '8人局' }],
-          girls: [
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-          ],
-          boys: [
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-            'https://cdn.seovx.com/d/?mom=302',
-          ],
-        });
-      }
-    }),
+    defaultIndex: 0,
   });
   const onRefresh = () => {
 
@@ -182,6 +117,8 @@ const FightwineScreen = () => {
   };
 
   const api = async (params: any) => {
+    console.log(params);
+
     const { data } = await winePartyByAll(params);
 
     const tempList = data?.records?.map(item => {
@@ -203,6 +140,13 @@ const FightwineScreen = () => {
     navigation.navigate('FightwineDetail', { partyId: id });
   };
 
+  const handleChangeIndex = (index: number) => {
+    setData((darft) => {
+      darft.defaultIndex = index;
+    });
+
+  };
+
 
 
   return (
@@ -210,7 +154,7 @@ const FightwineScreen = () => {
       <CheckLayout />
       <TabsProvider
         defaultIndex={0}
-      // onChangeIndex={handleChangeIndex} optional
+        onChangeIndex={handleChangeIndex}
       >
         <Tabs
           uppercase={true} // true/false | default=true (on material v2) | labels are uppercase
@@ -224,9 +168,9 @@ const FightwineScreen = () => {
           disableSwipe={false} // (default=false) disable swipe to left/right gestures
         >
 
-          {modeList.map(m => (<TabScreen key={m.winePartyMode} label={m.modeName!}>
+          {modeList.map((m, index) => (<TabScreen key={m.winePartyMode} label={m.modeName!}>
             <View className="bg-transparent">
-              <CustomFlatList renderItem={(item) => <Item {...item} onPress={toUrl} />} onFetchData={api} />
+              {index === data.defaultIndex && <CustomFlatList renderItem={(item) => <Item {...item} onPress={toUrl} />} onFetchData={api} />}
             </View>
           </TabScreen>))}
         </Tabs>

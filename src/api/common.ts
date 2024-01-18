@@ -33,7 +33,9 @@ export const getcarouselList = async (params: IParams) => {
 		params,
 	});
 
-	return data.data.map((item: any) => {
+
+
+	return data?.data?.map((item: any) => {
 		item.pictureFile = `${fileStore.fileUrl}/${item.pictureFile[0].fileName}`;
 		return item;
 	});

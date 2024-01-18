@@ -19,13 +19,16 @@ import { useCallback, useEffect } from 'react';
 import { checkAuth } from '@utils/checkAuth';
 import { useNavigation } from '@react-navigation/native';
 import CheckAuthLayout from '@components/baselayout/checkLayout';
+import { useRequest } from 'ahooks';
+import { myTicket } from '@api/ticket';
+import CustomFlatList from '@components/custom-flatlist';
 
 
 
 const BG = require('@assets/imgs/home/bg.png');
 
 
-const renderItem = ({ item, handleItemPress }) => {
+const Item = ({ item, handleItemPress }) => {
   return <TouchableWithoutFeedback onPress={() => handleItemPress(item)}>
     <View className="w-80 h-32 bg-[#FFFFFF1A] mx-auto  my-3   justify-center flex-row items-center rounded-xl border py-5 ">
       <View className="w-36 h-24 relative border border-red-500 rounded-xl -left-5 ">
@@ -48,15 +51,40 @@ const renderItem = ({ item, handleItemPress }) => {
 
 const TicketScreen = () => {
 
+  const tabs = [
+    {
+      title: '全部',
+      status: undefined,
+    },
+    {
+      title: '已使用',
+      status: 'USED',
+    },
+    {
+      title: '未使用',
+      status: 'UNUSED',
+    },
+    {
+      title: '已过期',
+      status: 'EXPIRED',
+    },
+  ];
   const navigation = useNavigation();
   const [data, setData] = useImmer({
-    refreshing: false,
-    cells: [1, 2, 3, 4, 5, 6, 7],
+    defaultIndex: 0,
     visible: false,
 
   });
 
   const containerStyle = { backgroundColor: 'white', padding: 20 };
+
+  useRequest(myTicket, {
+    onSuccess: (res) => {
+      console.log(res);
+
+    },
+
+  });
 
   const hideModal = () => {
     setData(draft => {
@@ -64,9 +92,7 @@ const TicketScreen = () => {
     });
   };
 
-  const onRefresh = () => {
 
-  };
 
   const handleItemPress = useCallback((item) => {
     setData(draft => {
@@ -74,7 +100,7 @@ const TicketScreen = () => {
     });
 
 
-  }, [data]);
+  }, [data.visible]);
 
 
 
@@ -96,52 +122,17 @@ const TicketScreen = () => {
           showLeadingSpace={false} //  (default=true) show leading space in scrollable tabs inside the header
           disableSwipe={false} // (default=false) disable swipe to left/right gestures
         >
-          <TabScreen label="全部">
-            <View className="bg-transparent">
-              <Animated.FlatList
-                ListHeaderComponent={<Text className="text-center pt-5 pb-2.5">营业时间内可以入场，请安排好您的时间</Text>}
-                renderItem={({ item }) => renderItem({ item, handleItemPress })}
-                ListFooterComponent={<Text className="text-center pb-5">没有更多</Text>}
-                keyExtractor={item => item}
-                data={data.cells}
 
-                refreshControl={<RefreshControl refreshing={data.refreshing} onRefresh={onRefresh} />}
-              />
-            </View>
-          </TabScreen>
-          <TabScreen label="未使用">
-            <View className="bg-transparent" />
-          </TabScreen>
-          <TabScreen
-            label="已使用"
-          // optional props
-          // badge={true} // only show indicator
-          // badge="text"
-          // badge={1}
-          // onPressIn={() => {
-          //   console.log('onPressIn explore');
-          // }}
-          // onPress={() => {
-          //   console.log('onPress explore');
-          // }}
-          >
-            <View style={{ backgroundColor: 'red', flex: 1 }} />
-          </TabScreen>
-          <TabScreen
-            label="已过期"
-          // optional props
-          // badge={true} // only show indicator
-          // badge="text"
-          // badge={1}
-          // onPressIn={() => {
-          //   console.log('onPressIn explore');
-          // }}
-          // onPress={() => {
-          //   console.log('onPress explore');
-          // }}
-          >
-            <View />
-          </TabScreen>
+          {
+            tabs.map((tab, index) => (
+              <TabScreen label={tab.title} key={index}>
+                <View className="bg-transparent">
+                  <CustomFlatList renderItem={(item) => <Item  {...item} handleItemPress={handleItemPress} />} onFetchData={myTicket} />
+                </View>
+              </TabScreen>
+            ))
+          }
+
         </Tabs>
       </TabsProvider>
 

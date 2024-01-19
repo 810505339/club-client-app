@@ -161,7 +161,7 @@ const Dynamic = () => {
 
           return (<TabScreen label={dynamicType.name} key={dynamicType.id}>
             <View className="bg-transparent">
-              <CustomFlatList renderItem={(item) => <DynamicItem {...item} />} params={{ typeId, storeId }} onFetchData={getDynamicList} key={dynamicType.id} />
+              <CustomFlatList keyExtractor={(item)=>item.id} renderItem={(item) => <DynamicItem {...item} />} params={{ typeId, storeId }} onFetchData={getDynamicList} key={dynamicType.id} />
             </View>
           </TabScreen>);
         })}

@@ -19,6 +19,7 @@ import currency from 'currency.js';
 import Toast from 'react-native-toast-message';
 import useSelectTimer from '@hooks/useSelectTimer';
 import { useTranslation } from 'react-i18next';
+import { ticketBooking } from '@api/ticket';
 
 
 const tickerBg = require('@assets/imgs/home/preset/ticket-header.png');
@@ -98,6 +99,16 @@ const Preset = () => {
         { label: t('orders.label7'), value: data.total },
       ],
       headerImg: card_1,
+      submit: async () => {
+        await ticketBooking({
+          storeId: shop.select.id,
+          areaId: data.selectAreaId,
+          ticketId: data.ticketId,
+          ticketNum: data.num,
+          entranceDate: formatDay,
+          productName:data.ticketName,
+        });
+      },
     });
   };
 

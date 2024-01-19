@@ -1,5 +1,5 @@
 import BaseLayout from '@components/baselayout';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, memo } from 'react';
 import { View, TouchableOpacity, LayoutChangeEvent } from 'react-native';
 import { Text } from 'react-native-paper';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withSequence, withSpring } from 'react-native-reanimated';
@@ -12,6 +12,7 @@ type IProps = {
 }
 
 const ListHeaderComponent: FC<IProps> = ({ list, tabIndex }) => {
+  console.log('render');
 
   const [data, setData] = useImmer({
     // list: [{ title: '全部', x: 0, w: 0, h: 0 }, { title: '已支付', x: 0, w: 0, h: 0 }, { title: '未支付', x: 0, w: 0, h: 0 }],
@@ -88,4 +89,4 @@ const ListHeaderComponent: FC<IProps> = ({ list, tabIndex }) => {
 
 
 
-export default ListHeaderComponent;
+export default memo(ListHeaderComponent);

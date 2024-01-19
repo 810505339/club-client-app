@@ -1,5 +1,5 @@
 import BaseLayout from '@components/baselayout';
-import { RefreshControl, View, TouchableOpacity } from 'react-native';
+import { RefreshControl, View, TouchableOpacity, Image } from 'react-native';
 import { Text } from 'react-native-paper';
 import { TabsProvider, Tabs, TabScreen } from 'react-native-paper-tabs';
 import Animated from 'react-native-reanimated';
@@ -8,24 +8,32 @@ import ListHeaderComponent from './components/ListHeaderComponent';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNavigationProp } from '@router/type';
 import { useRequest } from 'ahooks';
-import { getOrderList,tempPay } from '@api/order';
+import { getOrderDetail, getOrderList, tempPay } from '@api/order';
+import CustomFlatList from '@components/custom-flatlist';
+import { FC } from 'react';
+import { fileStore } from '@store/getfileurl';
+import { useTranslation } from 'react-i18next';
 
 
-const renderItem = ({ item, handleItemPress }) => {
-  return <TouchableOpacity onPress={() => handleItemPress(item)}>
-    <View className="  bg-[#151313FF]  p-2.5   rounded-xl border  border-[#252525] my-2.5">
+const Item: FC<any> = (props) => {
+  const { name, orderStatus, handleItemPress, orderType, createTime, originalAmount, picture, orderId } = props;
+  const img = fileStore.fileUrl + (picture?.fileName ?? '');
+  return <TouchableOpacity onPress={() => handleItemPress(orderId)}>
+    <View className="  bg-[#151313FF]  p-2.5   rounded-xl border  border-[#252525] m-2.5">
       <View className="flex-row items-center justify-between">
-        <Text className="text-[#FFFFFF] text-sm font-semibold">预定门票</Text>
-        <Text className="text-xs font-normal text-[#ffffff7f]">已支付</Text>
+        <Text className="text-[#FFFFFF] text-sm font-semibold">{orderType}</Text>
+        <Text className="text-xs font-normal text-[#ffffff7f]">{orderStatus}</Text>
       </View>
 
       <View className="mt-2.5 flex-row">
-        <View className="w-24 h-14 bg-violet-500 rounded-md" />
-        <View className="flex-auto ml-2.5 mr-5">
-          <Text numberOfLines={2} className="text-[#ffffff] text-sm">商品名称商品名称商品名称商品名称</Text>
-          <Text className="text-[#ffffff7f] text-xs">2023/09/06 18:29:56</Text>
+        <View className="w-24 h-14 bg-violet-500 rounded-md">
+          <Image source={{ uri: img }} />
         </View>
-        <Text>12572.25</Text>
+        <View className="flex-auto ml-2.5 mr-5">
+          <Text numberOfLines={2} className="text-[#ffffff] text-sm">{name}</Text>
+          <Text className="text-[#ffffff7f] text-xs">{createTime}</Text>
+        </View>
+        <Text>${originalAmount}</Text>
       </View>
       <View className="py-2.5 mt-2.5 flex-row items-center justify-between">
         <Text className="text-xs text-[#ffffff] ">
@@ -53,30 +61,78 @@ const renderItem = ({ item, handleItemPress }) => {
 
 
 
-
+const orderStatus = [
+  { title: '全部', type: undefined },
+  { title: '待支付', type: 'NOT_PAY' },
+  { title: '已支付', type: 'PAY_SUCCESS' },
+  { title: '支付失败', type: 'PAY_FAIL' },
+  { title: '已取消', type: 'PAY_CANCEL' },
+];
+const a = orderStatus.map(o => o.title);
 const Orders = () => {
 
   const navigation = useNavigation<ScreenNavigationProp<'OrdersInfo'>>();
+  const { t } = useTranslation();
 
-  useRequest(()=>tempPay('1742429025592176641'));
   const [data, setData] = useImmer({
-    refreshing: false,
-    cells: [1, 2, 4, 5, 6],
-    types: ['全部', '待支付', '已支付', '支付失败', '已取消'],
-    typeIndex: 0,
+    defaultIndex: 0,
+    // orderStatus: ['全部', '待支付', '已支付', '支付失败', '已取消'],
+    orderStatus: [
+
+    ],
+    typeIndex: 2,
+    tabs: [
+      {
+        title: '全部',
+        orderType: undefined,
+      },
+      {
+        title: '拼酒局',
+        orderType: 'WINE_PARTY',
+      },
+      {
+        title: '预定门票',
+        orderType: 'TICKET',
+      },
+      {
+        title: '预定卡座',
+        orderType: 'BOOTH',
+      },
+
+    ],
   });
 
-  const onRefresh = () => {
 
+  const handleItemPress = async (orderId: string) => {
+
+    const { data } = await getOrderDetail(orderId);
+    console.log(data);
+    navigation.navigate('OrdersInfo', {
+      orderContext: [
+        { label: t('orders.label8'), value: data.productName },
+        { label: t('orders.label9'), value: data.productNum },
+        { label: t('orders.label2'), value: `${data.areaName}` },
+        { label: t('orders.label6'), value: data.latestArrivalTime },
+
+      ],
+      // headerImg: card_2,
+      submit: async () => {
+         await tempPay(orderId);
+      },
+    });
   };
-  const handleItemPress = () => {
-    navigation.navigate('OrdersInfo');
+  const handleChangeIndex = (index: number) => {
+    console.log(index);
+
+    setData(draft => {
+      draft.defaultIndex = index;
+    });
   };
 
   return (<BaseLayout>
     <TabsProvider
       defaultIndex={0}
-    // onChangeIndex={handleChangeIndex} optional
+      onChangeIndex={handleChangeIndex}
     >
       <Tabs
         uppercase={true} // true/false | default=true (on material v2) | labels are uppercase
@@ -89,7 +145,22 @@ const Orders = () => {
         showLeadingSpace={false} //  (default=true) show leading space in scrollable tabs inside the header
         disableSwipe={false} // (default=false) disable swipe to left/right gestures
       >
-        <TabScreen label="全部">
+
+        {data.tabs.map((tab, index) => {
+          const orderType = data.tabs[index].orderType;
+          // <ListHeaderComponent list={a} tabIndex={data.typeIndex} />;
+          return (<TabScreen label={tab.title} key={index} >
+            <View>
+
+              {index === data.defaultIndex && <CustomFlatList
+                renderItem={(item) => <Item {...item} handleItemPress={handleItemPress} />}
+                onFetchData={getOrderList}
+                params={{ orderType: orderType}}
+              />}
+            </View>
+          </TabScreen>);
+        })}
+        {/* <TabScreen label="全部">
           <View className="bg-transparent">
             <Animated.FlatList
               ListHeaderComponent={<ListHeaderComponent list={data.types} tabIndex={data.typeIndex} />}
@@ -101,40 +172,7 @@ const Orders = () => {
               refreshControl={<RefreshControl refreshing={data.refreshing} onRefresh={onRefresh} />}
             />
           </View>
-        </TabScreen>
-        <TabScreen label="拼酒局">
-          <View className="bg-transparent" />
-        </TabScreen>
-        <TabScreen
-          label="预定门票"
-        // optional props
-        // badge={true} // only show indicator
-        // badge="text"
-        // badge={1}
-        // onPressIn={() => {
-        //   console.log('onPressIn explore');
-        // }}
-        // onPress={() => {
-        //   console.log('onPress explore');
-        // }}
-        >
-          <View style={{ backgroundColor: 'red', flex: 1 }} />
-        </TabScreen>
-        <TabScreen
-          label="预定卡座"
-        // optional props
-        // badge={true} // only show indicator
-        // badge="text"
-        // badge={1}
-        // onPressIn={() => {
-        //   console.log('onPressIn explore');
-        // }}
-        // onPress={() => {
-        //   console.log('onPress explore');
-        // }}
-        >
-          <View />
-        </TabScreen>
+        </TabScreen> */}
       </Tabs>
     </TabsProvider>
   </BaseLayout>);

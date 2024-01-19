@@ -1,9 +1,10 @@
 import { useRequest } from 'ahooks';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, forwardRef, useImperativeHandle, Ref } from 'react';
 import { FlatList, RefreshControl, Text, View, RefreshControlProps, Image } from 'react-native';
 import { useImmer } from 'use-immer';
 import { ActivityIndicator } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
+
 
 
 
@@ -43,25 +44,32 @@ const RenderNoData = () => {
 
 const RendernoMoreData = () => {
   const { t } = useTranslation();
-  return <Text className="text-center pb-3">{t('flatList.noMore1')}</Text>;
+  return <Text className="text-center p-3">{t('flatList.noMore1')}</Text>;
 };
 
-function CustomFlatList<T>(props: IPaginatedFlatListProps<T>) {
+type CustomFlatListRef = {
+  refreshData: () => Promise<void>
+}
+
+
+
+const CustomFlatList = forwardRef<CustomFlatListRef, IPaginatedFlatListProps<any>>((props, ref: Ref<CustomFlatListRef>) => {
   const {
     renderItem,
     data = [],
     onFetchData,
     initialPage = 1,
     size = 10,
-    params,
+    params = {},
     refreshControlProps,
     errorComponent = <Text>Oops! Something went wrong.</Text>,
     noMoreData = <RendernoMoreData />,
     noDataComponent = <RenderNoData />,
     renderHeader = <></>,
-
+    ...rest
   } = props;
 
+  console.log('触发的我的render');
 
 
 
@@ -71,50 +79,72 @@ function CustomFlatList<T>(props: IPaginatedFlatListProps<T>) {
     data,
   });
 
-  const { isLoading, isRefreshing, hasMoreData, error } = allData;
+  const { isRefreshing, hasMoreData, error, isLoading } = allData;
 
-  const { run } = useRequest(onFetchData, {
+  const { run, cancel } = useRequest(onFetchData, {
     manual: true,
+
     onSuccess(res) {
+
+
+      if (!('data' in res)) {
+        setAllData((draft) => {
+          draft.hasMoreData = true;
+          draft.isLoading = false;
+        });
+        return;
+      }
       const total = res?.data?.total ?? 0;
+      const records = res?.data?.records ?? [];
+
+
       setAllData((draft) => {
-        draft.data = isRefreshing ? [...res?.data?.records ?? []] : [...draft?.data, ...res?.data?.records ?? []];
-        draft.hasMoreData = total > draft.data.length;
+        draft.data = isRefreshing ? [...records] : [...draft?.data, ...records];
+        // console.log(draft.data);
+        draft.hasMoreData = total <= draft.data.length;
+        draft.isLoading = !draft.hasMoreData;
+
       });
+
     },
     onBefore() {
-      //请求之前 loading
       setAllData((draft) => {
         draft.isLoading = true;
+
       });
     },
-    onFinally() {
-      //请求结束
+    onError() {
+      console.log(1);
+
       setAllData((draft) => {
-        draft.isLoading = false;
+        draft.hasMoreData = true;
+      });
+    },
+    onFinally: async () => {
+      //请求结束
+
+      setAllData((draft) => {
         draft.isRefreshing = false;
+
       });
     },
   });
 
   // 当 current 发生变化时，重新获取数据
   useEffect(() => {
-    console.log(allData.isRefreshing, ' allData.isRefreshing');
     run({ ...params, current: allData.current, size });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [allData.current]);
 
   // 上拉请求分页
   const fetchData = () => {
-    if (!hasMoreData || isLoading) {
+    if (allData.hasMoreData) {
       return;
     }
+
     setAllData(draft => {
       draft.current += 1;
-      run({ ...params, current: draft.current, size });
     });
-
-
   };
 
   // 下拉刷新
@@ -125,39 +155,52 @@ function CustomFlatList<T>(props: IPaginatedFlatListProps<T>) {
       draft.current = 1;
       draft.data = [];
     });
+    cancel();
     run({ ...params, current: 1, size });
   };
 
   // 渲染每个 item
   const renderItemWithIndex = ({ item, index }: { item: T; index: number }) => renderItem(item, index);
 
+
+  const ListFooterComponent = () => {
+    if (isLoading) {
+      return <View className="h-10 flex-row items-center justify-center">
+        <ActivityIndicator />
+      </View>;
+    }
+    console.log(hasMoreData);
+
+    if (hasMoreData && allData.data.length > 0) {
+      return RendernoMoreData();
+    }
+  };
+
+  useImperativeHandle(ref, () => ({
+    refreshData,
+  }));
+
   // 渲染 FlatList
   return (
     <FlatList
       data={allData.data}
+      {...rest}
       refreshing={isLoading}
-      ListHeaderComponent={renderHeader}
       renderItem={({ item, index }) => renderItemWithIndex({ item, index })}
-      keyExtractor={(item) => item.id}
+
       refreshControl={
         < RefreshControl refreshing={isRefreshing} onRefresh={refreshData} {...refreshControlProps} />
       }
-      onEndReachedThreshold={0.1}
+
       onEndReached={fetchData}
+      ListEmptyComponent={
+        allData.data.length === 0 && !isLoading && <RenderNoData />
+      }
       ListFooterComponent={
-        isLoading ? (
-          <ActivityIndicator />
-        ) : (
-          !hasMoreData && (
-            <View>
-              {!allData.data.length ? noDataComponent : noMoreData}
-              {error ? errorComponent : null}
-            </View>
-          )
-        )
+        ListFooterComponent
       }
     />);
-}
+});
 
 
 export default CustomFlatList;

@@ -14,3 +14,13 @@ export const myTicket = async (params: IParams) => {
   });
   return data;
 };
+
+
+export const ticketBooking = async (data: any) => {
+  const { data: _data } = await service({
+    url: 'consumption/ticket/booking',
+    method: 'POST',
+    data,
+  });
+  return _data;
+};

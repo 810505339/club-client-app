@@ -170,7 +170,7 @@ const FightwineScreen = () => {
 
           {modeList.map((m, index) => (<TabScreen key={m.winePartyMode} label={m.modeName!}>
             <View className="bg-transparent">
-              {index === data.defaultIndex && <CustomFlatList renderItem={(item) => <Item {...item} onPress={toUrl} />} onFetchData={api} />}
+              {index === data.defaultIndex && <CustomFlatList  keyExtractor={(item)=>item.orderId} renderItem={(item) => <Item {...item} onPress={toUrl} />} onFetchData={api} />}
             </View>
           </TabScreen>))}
         </Tabs>

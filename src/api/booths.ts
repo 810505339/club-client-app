@@ -22,3 +22,15 @@ export const getByBoothId = async (boothId: string) => {
 
   return res;
 };
+
+
+//预定卡座
+export const booking = async (data: any) => {
+  const { data: res } = await service({
+    url: '/consumption/booth/booking',
+    method: 'POST',
+    data,
+  });
+
+  return res;
+};

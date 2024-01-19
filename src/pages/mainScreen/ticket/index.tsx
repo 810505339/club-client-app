@@ -28,7 +28,11 @@ import CustomFlatList from '@components/custom-flatlist';
 const BG = require('@assets/imgs/home/bg.png');
 
 
-const Item = ({ item, handleItemPress }) => {
+const Item = (props) => {
+  const { entranceDate, usableTimeBegin, usableTimeEnd, areaName, boothName, usageType, latestArrivalTime } = props;
+
+  const useTime = usageType === 'TICKET' ? `${usableTimeBegin}-${usableTimeEnd}使用` : `最迟入场${latestArrivalTime}`;
+
   return <TouchableWithoutFeedback onPress={() => handleItemPress(item)}>
     <View className="w-80 h-32 bg-[#FFFFFF1A] mx-auto  my-3   justify-center flex-row items-center rounded-xl border py-5 ">
       <View className="w-36 h-24 relative border border-red-500 rounded-xl -left-5 ">
@@ -36,11 +40,11 @@ const Item = ({ item, handleItemPress }) => {
       </View>
       <View className=" h-full  flex-grow  overflow-hidden flex-col relative">
         <View>
-          <Text className="text-white text-lg font-600">2023/11/16</Text>
-          <Text className="text-[#ffffff7f] text-xs">仅限当日 18:00-23:00 使用</Text>
+          <Text className="text-white text-lg font-600">{entranceDate}</Text>
+          <Text className="text-[#ffffff7f] text-xs" >{useTime}</Text>
         </View>
         <View style={{ flex: 1 }}>
-          <Text className="absolute bottom-0 text-white text-sm">Lounge</Text>
+          <Text className="absolute bottom-0 text-white text-sm">{areaName}{boothName && `  -  ${boothName}`}</Text>
         </View>
 
         <View className="bg-[#FFFFFF33] w-5 h-5 rounded border border-red-100 absolute z-10 right-5" />
@@ -103,13 +107,17 @@ const TicketScreen = () => {
   }, [data.visible]);
 
 
-
+  const handleChangeIndex = (index: number) => {
+    setData(draft => {
+      draft.defaultIndex = index;
+    });
+  };
   return (
     <BaseLayout className="relative">
       <CheckAuthLayout />
       <TabsProvider
-        defaultIndex={0}
-      // onChangeIndex={handleChangeIndex} optional
+        defaultIndex={data.defaultIndex}
+        onChangeIndex={handleChangeIndex}
       >
         <Tabs
           uppercase={true} // true/false | default=true (on material v2) | labels are uppercase
@@ -127,7 +135,8 @@ const TicketScreen = () => {
             tabs.map((tab, index) => (
               <TabScreen label={tab.title} key={index}>
                 <View className="bg-transparent">
-                  <CustomFlatList renderItem={(item) => <Item  {...item} handleItemPress={handleItemPress} />} onFetchData={myTicket} />
+                  {index === data.defaultIndex && <CustomFlatList keyExtractor={(item) => item.cusTicketId} params={{ status: tabs[index].status }} renderItem={(item) => <Item  {...item} handleItemPress={handleItemPress} />} onFetchData={myTicket} />}
+
                 </View>
               </TabScreen>
             ))

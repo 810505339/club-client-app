@@ -16,6 +16,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import useSelectShop from '@hooks/useSelectShop';
 import { useImmer } from 'use-immer';
 import { useTranslation } from 'react-i18next';
+import { booking } from '@api/booths';
 
 
 type IItem = {
@@ -31,7 +32,7 @@ const ConfirmBooth = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const route = useRoute<RouteProp<RootStackParamList, 'ConfirmBooth'>>();
   const { t } = useTranslation();
-  const { areaId, entranceDate, peopleNum, latestArrivalTime, areaName } = route.params;
+  const { areaId, entranceDate, peopleNum, latestArrivalTime, areaName,storeId } = route.params;
 
 
   const { booths, itemPress } = useSelectBooths({ areaId, entranceDate, peopleNum });
@@ -79,6 +80,17 @@ const ConfirmBooth = () => {
         { label: t('orders.label7'), value: `${selectBooth?.minConsumption}` },
       ],
       headerImg: card_2,
+      submit: async () => {
+        await booking({
+          storeId: storeId,
+          areaId: areaId,
+          entranceDate: entranceDate,
+          boothId: selectBooth?.boothId,
+          latestArrivalTime:latestArrivalTime,
+          productName: '11',
+          peopleNum:peopleNum,
+        });
+      },
     });
   };
 

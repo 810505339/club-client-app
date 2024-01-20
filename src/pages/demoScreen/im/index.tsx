@@ -4,7 +4,7 @@ import { Button } from 'react-native-paper';
 import { TencentImSDKPlugin, LogLevelEnum, V2TimSDKListener, V2TimValueCallback } from 'react-native-tim-js';
 
 
-const sdkAppID = 1600012259;
+const sdkAppID = 1600009072;
 const userID = '1001'; // 用户设置的userID
 const userSig = 'eJwtzF0LgjAUxvHvcq5DttURJ3SVEMYMJYn0LtyKgxVj2YtE372lXj6-PzwfKNUueBoHMYiAwWzYpM2toxMNzBnjk991e7SWNMQ8ZJ6FQDkW87bkjHdEFD6N2tH1b6GUEsWC4fRCZ3'; // 用户计算出的userSig
 

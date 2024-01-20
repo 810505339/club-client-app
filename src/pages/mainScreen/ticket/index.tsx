@@ -1,4 +1,4 @@
-import { Image, ImageBackground, RefreshControl, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Image, ImageBackground, TouchableWithoutFeedback, View, StyleSheet } from 'react-native';
 import {
   Button,
   Title,
@@ -15,25 +15,37 @@ import { useHeaderHeight } from '@react-navigation/elements';
 import BaseLayout from '@components/baselayout';
 import Animated from 'react-native-reanimated';
 import { useImmer } from 'use-immer';
-import { useCallback, useEffect } from 'react';
+import { memo, useCallback, useEffect } from 'react';
 import { checkAuth } from '@utils/checkAuth';
 import { useNavigation } from '@react-navigation/native';
 import CheckAuthLayout from '@components/baselayout/checkLayout';
 import { useRequest } from 'ahooks';
 import { myTicket } from '@api/ticket';
 import CustomFlatList from '@components/custom-flatlist';
-
+import QRCode from 'react-native-qrcode-svg';
 
 
 const BG = require('@assets/imgs/home/bg.png');
+const modalBg = require('@assets/imgs/modal/ticket-head-bg.png');
+const modalIcon = require('@assets/imgs/modal/ticket-icon.png');
+
+const style = StyleSheet.create({
+  modal: {
+
+    height: 400,
+
+  },
+});
 
 
-const Item = (props) => {
-  const { entranceDate, usableTimeBegin, usableTimeEnd, areaName, boothName, usageType, latestArrivalTime } = props;
+const Item = memo<any>((props: any) => {
+  console.log('renderItem');
+
+  const { entranceDate, usableTimeBegin, usableTimeEnd, areaName, boothName, usageType, latestArrivalTime, handleItemPress } = props;
 
   const useTime = usageType === 'TICKET' ? `${usableTimeBegin}-${usableTimeEnd}使用` : `最迟入场${latestArrivalTime}`;
 
-  return <TouchableWithoutFeedback onPress={() => handleItemPress(item)}>
+  return <TouchableWithoutFeedback onPress={() => handleItemPress()}>
     <View className="w-80 h-32 bg-[#FFFFFF1A] mx-auto  my-3   justify-center flex-row items-center rounded-xl border py-5 ">
       <View className="w-36 h-24 relative border border-red-500 rounded-xl -left-5 ">
         {/* <Image source={BG} className="absolute z-10 -left-10"  /> */}
@@ -51,22 +63,18 @@ const Item = (props) => {
       </View>
     </View>
   </TouchableWithoutFeedback>;
-};
+});
 
 const TicketScreen = () => {
 
   const tabs = [
     {
-      title: '全部',
-      status: undefined,
+      title: '未使用',
+      status: 'UNUSED',
     },
     {
       title: '已使用',
       status: 'USED',
-    },
-    {
-      title: '未使用',
-      status: 'UNUSED',
     },
     {
       title: '已过期',
@@ -80,7 +88,7 @@ const TicketScreen = () => {
 
   });
 
-  const containerStyle = { backgroundColor: 'white', padding: 20 };
+  const containerStyle = { background: '#1E1E1E', padding: 20, margin: 20 };
 
   useRequest(myTicket, {
     onSuccess: (res) => {
@@ -96,15 +104,14 @@ const TicketScreen = () => {
     });
   };
 
+  const api = useCallback(myTicket, []);
 
 
-  const handleItemPress = useCallback((item) => {
+  const handleItemPress = useCallback(() => {
     setData(draft => {
       draft.visible = true;
     });
-
-
-  }, [data.visible]);
+  }, [setData]);
 
 
   const handleChangeIndex = (index: number) => {
@@ -112,6 +119,8 @@ const TicketScreen = () => {
       draft.defaultIndex = index;
     });
   };
+
+  const getId = useCallback((item: any) => item.cusTicketId, []);
   return (
     <BaseLayout className="relative">
       <CheckAuthLayout />
@@ -135,8 +144,7 @@ const TicketScreen = () => {
             tabs.map((tab, index) => (
               <TabScreen label={tab.title} key={index}>
                 <View className="bg-transparent">
-                  {index === data.defaultIndex && <CustomFlatList keyExtractor={(item) => item.cusTicketId} params={{ status: tabs[index].status }} renderItem={(item) => <Item  {...item} handleItemPress={handleItemPress} />} onFetchData={myTicket} />}
-
+                  {index === data.defaultIndex && <CustomFlatList keyExtractor={getId} params={{ status: tabs[index].status }} renderItem={(item) => <Item  {...item} handleItemPress={handleItemPress} />} onFetchData={api} />}
                 </View>
               </TabScreen>
             ))
@@ -147,7 +155,17 @@ const TicketScreen = () => {
 
       <Portal>
         <Modal visible={data.visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
-          <Text>Example Modal.  Click outside this area to dismiss.</Text>
+          <View className="bg-[#1E1E1E] relative flex items-center" style={style.modal}>
+            <ImageBackground source={modalBg} className="w-full h-44" />
+            <Image source={modalIcon} className="absolute -top-10" />
+            <View className="rounded-xl border p-2.5 bg-white   absolute   inset-0 top-28 flex flex-row items-center justify-center">
+              <QRCode
+                value="https://www.baidu.com/"
+                size={260}
+                logoBackgroundColor="transparent" />
+            </View>
+          </View>
+
         </Modal>
       </Portal>
     </BaseLayout>

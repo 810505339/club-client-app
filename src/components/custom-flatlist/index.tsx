@@ -1,5 +1,5 @@
 import { useRequest } from 'ahooks';
-import React, { useEffect, forwardRef, useImperativeHandle, Ref } from 'react';
+import React, { useEffect, forwardRef, useImperativeHandle, Ref, memo } from 'react';
 import { FlatList, RefreshControl, Text, View, RefreshControlProps, Image } from 'react-native';
 import { useImmer } from 'use-immer';
 import { ActivityIndicator } from 'react-native-paper';
@@ -206,4 +206,4 @@ const CustomFlatList = forwardRef<CustomFlatListRef, IPaginatedFlatListProps<any
 });
 
 
-export default CustomFlatList;
+export default memo(CustomFlatList);

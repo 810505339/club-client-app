@@ -26,7 +26,7 @@ interface IPaginatedFlatListProps<T> {
 }
 
 const INIT_STATE = {
-  isLoading: false,
+  isLoading: true,
   isRefreshing: false,
   hasMoreData: true,
   error: null,
@@ -87,10 +87,13 @@ const CustomFlatList = forwardRef<CustomFlatListRef, IPaginatedFlatListProps<any
     onSuccess(res) {
 
 
+
       if (!('data' in res)) {
         setAllData((draft) => {
           draft.hasMoreData = true;
           draft.isLoading = false;
+          console.log(draft.isLoading, '!data in res');
+
         });
         return;
       }
@@ -194,7 +197,7 @@ const CustomFlatList = forwardRef<CustomFlatListRef, IPaginatedFlatListProps<any
 
       onEndReached={fetchData}
       ListEmptyComponent={
-        allData.data.length === 0 && !isLoading && <RenderNoData />
+        !isLoading && <RenderNoData />
       }
       ListFooterComponent={
         ListFooterComponent

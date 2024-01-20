@@ -63,7 +63,10 @@ const ItemCard = ({ cards }: { cards: any[] }) => {
 
 
 const Item = (props) => {
-  const { partyName, statusDesc, bg, tagColor, color, modeName, peopleNum, entranceDate, latestArrivalTime, onPress, id } = props;
+  const { partyName, statusDesc, peopleNum, modeName, entranceDate, latestArrivalTime, onPress, id, partyMode } = props;
+
+  //寻找对应的元素 需要里面的tagColor,color
+  const { tagColor, color, bg } = list.find(item => item.winePartyMode === partyMode)!;
 
   const tags = [
     { label: modeName },
@@ -107,34 +110,13 @@ const FightwineScreen = () => {
     refreshing: false,
     defaultIndex: 0,
   });
-  const onRefresh = () => {
 
-  };
 
   //发起酒局
   const onLaunch = () => {
     navigation.navigate('Launch');
   };
 
-  const api = async (params: any) => {
-    console.log(params);
-
-    const { data } = await winePartyByAll(params);
-
-    const tempList = data?.records?.map(item => {
-      const index = modeList.findIndex(l => l.winePartyMode === item.partyMode);
-      if (~index) {
-        return {
-          ...item,
-          ...modeList[index],
-        };
-      }
-    });
-    data.records = tempList;
-    return {
-      data,
-    };
-  };
 
   const toUrl = (id: string) => {
     navigation.navigate('FightwineDetail', { partyId: id });
@@ -170,7 +152,7 @@ const FightwineScreen = () => {
 
           {modeList.map((m, index) => (<TabScreen key={m.winePartyMode} label={m.modeName!}>
             <View className="bg-transparent">
-              {index === data.defaultIndex && <CustomFlatList  keyExtractor={(item)=>item.orderId} renderItem={(item) => <Item {...item} onPress={toUrl} />} onFetchData={api} />}
+              {index === data.defaultIndex && <CustomFlatList params={{ winePartyMode: m.winePartyMode }} keyExtractor={(item) => item.id} renderItem={(item) => <Item {...item} modeName={m.modeName} onPress={toUrl} />} onFetchData={winePartyByAll} />}
             </View>
           </TabScreen>))}
         </Tabs>

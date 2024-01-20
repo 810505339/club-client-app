@@ -25,9 +25,6 @@ export const Stack = createStackNavigator<RootStackParamList>();
 const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: DefaultTheme });
 const AppNavigator = () => {
   useSysLanguage();
-
-
-
   return (
     <NavigationContainer theme={DarkTheme} ref={navigationRef}>
       <Stack.Navigator initialRouteName={initialRouteName} screenOptions={{

@@ -5,8 +5,8 @@ import { TencentImSDKPlugin, LogLevelEnum, V2TimSDKListener, V2TimValueCallback 
 
 
 const sdkAppID = 1600009072;
-const userID = '1001'; // 用户设置的userID
-const userSig = 'eJwtzF0LgjAUxvHvcq5DttURJ3SVEMYMJYn0LtyKgxVj2YtE372lXj6-PzwfKNUueBoHMYiAwWzYpM2toxMNzBnjk991e7SWNMQ8ZJ6FQDkW87bkjHdEFD6N2tH1b6GUEsWC4fRCZ3'; // 用户计算出的userSig
+const userID = 'dev2'; // 用户设置的userID
+const userSig = 'eJwtzEELgjAcBfDvsnPYHPu7FLoZdihCqlsXa5v8W*Zw4oTou7fUd3u-B*9DLodzNKiOZIRFlKymjlK9e9Q4sVQDW9xJU1mLkmRxQkNSKti8qNFip4IDAAvLrD02fxMUBE*o2CwvWIdbfBgBR4CxdbW-m2L31JXOT1fO41cj3G3tadnuU1f5otyS7w8ETDFM'; // 用户计算出的userSig
 
 
 const init = async () => {
@@ -30,7 +30,7 @@ const IM = () => {
   };
 
   return (<BaseLayout >
-    <Button onPress={handleLogin}>登录</Button>
+    <Button onPress={handleLogin}>登录</Button> 
   </BaseLayout>);
 };
 

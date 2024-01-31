@@ -22,8 +22,11 @@ export const getOrderDetail = async (orderId: string) => {
 //支付（临时）
 export const tempPay = async (orderId: string) => {
   return service({
-    url: `/consumption/order/tempPay/${orderId}`,
+    url: `/consumption/order/tempPay`,
     method: 'post',
+    data:{
+      orderId
+    }
   });
 };
 

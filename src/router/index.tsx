@@ -1,6 +1,4 @@
 import { NavigationContainer, DefaultTheme, createNavigationContainerRef } from '@react-navigation/native';
-import { getGenericPassword } from 'react-native-keychain';
-import { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { adaptNavigationTheme } from 'react-native-paper';
 import useSysLanguage from '@hooks/useSysLanguage';
@@ -19,7 +17,7 @@ import FightGroup from './fightgroup';
 import BlurviewDEmo from '@pages/demoScreen/blurview';
 import CouponsModal from '@pages/mainScreen/user/coupons/modal';
 
-const initialRouteName: keyof RootStackParamList = 'IM';
+const initialRouteName: keyof RootStackParamList = 'HomeTabs';
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 export const Stack = createStackNavigator<RootStackParamList>();
 const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: DefaultTheme });

@@ -83,8 +83,10 @@ const Item = (props) => {
 
 
   return <View className=" h-32 p-2.5 m-2.5  relative rounded-2xl overflow-hidden">
+
     <ImageBackground source={bg} className="absolute left-0 right-0 bottom-0 z-0 top-0" />
     <View className="flex flex-row items-center justify-between ">
+    <Text>{props.id}</Text>
       <Text className="text-sm text-white font-bold">{partyName}</Text>
       <Text className="text-xs text-white border border-white rounded-xl px-1.5 py-1">{statusDesc}</Text>
     </View>

@@ -1,15 +1,18 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import BaseLayout from '@components/baselayout';
-import { ImageBackground, View } from 'react-native';
-import { Button, Divider, Text } from 'react-native-paper';
+import { ImageBackground, View, TextInput, TouchableOpacity, Image, useWindowDimensions } from 'react-native';
+import { Button, Divider, IconButton, Modal, Portal, Text } from 'react-native-paper';
 import { RootStackParamList } from '@router/type';
 import { useRequest } from 'ahooks';
 import { joinWineParty, winePartyByDetail } from '@api/fightwine';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Image } from 'react-native';
+
 import uuid from 'react-native-uuid';
 import { useImmer } from 'use-immer';
+import useUpdateFile, { IUpdateImage } from '@hooks/useUpdateFile';
+import { ImageLibraryOptions } from 'react-native-image-picker';
+import { useEffect } from 'react';
 
 const femaleAvatarBg = require('@assets/imgs/fightwine/femaleAvatarBg.png');
 const maleAvatarBg = require('@assets/imgs/fightwine/maleAvatarBg.png');
@@ -94,6 +97,131 @@ const PeoPleItem = (props: PeopleType) => {
   </View>;
 };
 
+const Appraise = (props) => {
+
+  type IData = {
+    visible: boolean,
+    option: ImageLibraryOptions,
+    selectImage?: IUpdateImage
+  }
+  const [data, setData] = useImmer<IData>({
+    option: {
+      mediaType: 'photo',
+      // maxWidth: 600,// 设置选择照片的大小，设置小的话会相应的进行压缩
+      // maxHeight: 600,
+      quality: 0.8,
+      selectionLimit: 4,
+    },
+    visible: false,
+    selectImage: undefined,
+  });
+
+  const { handleChooseImage, imageList, deleteImage } = useUpdateFile(data.option);
+  const window = useWindowDimensions();
+
+  /* 点击上传酒局评价 */
+  const onChooseImage = async () => {
+    console.log(4 - imageList.length, 'imageList.length');
+
+
+    await handleChooseImage();
+
+  };
+  /* 点击删除 */
+  const onDeleteImage = (id: string) => {
+    deleteImage(id);
+  };
+  /* 弹窗关闭 */
+  const hideModal = () => {
+    setData(draft => {
+      draft.visible = false;
+    });
+  };
+  const onSelectImage = (image: IUpdateImage) => {
+    console.log(image);
+    setData(draft => {
+      draft.visible = true;
+      draft.selectImage = image;
+    });
+  };
+
+  /* computed */
+  const contentContainerStyle = data.selectImage && {
+    width: data.selectImage.width, height: data.selectImage.height,
+    margin: (window.width - data.selectImage.width) / 2,
+  };
+
+  /* useEffect */
+
+  useEffect(() => {
+
+    setData(draft => {
+      draft.option.selectionLimit = 4 - imageList.length;
+    });
+    /*  */
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [imageList.length]);
+
+
+
+
+
+  return (<View className="m-5">
+    <Text className="font-bold my-3">酒局评价</Text>
+    <View className="bg-[#191919] border border-[#343434] rounded-xl h-24 justify-center items-center">
+      <Text className="opacity-50 text-left" numberOfLines={2}>还没有人评价本次酒局， 来做第一个评价人吧～</Text>
+    </View>
+    <View className="flex-row items-center space-x-2 my-3">
+      <Text className="font-bold">评价本次酒局</Text>
+      <Text className=" text-[#EE2737] font-normal text-xs">*必填</Text>
+    </View>
+    <View className="bg-[#191919] rounded-xl border-[#343434] p-2">
+      <TextInput placeholder="请输入酒局评价"
+        editable
+        maxLength={300}
+        /* // ios fix for centering it at the top-left corner  */
+        multiline
+        numberOfLines={4}
+        /* 仅限 Android  */
+        textAlignVertical="top"
+      />
+    </View>
+
+    <View className="flex-row  my-3 space-x-2">
+      <Text className="font-bold">上传图片</Text>
+      <Text className="text-[#EE2737] font-normal text-xs">*选填，最多上传4张图片</Text>
+    </View>
+
+    <View className="flex-row  space-x-2    items-center ">
+      {imageList.map((image) => {
+        return (<TouchableOpacity className="w-20 h-20 rounded relative " key={image.id} onPress={() => onSelectImage(image)}>
+          <IconButton icon="backspace-reverse"
+            className="absolute z-10 -right-4 -top-4 "
+            iconColor={'#000'}
+            size={14} onPress={() => onDeleteImage(image.id)} />
+          <Image source={{ uri: image.previewUrl }} className="w-20 h-20 rounded" onProgress={() => onDeleteImage(image.id)} />
+        </TouchableOpacity>);
+      })}
+      {imageList.length < 4 && <IconButton
+        icon="plus-thick"
+        iconColor={'#ffffff'}
+        size={20}
+        className=" w-20 h-20  bg-[#191919] border border-[#343434]"
+        onPress={onChooseImage}
+      />}
+
+    </View>
+    <Portal>
+      <Modal visible={data.visible} onDismiss={hideModal} contentContainerStyle={contentContainerStyle}>
+        <View >
+          <Image source={{ uri: data.selectImage?.previewUrl }} width={data.selectImage?.width} height={data.selectImage?.height} resizeMode="contain" className="" />
+        </View>
+      </Modal>
+    </Portal>
+  </View>);
+};
+
 
 const FightwineDetail = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
@@ -175,6 +303,8 @@ const FightwineDetail = () => {
         </View>
         <View />
       </View>
+      {/* 评价酒局 */}
+      <Appraise />
     </ScrollView>
 
     <View className="h-14  flex-col justify-center">

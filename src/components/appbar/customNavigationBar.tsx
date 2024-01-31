@@ -3,6 +3,7 @@ import { getHeaderTitle, getDefaultHeaderHeight } from '@react-navigation/elemen
 import { View } from 'react-native';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import { useSafeAreaFrame, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StackHeaderProps } from '@react-navigation/stack';
 
 
 export default function CustomNavigationBar({
@@ -10,7 +11,7 @@ export default function CustomNavigationBar({
   route,
   options,
   back,
-}: NativeStackHeaderProps) {
+}: StackHeaderProps) {
 
   const title = getHeaderTitle(options, route.name);
   const Right = options.headerRight || (() => null);

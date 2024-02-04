@@ -18,6 +18,14 @@ const femaleAvatarBg = require('@assets/imgs/fightwine/femaleAvatarBg.png');
 const maleAvatarBg = require('@assets/imgs/fightwine/maleAvatarBg.png');
 const playerTypeIcon = require('@assets/imgs/fightwine/playerTypeIcon.png');
 
+export enum STATE {
+  '未开始' = 'WAIT_START',
+  '进行中' = 'IN_PROGRESS',
+  '待入场' = 'WAIT_ENTER',
+  '已入场' = 'ENTERED',
+  '已取消' = 'CANCELED',
+}
+
 
 
 type InfoType = {
@@ -26,13 +34,20 @@ type InfoType = {
   key: string;
 
 }
-type PeopleType = {
+type IPeopleType = {
   id: string,
   gender: string,
   avatarUrl: string,
   name: string,
   playerButton?: string
   playerType?: string
+}
+
+type IAllData = {
+  infoList: InfoType[];
+  peopleList: IPeopleType[];
+  status: STATE,
+  res: any
 }
 
 const infoList = [
@@ -73,8 +88,8 @@ const infoList = [
   },
 ];
 
-
-const PeoPleItem = (props: PeopleType) => {
+/* 用户item */
+const PeoPleItem = (props: IPeopleType) => {
   const { avatarUrl, gender, name, playerButton, playerType } = props;
 
   const avatarBg = gender == '2' ? femaleAvatarBg : maleAvatarBg;
@@ -97,6 +112,7 @@ const PeoPleItem = (props: PeopleType) => {
   </View>;
 };
 
+/* 评价 */
 const Appraise = (props) => {
 
   type IData = {
@@ -228,16 +244,17 @@ const FightwineDetail = () => {
   const route = useRoute<RouteProp<RootStackParamList, 'FightwineDetail'>>();
   const { partyId } = route.params;
 
-  const [allData, setAllData] = useImmer<{
-    infoList: InfoType[];
-    peopleList: PeopleType[]
-  }>({
+  const [allData, setAllData] = useImmer<IAllData>({
     infoList,
     peopleList: [],
+    status: STATE.未开始, //
+    res: {},
   });
 
+  const { res, status } = allData;
 
-  useRequest(() => winePartyByDetail(partyId), {
+
+  const { loading } = useRequest(() => winePartyByDetail(partyId), {
     onSuccess: (res) => {
       const _data = res.data;
       /* 需要填充的数量 */
@@ -255,23 +272,42 @@ const FightwineDetail = () => {
             ...info,
             value: _data[info.key],
           };
+
         });
+        darft.status = _data.status;
+        darft.res = _data;
       });
 
     },
   });
 
 
-  const join = async () => {
-    const { data } = await joinWineParty(partyId);
 
-    console.log(data);
 
+
+  const NavBar = () => {
+
+    /* 点击加入酒局按钮 */
+    const join = async () => {
+      const { data } = await joinWineParty(partyId);
+
+      console.log(data);
+
+    };
+
+    if (allData.res.isJoined) {
+      return (
+        <View className="flex-row  items-center justify-around">
+          <Button mode={'outlined'} className="bg-[#101010] w-[126]" style={{ borderColor: '#EE2737' }} textColor="#EE2737FF" >查看门票</Button>
+          <Button mode={'elevated'} className="bg-[#EE2737FF]  w-[126]" textColor="#0C0C0CFF" >开始聊天</Button>
+        </View>
+      );
+
+
+    } else {
+      return <Button mode={'elevated'} className="bg-[#EE2737FF]" textColor="#0C0C0CFF" onPress={join}>加入酒局</Button>;
+    }
   };
-
-
-
-
 
 
 
@@ -304,13 +340,14 @@ const FightwineDetail = () => {
         <View />
       </View>
       {/* 评价酒局 */}
-      <Appraise />
+      {status === STATE.已入场 && <Appraise />}
+
     </ScrollView>
 
     <View className="h-14  flex-col justify-center">
       <Divider />
       <View className="px-5 mt-2">
-        <Button mode={'elevated'} className="bg-[#EE2737FF]" textColor="#0C0C0CFF" onPress={join}>加入酒局</Button>
+        {!loading && <NavBar />}
       </View>
     </View>
 

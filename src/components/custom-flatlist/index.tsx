@@ -22,7 +22,8 @@ interface IPaginatedFlatListProps<T> {
   renderHeader?: React.ReactNode;
   noMoreData?: React.ReactNode;
   params?: any,
-  disabled?: boolean
+  disabled?: boolean,
+  keyExtractor: (item: any) => any
 }
 
 const INIT_STATE = {
@@ -181,7 +182,8 @@ const CustomFlatList = forwardRef<CustomFlatListRef, IPaginatedFlatListProps<any
 
   useImperativeHandle(ref, () => ({
     refreshData,
-  }));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }), []);
 
   // 渲染 FlatList
   return (

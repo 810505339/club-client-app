@@ -13,6 +13,7 @@
       "@hooks/*": ["src/hooks/*"],
       "@assets/*":["assets/*"],
       "@api/*":["src/api/*"],
+      "@TUIKit/*":["src/TUIKit/*"],
     },
     "types": ["webpack-env"],
     

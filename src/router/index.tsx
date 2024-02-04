@@ -4,6 +4,7 @@ import { adaptNavigationTheme } from 'react-native-paper';
 import useSysLanguage from '@hooks/useSysLanguage';
 import { RootStackParamList } from './type';
 import Demo from '@pages/demoScreen/index';
+import Chat from '@pages/mainScreen/im/chat.tsx';
 import IM from '@pages/demoScreen/im/index';
 import AnimatedScreen from '@pages/demoScreen/animated';
 import Carouseldemo from '@pages/demoScreen/carousel';
@@ -13,6 +14,7 @@ import LoginGroup from './LoginGroup';
 import Homegroup from './homegroup';
 import UserGroup from './usergroup';
 import FightGroup from './fightgroup';
+
 
 import BlurviewDEmo from '@pages/demoScreen/blurview';
 import CouponsModal from '@pages/mainScreen/user/coupons/modal';
@@ -33,6 +35,7 @@ const AppNavigator = () => {
 
         <Stack.Screen name="Demo" component={Demo} />
         <Stack.Screen name="IM" component={IM} />
+        <Stack.Screen name="Chat" component={Chat} />
         <Stack.Screen name="Animated" component={AnimatedScreen} />
         <Stack.Screen name="Carouseldemo" component={Carouseldemo} />
         <Stack.Screen name="BlurviewDEmo" component={BlurviewDEmo} />

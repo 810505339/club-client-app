@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { NativeStackHeaderProps, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { View, RefreshControl, ImageBackground, StyleSheet, StyleProp, ViewStyle, TouchableOpacity, ImageSourcePropType } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { RootStackParamList } from '@router/type';
@@ -11,6 +11,9 @@ import { useImmer } from 'use-immer';
 import CustomFlatList from '@components/custom-flatlist';
 import { winePartyByAll } from '@api/fightwine';
 import useMode from './hooks/useMode';
+import { useEffect } from 'react';
+import CustomNavigationBar from '@components/appBar/customNavigationBar';
+import { HeaderButtonProps } from '@react-navigation/native-stack/lib/typescript/src/types';
 
 const bg1 = require('@assets/imgs/fightwine/bg1.png');
 const bg2 = require('@assets/imgs/fightwine/bg2.png');
@@ -62,7 +65,7 @@ const ItemCard = ({ cards }: { cards: any[] }) => {
 
 
 
-const Item = (props) => {
+export const Item = (props) => {
   const { partyName, statusDesc, peopleNum, modeName, entranceDate, latestArrivalTime, onPress, id, partyMode } = props;
 
   //寻找对应的元素 需要里面的tagColor,color
@@ -86,7 +89,7 @@ const Item = (props) => {
 
     <ImageBackground source={bg} className="absolute left-0 right-0 bottom-0 z-0 top-0" />
     <View className="flex flex-row items-center justify-between ">
-    <Text>{props.id}</Text>
+      <Text>{props.id}</Text>
       <Text className="text-sm text-white font-bold">{partyName}</Text>
       <Text className="text-xs text-white border border-white rounded-xl px-1.5 py-1">{statusDesc}</Text>
     </View>
@@ -103,8 +106,32 @@ const Item = (props) => {
   </View>;
 };
 
+
+type HeaderRightProps = {
+  onPress: () => void
+}
+
+const HeaderRight = (props: HeaderButtonProps & HeaderRightProps) => {
+
+  console.log(props);
+
+
+
+  return (
+    <View className="mr-4">
+      <Button textColor="white" contentStyle={{ height: 36 }} style={{ height: 36 }} className="bg-[#EE2737FF]" onPress={props.onPress}  >我的酒局</Button>
+    </View>
+  );
+};
+
 const FightwineScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: (props: HeaderButtonProps) => <HeaderRight {...props} onPress={nextMyWineParty} />,
+    });
+  }, [navigation]);
 
   const { modeList } = useMode<Item[]>(undefined, list);
 
@@ -130,6 +157,11 @@ const FightwineScreen = () => {
     });
 
   };
+
+  /* 跳转我的酒局 */
+  function nextMyWineParty() {
+    navigation.navigate('MyWineParty');
+  }
 
 
 

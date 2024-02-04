@@ -8,6 +8,7 @@ export type RootStackParamList = {
   Login: undefined,
   NewUser: undefined,
   OldUser: undefined,
+  Chat: undefined,
   Verification: {
     phone: string
   },
@@ -70,6 +71,9 @@ export type HomeParamList = {
   },
   FightwineDetail: {
     partyId: string
+  },
+  MyWineParty: {
+    
   }
 }
 

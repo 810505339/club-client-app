@@ -87,5 +87,15 @@ export const joinWineParty = async (partyId: string) => {
   return res;
 };
 
+//我的酒局
+export const myWinePartyApi = async (params: any) => {
+  const { data: res } = await service({
+    url: '/consumption/wineParty/page/my',
+    method: 'GET',
+    params,
+  });
+
+  return res;
+};
 
 

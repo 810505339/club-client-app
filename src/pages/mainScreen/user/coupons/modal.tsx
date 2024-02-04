@@ -9,6 +9,9 @@ import CustomFlatList from '@components/custom-flatlist';
 import { useTranslation } from 'react-i18next';
 import { TabView, SceneMap, SceneRendererProps, NavigationState } from 'react-native-tab-view';
 import { useEffect, useState } from 'react';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { RootStackParamList } from '@router/type';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const headerImg = require('@assets/imgs/base/coupons-header.png');
 
@@ -20,32 +23,44 @@ const bgColor = {
 };
 
 
-const FirstRoute = () => {
+type IFirstRouteProps = {
+  available: boolean
+  params: any
+}
+
+const FirstRoute = (props: IFirstRouteProps) => {
+  const { available, params } = props;
   const { t } = useTranslation();
   const [checked, setChecked] = useState('');
 
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
   const onChecked = (id: string) => {
     setChecked(id);
+    /* 回到上一个页面   couponId优惠卷Id */
+    navigation.navigate({
+      name: 'OrdersInfo',
+      params: { couponId: id },
+      merge: true,
+    });
+
   };
   return <View className="mt-5" >
-    <CustomFlatList renderItem={(item, index) => Item(item, index, t, checked, onChecked)} onFetchData={getCustomerCoupon} />
+    <CustomFlatList renderItem={(item, index) => Item(item, index, t, checked, onChecked, available)} onFetchData={getCustomerCoupon} keyExtractor={(item) => item.id} params={{ available: available, ...params }} />
   </View>;
 };
 
 
-const renderScene = SceneMap({
-  first: FirstRoute,
-  second: FirstRoute,
-});
 
 
 
 
-export const Item = (item, index, t, checked, onChecked) => {
+
+export const Item = (item, index, t, checked, onChecked, available) => {
 
 
   const { name, couponTypeDetailVO } = item.couponVO;
-
+  const imageBg = available ? bgColor[couponTypeDetailVO?.type] : 'bg-[#666666FF]';
   const renderText = () => {
 
 
@@ -58,7 +73,7 @@ export const Item = (item, index, t, checked, onChecked) => {
 
   //h-24
   return <TouchableOpacity className="my-2.5 mx-5 flex-row rounded-xl overflow-hidden h-24 " onPress={() => onChecked(item.id)}>
-    <View className={`${bgColor[couponTypeDetailVO?.type]} w-32 justify-center items-center`}>
+    <View className={`${imageBg} w-32 justify-center items-center`}>
       {renderText()}
       {/* <Text className="font-bold text-white text-2xl">${couponTypeDetailVO.discount}</Text> */}
       {couponTypeDetailVO?.doorSill && <Text>满${couponTypeDetailVO?.doorSill}可用</Text>}
@@ -73,7 +88,7 @@ export const Item = (item, index, t, checked, onChecked) => {
         <Text style={{ fontSize: 10 }} className="font-light text-[#ffffff7f]">{item.takeEffectTime} - {item.disabledTime}</Text>
       </View>
       <View className="items-center ">
-        <Checkbox status={checked === item.id ? 'checked' : 'unchecked'} onPress={() => onChecked(item.id)} value={item.id} />
+        {available && <Checkbox status={checked === item.id ? 'checked' : 'unchecked'} onPress={() => onChecked(item.id)} value={item.id} />}
       </View>
     </View>
 
@@ -84,6 +99,9 @@ export const Item = (item, index, t, checked, onChecked) => {
 const CouponsModal = () => {
   const { t } = useTranslation();
   const layout = useWindowDimensions();
+  const route = useRoute<RouteProp<RootStackParamList, 'Carouseldemo'>>();
+
+  // const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: 'first', title: t('coupons.btn1') },
@@ -129,9 +147,16 @@ const CouponsModal = () => {
 
 
 
+  const renderScene = SceneMap({
+    first: () => <FirstRoute available={true} params={route.params} />,
+    second: () => <FirstRoute available={false} params={route.params} />,
+  });
+
+
   return (<BaseLayout source={false}>
     <ImageBackground source={headerImg} resizeMode="stretch" className="absolute  top-0 left-0 right-0 h-[181px]" />
     <TabView
+      lazy
       navigationState={{ index, routes }}
       renderScene={renderScene}
       onIndexChange={setIndex}

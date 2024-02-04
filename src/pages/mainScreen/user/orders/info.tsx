@@ -2,10 +2,11 @@ import BaseLayout from '@components/baselayout';
 import { Text, IconButton, Divider, Checkbox, Button } from 'react-native-paper';
 import { ScrollView, View, Image, ImageBackground, TouchableOpacity } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-
+import { useIsFocused } from '@react-navigation/native';
 import { RootStackParamList } from '@router/type';
 import Panel from '@components/panel';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack/lib/typescript/src/types';
+import { useEffect } from 'react';
 
 
 const payList = [
@@ -24,8 +25,20 @@ const OrdersInfo = () => {
   const route = useRoute<RouteProp<RootStackParamList, 'OrdersInfo'>>();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
+
+  /* 当存在couponId 也就是选中了优惠券 */
+  useEffect(() => {
+    console.log(route.params?.couponId);
+
+  }, [
+    route.params?.couponId,
+  ]);
+
+
   const toUrl = () => {
-    navigation.navigate('CouponsModal');
+    navigation.navigate('CouponsModal',{
+      
+    });
   };
 
 
@@ -51,7 +64,7 @@ const OrdersInfo = () => {
           <TouchableOpacity className=" flex-row  items-center justify-between py-3.5" onPress={toUrl}>
             <Text className="text-xs font-bold text-white">优惠券</Text>
             <View className="flex-row items-center justify-center">
-              <Text >已选择<Text className="text-[#E6A055FF]"> 2 </Text> 张优惠券
+              <Text >已选择<Text className="text-[#E6A055FF]"> 1 </Text> 张优惠券
               </Text>
               <IconButton icon="chevron-right" size={14} className="w-5 h-3" />
             </View>

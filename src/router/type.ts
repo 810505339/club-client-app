@@ -3,7 +3,13 @@ import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ImageSourcePropType } from 'react-native';
 export type RootStackParamList = {
-  CouponsModal: undefined,
+  CouponsModal: {
+    storeId?: string
+    ticketId?: string
+    activityId?: string
+    boothId?: string
+    winePartyMode?: string
+  },
   LoginOrRegister: undefined,
   Login: undefined,
   NewUser: undefined,
@@ -35,7 +41,8 @@ export type UsertackParamList = {
   OrdersInfo: {
     orderContext: { label: string, value: any }[]
     headerImg?: ImageSourcePropType,
-    submit?: () => void
+    submit?: () => void,
+    couponId?: string
   },
   SystemMessage: undefined,
   SystemMessageInfo: undefined,
@@ -73,7 +80,7 @@ export type HomeParamList = {
     partyId: string
   },
   MyWineParty: {
-    
+
   }
 }
 

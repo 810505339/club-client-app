@@ -340,11 +340,12 @@ const FightwineDetail = () => {
       const { userId, userSig } = userInfo;
 
       const loginRes = await TencentImSDKPlugin.v2TIMManager.login(userId, userSig);
+      console.log(res.id, 'groupID');
 
       if (loginRes.code == 0) {
         navigation.navigate('Chat', {
           conversation: {
-            userID: userId,
+            // userID: userId,
             conversationID: `c2c_${123123}`,
             showName: '群聊',
             groupID: res.id,

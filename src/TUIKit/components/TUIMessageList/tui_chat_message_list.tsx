@@ -48,7 +48,7 @@ export const TUIMessageList = (props: TUIMessageListProps) => {
     const submition = Keyboard.addListener('keyboardWillShow', callback);
     return () => {
       try {
-        Keyboard.removeListener('keyboardWillShow',callback);
+        submition.remove();
       } catch (error) {
         console.log(error);
       }

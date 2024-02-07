@@ -22,7 +22,7 @@ const Payment = [
 const OrdersInfo = () => {
   const route = useRoute<RouteProp<RootStackParamList, 'OrdersInfo'>>();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-
+  /* 需要支付的钱 */
   const { data: couponAmount, run } = useRequest(discounts, {
     manual: true,
     onSuccess: (res: any) => {
@@ -132,7 +132,7 @@ const OrdersInfo = () => {
     </ScrollView>
     <View className="flex-row justify-around items-center mt-2 h-14">
       <Divider className="absolute top-0 left-0 right-0" />
-      <Button mode={'elevated'} className="bg-[#EE2737FF]" textColor="#0C0C0CFF" onPress={submit}>确定</Button>
+      <Button mode={'elevated'} className="bg-[#EE2737FF]" textColor="#0C0C0CFF" onPress={() => submit(route.params?.couponId)}>确定</Button>
       <Button mode={'elevated'} textColor="#ffffff">取消订单</Button>
       <Button mode={'elevated'} className="bg-[#EE2737FF]" textColor="#0C0C0CFF">继续支付</Button>
     </View>

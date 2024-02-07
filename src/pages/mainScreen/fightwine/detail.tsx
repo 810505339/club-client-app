@@ -13,10 +13,15 @@ import { useImmer } from 'use-immer';
 import useUpdateFile, { IUpdateImage } from '@hooks/useUpdateFile';
 import { ImageLibraryOptions } from 'react-native-image-picker';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { LogLevelEnum, TencentImSDKPlugin } from 'react-native-tim-js';
+import storage from '@storage/index';
+import { IM_KEY } from '@storage/shop/key';
 
 const femaleAvatarBg = require('@assets/imgs/fightwine/femaleAvatarBg.png');
 const maleAvatarBg = require('@assets/imgs/fightwine/maleAvatarBg.png');
 const playerTypeIcon = require('@assets/imgs/fightwine/playerTypeIcon.png');
+
 
 export enum STATE {
   '未开始' = 'WAIT_START',
@@ -101,7 +106,8 @@ const PeoPleItem = (props: IPeopleType) => {
       <ImageBackground source={avatarBg} className="w-full h-full absolute -z-10" />
       <View className="px-5 py-3 flex flex-row items-center">
         <View className="border-2 border-[#000000FF] w-6 h-6 rounded-full overflow-hidden">
-          {/* <Image source={{ uri: avatarUrl }} className="w-6 h-6 " /> */}
+          {avatarUrl && <Image source={{ uri: avatarUrl }} className="w-6 h-6 " />}
+
         </View>
         <Text className="ml-2 flex-auto">{name}</Text>
         {playerButtonRender}
@@ -243,6 +249,7 @@ const FightwineDetail = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const route = useRoute<RouteProp<RootStackParamList, 'FightwineDetail'>>();
   const { partyId } = route.params;
+  const { t } = useTranslation();
 
   const [allData, setAllData] = useImmer<IAllData>({
     infoList,
@@ -289,17 +296,82 @@ const FightwineDetail = () => {
 
     /* 点击加入酒局按钮 */
     const join = async () => {
-      const { data } = await joinWineParty(partyId);
+      /* 请求加入酒局 */
 
-      console.log(data);
+      if (res.isNeedPay) {
+        /* 需要支付跳转订单 */
+        navigation.navigate('OrdersInfo', {
+          orderContext: [
+            { label: t('orders.label1'), value: res.storeName },
+            { label: t('orders.label2'), value: `${res.areaName} - ${res.boothName}` },
+            { label: t('orders.label3'), value: res.drinksMealName },
+            { label: t('orders.label4'), value: res.entranceDate },
+            { label: t('orders.label6'), value: res.latestArrivalTime },
+            { label: t('orders.label10'), value: res.partyName },
+            { label: t('orders.label14'), value: res.modeName },
+            // { label: t('orders.label11'), value: latestArrivalTime },
+            { label: t('orders.label12'), value: res.maleNum },
+            { label: t('orders.label13'), value: res.femaleNum },
+            { label: t('orders.label7'), value: res.needPayAmount },
+          ],
+          amount: res.needPayAmount,
+          winePartyMode: res.partyMode,/* 酒局模式 */
+          useScope: 'WINE_PARTY', //使用范围
+          // storeId: storeId,
+          submit: async (couponId: string | undefined) => {
+            /* 加入酒局成功以后 */
+            const data = await joinSuccess(partyId, couponId);
+            data.orderId;
+          },
+        });
+
+
+      } else {
+        await joinSuccess(partyId);
+
+      }
+
+
 
     };
     /* 跳转im开始聊天 */
-    const nextIm = () => {
+    const nextIm = async () => {
+      const userInfo = await storage.load({ key: IM_KEY });
+      const { userId, userSig } = userInfo;
 
+      const loginRes = await TencentImSDKPlugin.v2TIMManager.login(userId, userSig);
+
+      if (loginRes.code == 0) {
+        navigation.navigate('Chat', {
+          conversation: {
+            userID: userId,
+            conversationID: `c2c_${123123}`,
+            showName: '群聊',
+            groupID: res.id,
+            type: 2,
+            initialMessageList: [],
+            unMount: (message: V2TimMessage[]) => { },
+          },
+        });
+      }
     };
 
-    if (allData.res.isJoined) {
+    /* 加入酒局成功 */
+    async function joinSuccess(partyId: string, couponId?: string | undefined) {
+      const { data } = await joinWineParty({
+        partyId,
+        couponId,
+      });
+
+      console.log(data);
+
+      return data;
+
+
+
+    }
+
+    if (res.isJoined && res.status === STATE.待入场) {
       return (
         <View className="flex-row  items-center justify-around">
           <Button mode={'outlined'} className="bg-[#101010] w-[126]" style={{ borderColor: '#EE2737' }} textColor="#EE2737FF" >查看门票</Button>
@@ -308,8 +380,10 @@ const FightwineDetail = () => {
       );
 
 
-    } else {
+    } else if (res.status === STATE.进行中) {
       return <Button mode={'elevated'} className="bg-[#EE2737FF]" textColor="#0C0C0CFF" onPress={join}>加入酒局</Button>;
+    } else {
+      return null;
     }
   };
 

@@ -78,10 +78,11 @@ export const winePartyByDetail = async (partyId: string) => {
 
 //加入酒局
 
-export const joinWineParty = async (partyId: string) => {
+export const joinWineParty = async (data: any) => {
   const { data: res } = await service({
-    url: `/consumption/wineParty/join/${partyId}`,
+    url: '/consumption/wineParty/join',
     method: 'PUT',
+    data: data,
   });
 
   return res;

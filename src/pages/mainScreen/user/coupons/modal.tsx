@@ -58,7 +58,7 @@ const FirstRoute = (props: IFirstRouteProps) => {
 
 
 
-export const Item = (item, index, t, checked, onChecked, available) => {
+export const Item = (item, index, t, checked, onChecked, available, showCheck = true) => {
 
 
   const { name, couponTypeDetailVO } = item.couponVO;
@@ -89,9 +89,10 @@ export const Item = (item, index, t, checked, onChecked, available) => {
         </View>
         <Text style={{ fontSize: 10 }} className="font-light text-[#ffffff7f]">{item.takeEffectTime} - {item.disabledTime}</Text>
       </View>
-      <View className="items-center ">
+      {showCheck && <View className="items-center ">
         {available && <Checkbox status={checked === item.id ? 'checked' : 'unchecked'} onPress={() => onChecked(item.id)} value={item.id} />}
-      </View>
+      </View>}
+
     </View>
 
   </TouchableOpacity>;

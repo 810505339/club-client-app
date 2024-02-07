@@ -137,7 +137,10 @@ const Booths = () => {
           });
           return res;
         },
-        useScope: 'BOOTH', //使用范围
+        useScope: 'WINE_PARTY', //使用范围
+        winePartyMode: winePartyMode,
+        storeId:storeId,
+        amount: `${res.data.payAmount}`,
       });
     }
 

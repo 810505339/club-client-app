@@ -113,6 +113,7 @@ const Preset = () => {
       ticketId: data.ticketId, //门票id
       storeId: shop.select.id,
       amount: `${data.total}`,//需要支付多少钱
+      
     });
   };
 

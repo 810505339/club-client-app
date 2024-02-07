@@ -16,9 +16,9 @@ import { useTranslation } from 'react-i18next';
 
 
 const Item: FC<any> = (props) => {
-  const { name, orderStatus, handleItemPress, orderType, createTime, originalAmount, picture, orderId } = props;
+  const { name, orderStatus, handleItemPress, orderType, createTime, originalAmount, picture } = props;
   const img = fileStore.fileUrl + (picture?.fileName ?? '');
-  return <TouchableOpacity onPress={() => handleItemPress(orderId)}>
+  return <TouchableOpacity onPress={() => handleItemPress(props)}>
     <View className="  bg-[#151313FF]  p-2.5   rounded-xl border  border-[#252525] m-2.5">
       <View className="flex-row items-center justify-between">
         <Text className="text-[#FFFFFF] text-sm font-semibold">{orderType}</Text>
@@ -103,9 +103,9 @@ const Orders = () => {
   });
 
 
-  const handleItemPress = async (orderId: string) => {
+  const handleItemPress = async (item: any) => {
 
-    const { data } = await getOrderDetail(orderId);
+    const { data } = await getOrderDetail(item.orderId);
     console.log(data);
     navigation.navigate('OrdersInfo', {
       orderContext: [
@@ -117,8 +117,12 @@ const Orders = () => {
       ],
       // headerImg: card_2,
       submit: async () => {
-         await tempPay(orderId);
+        await tempPay(item.orderId);
       },
+      storeId: item.storeId,
+      amount: item.realAmount,
+      
+
     });
   };
   const handleChangeIndex = (index: number) => {
@@ -155,7 +159,8 @@ const Orders = () => {
               {index === data.defaultIndex && <CustomFlatList
                 renderItem={(item) => <Item {...item} handleItemPress={handleItemPress} />}
                 onFetchData={getOrderList}
-                params={{ orderType: orderType}}
+                params={{ orderType: orderType }}
+                keyExtractor={(item) => item.storeId}
               />}
             </View>
           </TabScreen>);

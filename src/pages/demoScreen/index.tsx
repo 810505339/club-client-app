@@ -6,7 +6,7 @@ import { Button, Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNavigationProp } from '@router/type';
 import { BottomSheetFooter, BottomSheetModal } from '@gorhom/bottom-sheet';
-import { View } from 'react-native';
+import { Image, View } from 'react-native';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 
 
@@ -48,7 +48,8 @@ const DemoScreen = () => {
     <BaseLayout>
 
       <TestDrawer />
-      {/* <Animated.Image source={{ uri: base64Data }} className="h-80" /> */}
+      <Button onPress={getImage}>上传人脸</Button>
+      <Image source={{ uri: base64Data }} className="h-80" />
     </BaseLayout>
   );
 };

@@ -42,7 +42,7 @@ export type UsertackParamList = {
   OrdersInfo: {
     orderContext?: { label: string, value: any }[]
     headerImg?: ImageSourcePropType,
-    submit?: () => void,
+    submit?: (couponId: string | undefined) => void,  /* 优惠券id */
     couponId?: string, /* 优惠券id */
     useScope?: 'TICKET' | 'WINE_PARTY' | 'BOOTH' | 'ACTIVITY' /* 使用范围 */
     storeId?: string

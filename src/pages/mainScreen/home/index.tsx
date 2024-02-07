@@ -9,12 +9,24 @@ import HorizontalFlatList from './components/HorizontalFlatList';
 import { getcarouselList } from '@api/common';
 import { useImmer } from 'use-immer';
 import { fileStore } from '@store/getfileurl';
+import { LogLevelEnum, TencentImSDKPlugin } from 'react-native-tim-js';
 // const HOMEBG = require('@assets/imgs/home/bg.png')
 
 type IData = {
   id: string;
   swiperList: any[]
 }
+
+const init = async () => {
+  const sdkAppID = 1600009072;
+  await TencentImSDKPlugin.v2TIMManager.initSDK(
+    sdkAppID,
+    LogLevelEnum.V2TIM_LOG_DEBUG,
+    undefined,
+    true,
+  );
+};
+
 
 const HomeScreen = () => {
   const navigation =
@@ -40,13 +52,20 @@ const HomeScreen = () => {
 
   }
 
+  useEffect(() => {
+    init();
+  }, []);
+
 
   useEffect(() => {
 
 
     if (data.id) {
       getcarouselListApi();
+
     }
+
+
 
   }, [data.id]);
 

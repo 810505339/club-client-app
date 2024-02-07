@@ -21,7 +21,7 @@ import useSelectTimer from '@hooks/useSelectTimer';
 import { useTranslation } from 'react-i18next';
 import { ticketBooking } from '@api/ticket';
 
-
+/* 预定门票 */
 const tickerBg = require('@assets/imgs/home/preset/ticket-header.png');
 const card_1 = require('@assets/imgs/base/card_1.png');
 
@@ -106,9 +106,13 @@ const Preset = () => {
           ticketId: data.ticketId,
           ticketNum: data.num,
           entranceDate: formatDay,
-          productName:data.ticketName,
+          productName: data.ticketName,
         });
       },
+      useScope: 'TICKET', //使用范围
+      ticketId: data.ticketId, //门票id
+      storeId: shop.select.id,
+      amount: `${data.total}`,//需要支付多少钱
     });
   };
 

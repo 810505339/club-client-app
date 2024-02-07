@@ -7,12 +7,10 @@ import { RootStackParamList } from '@router/type';
 import Panel from '@components/panel';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack/lib/typescript/src/types';
 import { useEffect } from 'react';
+import { useRequest } from 'ahooks';
+import { discounts } from '@api/coupon';
 
 
-const payList = [
-  { label: '优惠金额：', value: '-$ 253.26', color: '#FF2C2CFF' },
-  { label: '实付金额：', value: '$ 985.00', color: '#E6A055FF' },
-];
 
 const Payment = [
   { label: '微信支付', icon: require('@assets/imgs/user/wechat.png') },
@@ -25,24 +23,56 @@ const OrdersInfo = () => {
   const route = useRoute<RouteProp<RootStackParamList, 'OrdersInfo'>>();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
+  const { data: couponAmount, run } = useRequest(discounts, {
+    manual: true,
+    onSuccess: (res: any) => {
+      console.log(res, '获取成功');
+
+    },
+  });
+
+
+
 
   /* 当存在couponId 也就是选中了优惠券 */
   useEffect(() => {
     console.log(route.params?.couponId);
 
+    if (route.params?.couponId) {
+      run({ couponCusId: route.params?.couponId, amount: route.params?.amount });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     route.params?.couponId,
   ]);
 
 
   const toUrl = () => {
-    navigation.navigate('CouponsModal',{
-      
+    const { useScope, activityId, ticketId, boothId, winePartyMode, storeId } = route.params;
+    navigation.navigate('CouponsModal', {
+      useScope: useScope,
+      activityId: activityId,
+      ticketId: ticketId,
+      boothId: boothId,
+      winePartyMode: winePartyMode,
+      storeId: storeId,
     });
   };
 
 
   const { orderContext = [], headerImg, submit } = route?.params;
+
+
+  const couponNum = route.params?.couponId ? 1 : 0;
+  const amount = !couponNum ? route.params?.amount : couponAmount?.data;
+  const couponUnAmount = Number(route.params?.amount) - couponAmount?.data;
+
+  const payList = [
+    { label: '优惠金额：', value: `-$ ${couponUnAmount}`, color: '#FF2C2CFF', show: route.params?.couponId },
+    { label: '实付金额：', value: `$ ${amount}`, color: '#E6A055FF', show: true },
+  ];
+
   return <BaseLayout className="bg-[#0B0B0BE6]">
     <View className="relative">
       {headerImg && <View className=" absolute right-5 left-5  h-52  rounded-2xl overflow-hidden">
@@ -64,17 +94,24 @@ const OrdersInfo = () => {
           <TouchableOpacity className=" flex-row  items-center justify-between py-3.5" onPress={toUrl}>
             <Text className="text-xs font-bold text-white">优惠券</Text>
             <View className="flex-row items-center justify-center">
-              <Text >已选择<Text className="text-[#E6A055FF]"> 1 </Text> 张优惠券
+              <Text >已选择<Text className="text-[#E6A055FF]"> {couponNum} </Text> 张优惠券
               </Text>
               <IconButton icon="chevron-right" size={14} className="w-5 h-3" />
             </View>
           </TouchableOpacity>
           <Divider />
           <View className="mt-3">
-            {payList.map((item, index) => (<View key={index} className="flex-row  items-center justify-between py-1">
-              <Text className="text-xs font-light text-[#ffffff7f]">{item.label}</Text>
-              <Text className="w-56 text-right text-base font-bold " style={{ color: item.color }}>{item.value}</Text>
-            </View>))}
+            {payList.map((item, index) => {
+
+              if (!item.show) {
+                return null;
+              }
+
+              return (<View key={index} className="flex-row  items-center justify-between py-1">
+                <Text className="text-xs font-light text-[#ffffff7f]">{item.label}</Text>
+                <Text className="w-56 text-right text-base font-bold " style={{ color: item.color }}>{item.value}</Text>
+              </View>);
+            })}
           </View>
           <View className="mt-5">
             <Text className="text-xs font-bold text-white pb-2.5">请选择支付方式</Text>

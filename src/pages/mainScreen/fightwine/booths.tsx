@@ -137,6 +137,7 @@ const Booths = () => {
           });
           return res;
         },
+        useScope: 'BOOTH', //使用范围
       });
     }
 

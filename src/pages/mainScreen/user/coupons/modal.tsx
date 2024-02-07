@@ -36,13 +36,15 @@ const FirstRoute = (props: IFirstRouteProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const onChecked = (id: string) => {
-    setChecked(id);
-    /* 回到上一个页面   couponId优惠卷Id */
-    navigation.navigate({
-      name: 'OrdersInfo',
-      params: { couponId: id },
-      merge: true,
-    });
+    if (available) {
+      setChecked(id);
+      /* 回到上一个页面   couponId优惠卷Id */
+      navigation.navigate({
+        name: 'OrdersInfo',
+        params: { couponId: id },
+        merge: true,
+      });
+    }
 
   };
   return <View className="mt-5" >

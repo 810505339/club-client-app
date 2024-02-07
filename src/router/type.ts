@@ -9,6 +9,7 @@ export type RootStackParamList = {
     activityId?: string
     boothId?: string
     winePartyMode?: string
+    useScope?: string //使用范围
   },
   LoginOrRegister: undefined,
   Login: undefined,
@@ -39,10 +40,17 @@ export type UsertackParamList = {
 
   },
   OrdersInfo: {
-    orderContext: { label: string, value: any }[]
+    orderContext?: { label: string, value: any }[]
     headerImg?: ImageSourcePropType,
     submit?: () => void,
-    couponId?: string
+    couponId?: string, /* 优惠券id */
+    useScope?: 'TICKET' | 'WINE_PARTY' | 'BOOTH' | 'ACTIVITY' /* 使用范围 */
+    storeId?: string
+    ticketId?: string
+    activityId?: string
+    boothId?: string
+    winePartyMode?: string
+    amount?: string
   },
   SystemMessage: undefined,
   SystemMessageInfo: undefined,

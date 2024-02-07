@@ -32,6 +32,7 @@ export const loginApi = async ({ code, grant_type = 'mobile', scope = 'server', 
 	if (data) {
 		//sub 手机号 token //登录token
 		await setGenericPassword(data?.sub, data?.access_token);
+		
 	}
 	return data
 

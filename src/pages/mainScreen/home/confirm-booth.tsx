@@ -32,7 +32,7 @@ const ConfirmBooth = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const route = useRoute<RouteProp<RootStackParamList, 'ConfirmBooth'>>();
   const { t } = useTranslation();
-  const { areaId, entranceDate, peopleNum, latestArrivalTime, areaName,storeId } = route.params;
+  const { areaId, entranceDate, peopleNum, latestArrivalTime, areaName, storeId } = route.params;
 
 
   const { booths, itemPress } = useSelectBooths({ areaId, entranceDate, peopleNum });
@@ -77,7 +77,7 @@ const ConfirmBooth = () => {
         { label: t('orders.label4'), value: entranceDate },
         { label: t('orders.label5'), value: peopleNum },
         { label: t('orders.label6'), value: latestArrivalTime },
-        { label: t('orders.label7'), value: `${selectBooth?.minConsumption}` },
+        { label: t('orders.label7'), value: `${selectBooth?.reserveAmount}` },
       ],
       headerImg: card_2,
       submit: async () => {
@@ -86,11 +86,15 @@ const ConfirmBooth = () => {
           areaId: areaId,
           entranceDate: entranceDate,
           boothId: selectBooth?.boothId,
-          latestArrivalTime:latestArrivalTime,
+          latestArrivalTime: latestArrivalTime,
           productName: '11',
-          peopleNum:peopleNum,
+          peopleNum: peopleNum,
         });
       },
+      useScope: 'BOOTH', //使用范围
+      boothId: selectBooth?.boothId,
+      storeId: storeId,
+      amount: selectBooth?.reserveAmount,
     });
   };
 

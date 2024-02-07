@@ -37,7 +37,7 @@ const HorizontalFlatList: FC<PropsWithChildren<IProps>> = ({ style }) => {
   const { t, i18n } = useTranslation();
 
   const data: IData[] = [
-    { key: '1', navigation: 'Preset', text: t('home.nav1'), source: require('@assets/imgs/home/fightwine.png'), color: '#ED8EFFFF' },
+    { key: '1', navigation: 'Fightwine', text: t('home.nav1'), source: require('@assets/imgs/home/fightwine.png'), color: '#ED8EFFFF' },
     { key: '2', navigation: 'Preset', text: t('home.nav2'), source: require('@assets/imgs/home/tickets.png'), color: '#FFBF65FF' },
     { key: '3', navigation: 'ReserveBooth', text: t('home.nav3'), source: require('@assets/imgs/home/deck.png'), color: '#91F2FFFF' },
     { key: '4', navigation: 'Preset', text: t('home.nav4'), source: require('@assets/imgs/home/radio.png'), color: '#FF8383FF' },

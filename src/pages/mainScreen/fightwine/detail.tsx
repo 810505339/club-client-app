@@ -294,12 +294,16 @@ const FightwineDetail = () => {
       console.log(data);
 
     };
+    /* 跳转im开始聊天 */
+    const nextIm = () => {
+
+    };
 
     if (allData.res.isJoined) {
       return (
         <View className="flex-row  items-center justify-around">
           <Button mode={'outlined'} className="bg-[#101010] w-[126]" style={{ borderColor: '#EE2737' }} textColor="#EE2737FF" >查看门票</Button>
-          <Button mode={'elevated'} className="bg-[#EE2737FF]  w-[126]" textColor="#0C0C0CFF" >开始聊天</Button>
+          <Button mode={'elevated'} className="bg-[#EE2737FF]  w-[126]" textColor="#0C0C0CFF" onPress={nextIm} >开始聊天</Button>
         </View>
       );
 

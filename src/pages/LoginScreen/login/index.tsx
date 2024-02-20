@@ -1,10 +1,11 @@
-import {useNavigation} from '@react-navigation/native';
-import {ImageBackground, View} from 'react-native';
-import {Button, Text} from 'react-native-paper';
-import {ScreenNavigationProp} from '@router/type';
+import { useNavigation } from '@react-navigation/native';
+import { View } from 'react-native';
+import { Button, Text } from 'react-native-paper';
+import { ScreenNavigationProp } from '@router/type';
 import BaseLayout from '@components/baselayout';
 
 const bgImage = require('@assets/imgs/login/bg.png');
+
 
 const Login = () => {
   const navigation = useNavigation<ScreenNavigationProp<'LoginOrRegister'>>();
@@ -17,13 +18,13 @@ const Login = () => {
       <View className="absolute left-16 right-16 bottom-0 h-64">
         <Button
           mode="outlined"
-          style={{borderColor: '#EE2737', height: 50, borderRadius: 33}}
+          style={{ borderColor: '#EE2737', height: 50, borderRadius: 33 }}
           labelStyle={{
             fontSize: 18,
             color: '#EE2737',
             fontWeight: '600',
           }}
-          contentStyle={{height: 50}}
+          contentStyle={{ height: 50 }}
           onPress={handleLogin}>
           登录 / 注册
         </Button>

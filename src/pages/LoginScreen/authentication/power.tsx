@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { ScreenNavigationProp } from '@router/type';
 const bgImage = require('@assets/imgs/login/login-register-bg.png');
+const authorizationImage = require('@assets/imgs/login/authorization.png');
 const AuthenticationPower = () => {
 
   const navigation = useNavigation<ScreenNavigationProp<'Authentication'>>();

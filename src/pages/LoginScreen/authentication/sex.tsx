@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ScreenNavigationProp } from 'router/type';
 
 const bgImage = require('@assets/imgs/login/login-register-bg.png');
+const faceImage = require('@assets/imgs/login/face.png');
 const DURATION = 1000;
 
 const AuthenticationSex = () => {
@@ -41,7 +42,9 @@ const AuthenticationSex = () => {
       <View className="mt-10  justify-center items-center">
         <View className="relative">
           <View className=" absolute  z-1 top-0 left-0 right-0 bottom-0 justify-center items-center">
-            <Animated.View className="w-20 h-20 rounded-full bg-blue-700" style={[animatedStyle]} />
+            <Animated.View className="w-20 h-20 rounded-full " style={[animatedStyle]} >
+              <Animated.Image source={faceImage} className={'w-20 h-20'} />
+            </Animated.View>
           </View>
           <CircularProgress
             value={50}

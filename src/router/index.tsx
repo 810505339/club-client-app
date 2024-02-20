@@ -19,7 +19,7 @@ import FightGroup from './fightgroup';
 import BlurviewDEmo from '@pages/demoScreen/blurview';
 import CouponsModal from '@pages/mainScreen/user/coupons/modal';
 
-const initialRouteName: keyof RootStackParamList = 'Login';
+const initialRouteName: keyof RootStackParamList = 'AuthenticationSex';
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 export const Stack = createStackNavigator<RootStackParamList>();
 const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: DefaultTheme });

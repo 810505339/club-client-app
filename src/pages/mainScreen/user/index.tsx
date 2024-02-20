@@ -2,23 +2,29 @@ import BaseLayout from '@components/baselayout';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCallback, useMemo, useState } from 'react';
-import { ImageBackground, RefreshControl, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ImageBackground, RefreshControl, Text, TouchableOpacity, View } from 'react-native';
 import { Divider, List } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import { UsertackParamList } from '@router/type';
 import CheckAuthLayout from '@components/baselayout/checkLayout';
 import { BlurView } from '@react-native-community/blur';
+import { useRequest } from 'ahooks';
+import { detailsById, mineInfo } from '@api/user';
 
 const bg1Icon = require('@assets/imgs/user/bg_1.png');
 const bg2Icon = require('@assets/imgs/user/bg_2.png');
 const bg3Icon = require('@assets/imgs/user/bg_3.png');
+const manIcon = require('@assets/imgs/user/man.png');
+const womanIcon = require('@assets/imgs/user/woman.png');
+const certifiedIcon = require('@assets/imgs/user/certified.png');
+const noCertifiedIcon = require('@assets/imgs/user/noCertified.png');
 
 const wait = (timeout: number) => {
   return new Promise(resolve => {
     setTimeout(resolve, timeout);
   });
 };
-const image = 'https://avatars.githubusercontent.com/u/15199031?v=4';
+
 
 
 
@@ -26,19 +32,33 @@ type IListHeader = {
   balancePress: (name: string) => void
 }
 const ListHeader = ({ balancePress }: IListHeader) => {
+  const { data } = useRequest(mineInfo);
+  const { data: _userInfo } = useRequest(detailsById);
+  const userInfo = _userInfo?.data;
+  const info = data?.data;
+  console.log(data?.data, 'data');
+  console.log(userInfo, 'userInfo');
+
   const fontText = 'text-xs text-[#ffffff7f]';
   const box = 'items-center  h-28 pb-3 justify-end mb-2 relative';
 
+  const sexIcon = userInfo?.gender === 1 ? manIcon : womanIcon;
+  const isCertifiedIcon = userInfo?.checkFace ? certifiedIcon : noCertifiedIcon;
+  const sexText = userInfo?.gender === 1 ? '男' : '女';
+  const isCertifieText = userInfo?.checkFace ? '已性别认证' : '未性别认证';
+
   return <View className=" rounded-t-3xl">
     <View className="mb-8 px-5 flex   flex-row    box-border">
-      <Animated.Image className={' w-24 h-24   rounded-full'} style={{ resizeMode: 'contain' }} source={{ uri: image }} />
+      <View className="w-24 h-24   rounded-full">
+        {userInfo?.avatarUrl && <Animated.Image className={' w-24 h-24   rounded-full'} style={{ resizeMode: 'contain' }} source={{ uri: userInfo?.avatarUrl }} />}
+      </View>
       <View className=" ml-5   flex-auto" >
         <View><Text className="text-lg text-[#fff] font-bold">Romania Slovakiean</Text></View>
-        <View className="">
-          <Text numberOfLines={1} ellipsizeMode="tail">个性签名asdasd asdasd asdasdasd Personal signatPersonal </Text>
+        <View >
+          <Text numberOfLines={1} ellipsizeMode="tail" className="text-white opacity-50">个性签名 {userInfo?.personalSignature}</Text>
         </View>
         <View className="flex-row mt-4">
-          <View className="w-24  h-6 rounded-xl  mr-2 items-end justify-center overflow-hidden">
+          <View className="  h-6 rounded-xl  mr-2 items-end justify-center overflow-hidden">
             <BlurView
               style={{ position: 'absolute', bottom: 0, left: 0, right: 0, top: 0 }}
               blurType="dark"
@@ -46,9 +66,10 @@ const ListHeader = ({ balancePress }: IListHeader) => {
               reducedTransparencyFallbackColor="transparent"
 
             />
-            <Text className=" text-xs pr-2">已性别认证</Text>
+            <Image source={isCertifiedIcon} className="w-4 h-4 absolute left-2" />
+            <Text className=" text-xs pl-8 pr-2 text-white opacity-50">{isCertifieText}</Text>
           </View>
-          <View className="w-12  h-6 rounded-xl items-end justify-center overflow-hidden">
+          <View className=" h-6 rounded-xl items-end justify-center overflow-hidden">
             <BlurView
               style={{ position: 'absolute', bottom: 0, left: 0, right: 0, top: 0 }}
               blurType="dark"
@@ -56,7 +77,8 @@ const ListHeader = ({ balancePress }: IListHeader) => {
               reducedTransparencyFallbackColor="transparent"
 
             />
-            <Text className="    text-xs pr-2">男</Text>
+            <Image source={sexIcon} className="w-4 h-4 absolute left-2" />
+            <Text className="text-xs pl-8 pr-2 text-white opacity-50">{sexText}</Text>
           </View>
 
 
@@ -65,18 +87,18 @@ const ListHeader = ({ balancePress }: IListHeader) => {
     </View>
     <View className="flex flex-row  gap-3  border-[#ffffff7f] pb-4 px-5">
       <TouchableOpacity className={`${box}  flex-grow`} onPress={() => balancePress('Information')} >
-        <ImageBackground source={bg1Icon} className="absolute left-0 right-0 bottom-0 left-0 w-full h-full" />
-        <Text className="text-[#E6A055FF]  text-2xl">1</Text>
+        <ImageBackground source={bg1Icon} className="absolute right-0 bottom-0 left-0 w-full h-full" />
+        <Text className="text-[#E6A055FF]  text-2xl">{info?.balanceAmount}</Text>
         <Text className={fontText}>账户余额</Text>
       </TouchableOpacity>
       <TouchableOpacity className={`${box} w-20 `} onPress={() => balancePress('Coupons')} >
         <ImageBackground source={bg2Icon} className="absolute inset-0 w-full h-full" />
-        <Text className="text-[#FF4DCEFF]  text-2xl">1</Text>
+        <Text className="text-[#FF4DCEFF]  text-2xl">{info?.couponCount}</Text>
         <Text className={fontText}>优惠券</Text>
       </TouchableOpacity>
       <TouchableOpacity className={`${box} w-20`} onPress={() => balancePress('Orders')}>
         <ImageBackground source={bg3Icon} className="absolute inset-0 w-full h-full" />
-        <Text className="text-[#2ECFFFFF] text-2xl ">1</Text>
+        <Text className="text-[#2ECFFFFF] text-2xl ">{info?.orderCount}</Text>
         <Text className={fontText}>订单</Text>
       </TouchableOpacity>
     </View>
@@ -86,6 +108,9 @@ const ListHeader = ({ balancePress }: IListHeader) => {
 
 const HomeScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<UsertackParamList>>();
+
+
+
   const cells = useMemo(() => {
     return ([
       { id: 'SystemMessage', title: '系统消息', left: '', right: '' },
@@ -122,7 +147,6 @@ const HomeScreen = () => {
   return (<BaseLayout className="bg-[#0B0B0BFF]">
     <CheckAuthLayout />
     <Animated.View>
-
       <Animated.FlatList
         ListHeaderComponent={() => <ListHeader balancePress={balancePress} />}
         ItemSeparatorComponent={Divider}

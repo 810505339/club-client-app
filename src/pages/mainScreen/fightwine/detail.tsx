@@ -15,10 +15,9 @@ import { ImageLibraryOptions } from 'react-native-image-picker';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TencentImSDKPlugin } from 'react-native-tim-js';
-import storage from '@storage/index';
-import { IM_KEY } from '@storage/shop/key';
 import Dialog from '@components/dialog';
 import Toast from 'react-native-toast-message';
+import useUserInfo from '@hooks/useUserInfo';
 
 const femaleAvatarBg = require('@assets/imgs/fightwine/femaleAvatarBg.png');
 const maleAvatarBg = require('@assets/imgs/fightwine/maleAvatarBg.png');
@@ -72,7 +71,7 @@ type IAllData = {
     cancelText: string,
     confirmText: string
   }
-  player?: IPeopleType
+  player?: IPeopleType,
 }
 
 const infoList = [
@@ -276,9 +275,8 @@ const Appraise = (props) => {
 };
 
 
-const FightwineDetail = async () => {
-  const userInfoStorage = await storage.load({ key: IM_KEY });
-  const { userId, userSig, userInfo } = userInfoStorage;
+const FightwineDetail = () => {
+
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const route = useRoute<RouteProp<RootStackParamList, 'FightwineDetail'>>();
   const { partyId } = route.params;
@@ -297,17 +295,17 @@ const FightwineDetail = async () => {
       confirmText: '确定',
     },
   });
+  const userInfoHooks = useUserInfo();
+
+  const { userId, userSig, userInfo } = userInfoHooks;
+
 
   const { res, status, dialog } = allData;
 
 
+
   const { loading, run } = useRequest(() => winePartyByDetail(partyId), {
     onSuccess: async (res) => {
-
-
-
-
-
       const _data = res.data;
       if (_data.isJoined && _data.playerType != 'FREE_PARTICIPANT' && _data.status == 'IN_PROGRESS') {
         const check = await checkNeedLockConfirm(partyId);
@@ -480,9 +478,9 @@ const FightwineDetail = async () => {
         navigation.navigate('Chat', {
           conversation: {
             // userID: userId,
-            conversationID: `c2c_${1755121255683485697}`,
+            conversationID: `c2c_${res.id}`,
             showName: '群聊',
-            groupID: 1755121255683485697,
+            groupID:res.id,
             type: 2,
             initialMessageList: [],
             unMount: (message: V2TimMessage[]) => { },
@@ -579,9 +577,12 @@ const FightwineDetail = async () => {
       <ActivityIndicator color="#EE2737FF" />
     </View>;
   };
-
-  if (userInfo.check) {
-    return <BaseLayout />;
+  console.log(userInfoHooks, 'userInfo');
+  /* 如果没有验证人脸 */
+  if (!userInfo?.checkFace) {
+    return <BaseLayout >
+      <Text>请认证人脸</Text>
+    </BaseLayout>;
   }
 
   return <BaseLayout>

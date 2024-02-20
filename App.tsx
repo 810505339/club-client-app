@@ -12,11 +12,9 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import Toast from 'react-native-toast-message';
 import toastConfig from '@components/toast/customToast';
 import { getFileUrl } from '@store/getfileurl';
-import { useState } from 'react';
 
 const App = () => {
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
   useEffect(() => {
     /* 这是启动页 */
     SplashScreen.hide();
@@ -41,7 +39,7 @@ const App = () => {
           <SafeAreaProvider>
             <StatusBar backgroundColor="transparent" translucent={true} />
             <AppNavigator />
-            <Toast config={toastConfig} bottomOffset={200} position="bottom"  />
+            <Toast config={toastConfig} bottomOffset={200} position="bottom" />
           </SafeAreaProvider>
         </PaperProvider>
       </BottomSheetModalProvider>

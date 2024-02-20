@@ -9,7 +9,8 @@ type IProps = {
   source?: ImageSourcePropType | boolean,
   className?: string
   showAppBar?: boolean
-  showNoMore?: boolean
+  showNoMore?: boolean,
+  loading?: boolean
 };
 
 const RendernoMoreData = () => {
@@ -17,7 +18,7 @@ const RendernoMoreData = () => {
   return <Text className="text-center">{t('flatList.noMore1')}</Text>;
 };
 
-const BaseLayout: FC<PropsWithChildren<IProps>> = ({ source = defaultBg, className = '', children, showAppBar = true, showNoMore = false }) => {
+const BaseLayout: FC<PropsWithChildren<IProps>> = ({ source = defaultBg, className = '', children, showAppBar = true, showNoMore = false, loading = false }) => {
 
   const classNames = `flex-1 bg-[#101010FF] ${className}`;
   return (
@@ -25,6 +26,7 @@ const BaseLayout: FC<PropsWithChildren<IProps>> = ({ source = defaultBg, classNa
       {source && <ImageBackground source={source} resizeMode="cover" className="absolute left-0 right-0 bottom-0 -z-10 top-0" />}
       {showAppBar && <View style={{ paddingTop: 56 + StatusBar.currentHeight! }} />}
       {showNoMore ? <RendernoMoreData /> : children}
+
     </View>
   );
 };

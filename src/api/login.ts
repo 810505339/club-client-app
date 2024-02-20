@@ -39,6 +39,7 @@ export const loginApi = async ({ code, grant_type = 'mobile', scope = 'server', 
 			data: {
 				userId: data?.user_id,
 				userSig: data?.user_info?.userSig,
+				userInfo: data?.user_info,
 			},
 		});
 

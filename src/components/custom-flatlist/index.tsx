@@ -39,13 +39,13 @@ const RenderNoData = () => {
   const { t } = useTranslation();
   return <View className="mt-40  justify-center items-center" >
     <Image source={noData} resizeMode="contain" />
-    <Text className="mt-2 opacity-50 text-xs font-bold">{t('flatList.noMore')}</Text>
+    <Text className="mt-2 opacity-50 text-xs font-bold text-white">{t('flatList.noMore')}</Text>
   </View>;
 };
 
 const RendernoMoreData = () => {
   const { t } = useTranslation();
-  return <Text className="text-center p-3">{t('flatList.noMore1')}</Text>;
+  return <Text className="text-center p-3 text-white">{t('flatList.noMore1')}</Text>;
 };
 
 type CustomFlatListRef = {

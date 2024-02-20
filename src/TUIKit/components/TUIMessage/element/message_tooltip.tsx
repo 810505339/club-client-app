@@ -1,10 +1,10 @@
-import {ScreenWidth} from '@rneui/base';
-import {Image, Text} from '@rneui/themed';
-import React, {Fragment, useState} from 'react';
-import {LayoutChangeEvent, LayoutRectangle, Modal} from 'react-native';
-import {Keyboard} from 'react-native';
-import {Pressable, StyleSheet, View} from 'react-native';
-import {Gesture, GestureDetector} from 'react-native-gesture-handler';
+import { ScreenWidth } from '@rneui/base';
+import { Image, Text } from '@rneui/themed';
+import React, { Fragment, useState } from 'react';
+import { LayoutChangeEvent, LayoutRectangle, Modal } from 'react-native';
+import { Keyboard } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import {
   MessageElemType,
   TencentImSDKPlugin,
@@ -15,7 +15,7 @@ import {
   setRepliedMessage,
   useTUIChatContext,
 } from '../../../store';
-import {MessageUtils} from '../../../utils/message';
+import { MessageUtils } from '../../../utils/message';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 export const MessageToolTip: React.FC<{
@@ -26,11 +26,11 @@ export const MessageToolTip: React.FC<{
   const [positionY, setPositionY] = React.useState(0);
   const [componentPosition, setComponentPosition] = useState<LayoutRectangle>();
   const viewRef = React.useRef<View | null>();
-  const {dispatch} = useTUIChatContext();
+  const { dispatch } = useTUIChatContext();
 
   const getPopOverContent = () => {
     console.log('get overlay content');
-    const {timestamp, elemType, status} = props.message;
+    const { timestamp, elemType, status } = props.message;
     const isCanRevoke =
       MessageUtils.isMessageRevokable(timestamp ?? 0, 120) && status === 2;
     const isCanCopy = elemType === MessageElemType.V2TIM_ELEM_TYPE_TEXT;
@@ -72,7 +72,7 @@ export const MessageToolTip: React.FC<{
               }}>
               <View style={styles.actionItemContainer}>
                 <Image source={item.icon} style={styles.actionIcon} />
-                <Text style={{fontSize: 10}}>{item.name}</Text>
+                <Text style={{ fontSize: 10 }}>{item.name}</Text>
               </View>
             </Pressable>
           ))}
@@ -82,12 +82,12 @@ export const MessageToolTip: React.FC<{
 
   const hanldeTooltipTaped = async (type: string) => {
     if (type === 'copy_message') {
-      const {textElem} = props.message;
+      const { textElem } = props.message;
       Clipboard.setString(textElem?.text ?? '');
     } else if (type === 'delete_message') {
-      const {msgID} = props.message;
+      const { msgID } = props.message;
       if (msgID) {
-        const {code} = await TencentImSDKPlugin.v2TIMManager
+        const { code } = await TencentImSDKPlugin.v2TIMManager
           .getMessageManager()
           .deleteMessages([msgID!]);
         if (code === 0) {
@@ -99,15 +99,15 @@ export const MessageToolTip: React.FC<{
         }
       }
     } else if (type === 'revoke_message') {
-      const {message} = props;
-      const {msgID} = message;
+      const { message } = props;
+      const { msgID } = message;
       if (msgID) {
         TencentImSDKPlugin.v2TIMManager
           .getMessageManager()
           .revokeMessage(msgID!);
       }
     } else if (type === 'reply_message') {
-      const {message} = props;
+      const { message } = props;
       dispatch(
         setRepliedMessage({
           message,
@@ -118,7 +118,8 @@ export const MessageToolTip: React.FC<{
   };
 
   const gesture = Gesture.LongPress().onStart(event => {
-    const {absoluteY, y} = event;
+    const { absoluteY, y } = event;
+    console.log(componentPosition, 'componentPosition');
     const halfHeight = componentPosition!.height;
     if (Keyboard.isVisible()) {
       setTimeout(() => {
@@ -140,6 +141,7 @@ export const MessageToolTip: React.FC<{
   const calculatePosition = (event: LayoutChangeEvent) => {
     const width = event.nativeEvent.layout.width;
     const height = event.nativeEvent.layout.height;
+
     if (!componentPosition && viewRef.current) {
       viewRef.current.measureInWindow((x, y) => {
         setComponentPosition({
@@ -201,7 +203,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     shadowColor: '#ccc',
-    shadowOffset: {width: 1, height: 2},
+    shadowOffset: { width: 1, height: 2 },
     shadowOpacity: 0.8,
   },
   actionContainer: {
@@ -213,7 +215,7 @@ const styles = StyleSheet.create({
     // justifyContent: '',
     alignItems: 'flex-start',
     shadowColor: '#ccc',
-    shadowOffset: {width: 1, height: 2},
+    shadowOffset: { width: 1, height: 2 },
     shadowOpacity: 0.8,
     paddingTop: 10,
     borderRadius: 8,

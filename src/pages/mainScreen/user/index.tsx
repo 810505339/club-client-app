@@ -49,7 +49,7 @@ const ListHeader = ({ balancePress }: IListHeader) => {
             <Text className=" text-xs pr-2">已性别认证</Text>
           </View>
           <View className="w-12  h-6 rounded-xl items-end justify-center overflow-hidden">
-          <BlurView
+            <BlurView
               style={{ position: 'absolute', bottom: 0, left: 0, right: 0, top: 0 }}
               blurType="dark"
               blurAmount={5}
@@ -65,7 +65,7 @@ const ListHeader = ({ balancePress }: IListHeader) => {
     </View>
     <View className="flex flex-row  gap-3  border-[#ffffff7f] pb-4 px-5">
       <TouchableOpacity className={`${box}  flex-grow`} onPress={() => balancePress('Information')} >
-        <ImageBackground source={bg1Icon} className="absolute inset-0 w-full h-full" />
+        <ImageBackground source={bg1Icon} className="absolute left-0 right-0 bottom-0 left-0 w-full h-full" />
         <Text className="text-[#E6A055FF]  text-2xl">1</Text>
         <Text className={fontText}>账户余额</Text>
       </TouchableOpacity>

@@ -24,8 +24,7 @@ import { myTicket } from '@api/ticket';
 import CustomFlatList from '@components/custom-flatlist';
 import QRCode from 'react-native-qrcode-svg';
 
-
-const BG = require('@assets/imgs/home/bg.png');
+const qrCodeImage = require('@assets/imgs/base/qrcode.png');
 const modalBg = require('@assets/imgs/modal/ticket-head-bg.png');
 const modalIcon = require('@assets/imgs/modal/ticket-icon.png');
 
@@ -41,14 +40,21 @@ const style = StyleSheet.create({
 const Item = memo<any>((props: any) => {
   console.log('renderItem');
 
-  const { entranceDate, usableTimeBegin, usableTimeEnd, areaName, boothName, usageType, latestArrivalTime, handleItemPress } = props;
+  const { entranceDate, usableTimeBegin, usableTimeEnd, areaName, boothName, usageType, latestArrivalTime, handleItemPress, ticketPicture, remainNum } = props;
 
   const useTime = usageType === 'TICKET' ? `${usableTimeBegin}-${usableTimeEnd}使用` : `最迟入场${latestArrivalTime}`;
+  const NumberRender = remainNum && <View className="bg-[#000000] rounded-xl absolute p-2 bottom-2 left-5">
+    <Text>
+      x
+      <Text className="font-bold ">{remainNum}</Text>
+    </Text>
+  </View>;
 
   return <TouchableWithoutFeedback onPress={() => handleItemPress()}>
     <View className="w-80 h-32 bg-[#FFFFFF1A] mx-auto  my-3   justify-center flex-row items-center rounded-xl border py-5 ">
-      <View className="w-36 h-24 relative border border-red-500 rounded-xl -left-5 ">
-        {/* <Image source={BG} className="absolute z-10 -left-10"  /> */}
+      <View className="w-36 h-24 relative  rounded-xl -left-5 ">
+        {ticketPicture && <Image source={{ uri: ticketPicture }} className="w-36 h-24 rounded-xl" />}
+        {NumberRender}
       </View>
       <View className=" h-full  flex-grow  overflow-hidden flex-col relative">
         <View>
@@ -59,7 +65,10 @@ const Item = memo<any>((props: any) => {
           <Text className="absolute bottom-0 text-white text-sm">{areaName}{boothName && `  -  ${boothName}`}</Text>
         </View>
 
-        <View className="bg-[#FFFFFF33] w-5 h-5 rounded border border-red-100 absolute z-10 right-5" />
+        <View className="bg-[#FFFFFF33] w-5 h-5 rounded border border-red-100 absolute z-10 right-5 flex items-center justify-center " >
+          <Image source={qrCodeImage} className="w-4 h-4" />
+        </View>
+
       </View>
     </View>
   </TouchableWithoutFeedback>;

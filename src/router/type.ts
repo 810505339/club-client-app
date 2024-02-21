@@ -53,7 +53,9 @@ export type UsertackParamList = {
     amount?: string
   },
   SystemMessage: undefined,
-  SystemMessageInfo: undefined,
+  SystemMessageInfo: {
+    id: string //消息id
+  },
   Account: undefined,
   AccountPhone: undefined,
   AccountSetPhone: undefined,

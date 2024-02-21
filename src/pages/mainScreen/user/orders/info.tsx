@@ -1,8 +1,7 @@
 import BaseLayout from '@components/baselayout';
 import { Text, IconButton, Divider, Checkbox, Button } from 'react-native-paper';
-import { ScrollView, View, Image, ImageBackground, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Image, TouchableOpacity } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { useIsFocused } from '@react-navigation/native';
 import { RootStackParamList } from '@router/type';
 import Panel from '@components/panel';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack/lib/typescript/src/types';
@@ -27,7 +26,6 @@ const OrdersInfo = () => {
     manual: true,
     onSuccess: (res: any) => {
       console.log(res, '获取成功');
-
     },
   });
 
@@ -85,10 +83,16 @@ const OrdersInfo = () => {
         <Panel className="mt-44">
           <View>
             <Text className="text-xs text-white mb-5">订单内容</Text>
-            {orderContext && orderContext?.map((item, index) => (<View key={index} className="flex-row  items-center justify-between mb-2.5">
-              <Text className="text-xs font-light text-[#ffffff7f]">{item.label}:</Text>
-              <Text numberOfLines={2} className="w-56 text-right">{item.value}</Text>
-            </View>))}
+            {orderContext && orderContext?.map((item, index) => {
+              if (item.value == null) {
+                return null;
+              }
+
+              return (<View key={index} className="flex-row  items-center justify-between mb-2.5">
+                <Text className="text-xs font-light text-[#ffffff7f]">{item.label}:</Text>
+                <Text numberOfLines={2} className="w-56 text-right">{item.value}</Text>
+              </View>);
+            })}
           </View>
           <Divider />
           <TouchableOpacity className=" flex-row  items-center justify-between py-3.5" onPress={toUrl}>
@@ -106,6 +110,7 @@ const OrdersInfo = () => {
               if (!item.show) {
                 return null;
               }
+
 
               return (<View key={index} className="flex-row  items-center justify-between py-1">
                 <Text className="text-xs font-light text-[#ffffff7f]">{item.label}</Text>

@@ -44,10 +44,20 @@ export const getDynamicInfo = async (params: getDynamicInfoIParams) => {
 };
 
 //新增报名
-export const signUp = async (id: string) => {
+export const signUp = async (params: any) => {
   const { data } = await service({
-    url: `/operation/dynamicState/saveActivity/signUp/${id}`,
+    url: '/consumption/customerActivity/signUp',
     method: 'POST',
+    data:params,
+  });
+  return data;
+};
+
+/* 用户是否已经报名 */
+export const isAlreadySignUp = async (id: string) => {
+  const { data } = await service({
+    url: `/consumption/customerActivity/isAlreadySignUp/${id}`,
+    method: 'get',
   });
   return data;
 };

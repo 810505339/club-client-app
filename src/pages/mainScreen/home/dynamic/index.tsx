@@ -1,9 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import BaseLayout from '@components/baselayout';
-import { View, Text, Image, ImageSourcePropType, ImageBackground, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ImageBackground, TouchableOpacity } from 'react-native';
 import { TabsProvider, Tabs, TabScreen } from 'react-native-paper-tabs';
 import { ScreenNavigationProp } from '@router/type';
-import { useImmer } from 'use-immer';
+
 import { BlurView } from '@react-native-community/blur';
 
 import useGetDynamicType from './hooks/useGetDynamicType';
@@ -140,7 +140,7 @@ const Dynamic = () => {
   // });
 
 
-  return (<BaseLayout showNoMore={dynamicTypeList?.length === 1} source={false}>
+  return (<BaseLayout showNoMore={dynamicTypeList?.length === 1} >
     {storeId && dynamicTypeList?.length >= 2 && <TabsProvider
       defaultIndex={0}
     // onChangeIndex={handleChangeIndex} optional

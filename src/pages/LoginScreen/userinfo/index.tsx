@@ -90,7 +90,7 @@ const UserInfo = () => {
       const { data: userInfo } = await editUserInfoApi({ avatarFileId: id, nickname, birthday: formatDay });
       if (userInfo.data) {
         //修改用户信息成功
-        navigation.navigate('HomeTab');
+        navigation.navigate('HomeTabs');
       }
 
     } catch (error) {

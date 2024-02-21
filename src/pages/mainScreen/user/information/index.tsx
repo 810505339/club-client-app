@@ -5,7 +5,7 @@ import { getBalanceInfo, balanceDetailPage } from '@api/balance';
 import { RefreshControl, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
-import { useImmer } from 'use-immer';
+
 
 
 type IListHeaderProps = {

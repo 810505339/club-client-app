@@ -295,9 +295,9 @@ const FightwineDetail = () => {
       confirmText: '确定',
     },
   });
-  const userInfoHooks = useUserInfo();
+  const { userInfoStorage } = useUserInfo();
 
-  const { userId, userSig, userInfo } = userInfoHooks;
+  const { userId, userSig, userInfo } = userInfoStorage;
 
 
   const { res, status, dialog } = allData;
@@ -480,7 +480,7 @@ const FightwineDetail = () => {
             // userID: userId,
             conversationID: `c2c_${res.id}`,
             showName: '群聊',
-            groupID:res.id,
+            groupID: res.id,
             type: 2,
             initialMessageList: [],
             unMount: (message: V2TimMessage[]) => { },

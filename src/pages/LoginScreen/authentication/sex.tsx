@@ -4,8 +4,6 @@ import { Button, Text } from 'react-native-paper';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withRepeat, withSequence, withSpring, withTiming } from 'react-native-reanimated';
 import { useEffect } from 'react';
-import { useCameraPermission } from 'react-native-vision-camera';
-import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNavigationProp } from 'router/type';
 

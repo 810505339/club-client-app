@@ -72,7 +72,7 @@
     "react-native-uuid": "^2.0.1",
     "react-native-vector-icons": "^9.2.0",
     "react-native-video": "^5.2.1",
-    "react-native-vision-camera": "^3.8.2",
+    "react-native-vision-camera": "^3.9.0",
     "runes": "^0.4.3",
     "use-immer": "^0.9.0",
     "uuid": "^9.0.1",

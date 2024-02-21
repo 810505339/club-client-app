@@ -84,7 +84,7 @@ export interface EditSelfParams {
  */
 export const editUserInfoApi = (data: EditSelfParams) => {
 	return service({
-		url: '/admin/customer/edit-self',
+		url: '/consumption/customer/edit-self',
 		method: 'put',
 		data,
 	});

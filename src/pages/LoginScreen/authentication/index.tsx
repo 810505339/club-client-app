@@ -37,7 +37,7 @@ const Authentication = () => {
       });
       return;
     }
-    console.log(1);
+
 
     navigation.navigate('AuthenticationCamera');
   };

@@ -27,11 +27,11 @@ export const TUIMessageList = (props: TUIMessageListProps) => {
     return (<>
 
       <MessageElement message={item} />
-    </>);
+    </>)
   };
 
   const getMessageIdentifier = (message: V2TimMessage) => {
-
+  
 
     return `${message?.msgID} - ${message?.timestamp} - ${message?.seq} -${message?.id} -${message?.status}`;
   };
@@ -48,7 +48,7 @@ export const TUIMessageList = (props: TUIMessageListProps) => {
     const submition = Keyboard.addListener('keyboardWillShow', callback);
     return () => {
       try {
-        submition.remove();
+        Keyboard.removeSubscription(submition);
       } catch (error) {
         console.log(error);
       }

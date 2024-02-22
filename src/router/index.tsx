@@ -14,6 +14,7 @@ import LoginGroup from './LoginGroup';
 import Homegroup from './homegroup';
 import UserGroup from './usergroup';
 import FightGroup from './fightgroup';
+import DemoGroup from './DemoGroup';
 
 
 import BlurviewDEmo from '@pages/demoScreen/blurview';
@@ -44,6 +45,7 @@ const AppNavigator = () => {
         {Homegroup()}
         {UserGroup()}
         {FightGroup()}
+
         <Stack.Screen
           name="HomeTabs"
           component={HomeTabs}

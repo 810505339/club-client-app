@@ -472,7 +472,9 @@ const FightwineDetail = () => {
 
 
       const loginRes = await TencentImSDKPlugin.v2TIMManager.login(userId, userSig);
-      console.log(res.id, 'groupID');
+      console.log(userId, userSig, 'loginRes');
+
+
 
       if (loginRes.code == 0) {
         navigation.navigate('Chat', {

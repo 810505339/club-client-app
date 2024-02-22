@@ -14,12 +14,13 @@ import LoginGroup from './LoginGroup';
 import Homegroup from './homegroup';
 import UserGroup from './usergroup';
 import FightGroup from './fightgroup';
+import DemoGroup from './DemoGroup';
 
 
 import BlurviewDEmo from '@pages/demoScreen/blurview';
 import CouponsModal from '@pages/mainScreen/user/coupons/modal';
 
-const initialRouteName: keyof RootStackParamList = 'HomeTabs';
+const initialRouteName: keyof RootStackParamList = 'DemoLogin';
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 export const Stack = createStackNavigator<RootStackParamList>();
 const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: DefaultTheme });
@@ -33,24 +34,25 @@ const AppNavigator = () => {
         // animation: 'none',
       }}>
 
-        <Stack.Screen name="Demo" component={Demo} />
+        {/* <Stack.Screen name="Demo" component={Demo} />
         <Stack.Screen name="IM" component={IM} />
         <Stack.Screen name="Chat" component={Chat} />
         <Stack.Screen name="Animated" component={AnimatedScreen} />
         <Stack.Screen name="Carouseldemo" component={Carouseldemo} />
-        <Stack.Screen name="BlurviewDEmo" component={BlurviewDEmo} />
+        <Stack.Screen name="BlurviewDEmo" component={BlurviewDEmo} /> */}
 
-        {LoginGroup()}
+        {/* {LoginGroup()}
         {Homegroup()}
         {UserGroup()}
-        {FightGroup()}
-        <Stack.Screen
+        {FightGroup()} */}
+        {DemoGroup()}
+        {/* <Stack.Screen
           name="HomeTabs"
           component={HomeTabs}
           options={{ headerShown: false }}
         />
 
-        <Stack.Screen name="CouponsModal" component={CouponsModal} options={{ presentation: 'modal' }} />
+        <Stack.Screen name="CouponsModal" component={CouponsModal} options={{ presentation: 'modal' }} /> */}
 
       </Stack.Navigator>
     </NavigationContainer>

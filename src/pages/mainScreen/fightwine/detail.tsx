@@ -340,20 +340,28 @@ const FightwineDetail = () => {
       const { userId, userSig } = userInfo;
 
       const loginRes = await TencentImSDKPlugin.v2TIMManager.login(userId, userSig);
-      console.log(res.id, 'groupID');
+      console.log(userId, userSig, 'loginRes');
+
+
 
       if (loginRes.code == 0) {
-        navigation.navigate('Chat', {
-          conversation: {
-            // userID: userId,
-            conversationID: `c2c_${123123}`,
-            showName: '群聊',
-            groupID: res.id,
-            type: 2,
-            initialMessageList: [],
-            unMount: (message: V2TimMessage[]) => { },
-          },
-        });
+        // //获取指定会话
+        // const getConversationtRes = await TencentImSDKPlugin.v2TIMManager
+        //   .getConversationManager()
+        //   .getConversation('group_PS20240207000008');
+        // console.log(getConversationtRes, 'getConversationtRes');
+
+        // navigation.navigate('Chat', {
+        //   conversation: {
+        //     conversationID: 'group_PS20240207000008',
+        //     showName: '群聊',
+        //     groupID: 'PS20240207000008',
+        //     type: 2,
+        //     initialMessageList: [],
+        //     unMount: (message: V2TimMessage[]) => { },
+        //   },
+        // });
+
       }
     };
 

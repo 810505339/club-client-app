@@ -1,17 +1,14 @@
 
-import React, { useEffect } from 'react';
-import { View } from 'react-native';
-import type { V2TimMessage } from 'react-native-tim-js';
+import React, {useEffect} from 'react';
+import {View} from 'react-native';
+import type {V2TimMessage} from 'react-native-tim-js';
 
-import { TUIChat } from '@TUIKit/components/TUIChat/index';
+import {TUIChat} from '@TUIKit';
 
-// type Props = NativeStackScreenProps<RootStackParamList, 'Chat'>;
 
-function ChatScreen({ route, navigation }: any) {
-  const { conversation, userID, unMount, initialMessageList } = route.params;
 
-  console.log(userID, 'userID');
-
+ function DemoChat({route, navigation}: any) {
+  const {conversation, userID, unMount, initialMessageList} = route.params;
   useEffect(() => {
     navigation.setOptions({
       title: conversation.showName ?? '',
@@ -30,7 +27,7 @@ function ChatScreen({ route, navigation }: any) {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <TUIChat
         conversation={conversation}
         loginUserID={userID}
@@ -44,4 +41,4 @@ function ChatScreen({ route, navigation }: any) {
 }
 
 
-export default ChatScreen;
+export  default DemoChat;

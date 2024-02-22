@@ -7,7 +7,7 @@ import React from 'react';
 import RenderHtml from 'react-native-render-html';
 import { useImmer } from 'use-immer';
 import { useRequest } from 'ahooks';
-import { getDynamicInfo, signUp } from '@api/dynamic';
+import { getDynamicInfo, isAlreadySignUp, signUp } from '@api/dynamic';
 import { RootStackParamList, ScreenNavigationProp } from '@router/type';
 import { useTranslation } from 'react-i18next';
 
@@ -38,17 +38,38 @@ const DynamicInfo = () => {
       },
     });
   };
+  const { data: application } = useRequest(() => isAlreadySignUp(id));
   const { data } = useRequest(() => getDynamicInfo({ id: id }));
+  console.log(application, 'application');
 
-  const { runAsync } = useRequest(() => signUp(id), {
+  const { runAsync } = useRequest(() => signUp({
+    activityId: id,
+  }), {
     debounceWait: 300,
     manual: true,
     debounceLeading: true,
     debounceTrailing: false,
   });
+  /* 报名 */
+  async function handleSignUp() {
+    const { data } = await runAsync();
+    console.log(data, 'data');
 
+  }
 
   const isFull = data?.data?.activitySignUpNumber == data?.data?.activityPersonNumber;
+  const isApplication = application?.data;/* 是否已经报名 */
+
+  const RenderBtn = () => {
+    if (isFull) {
+      return <Button className=" bg-[#EE2737FF] flex-auto mr-2" mode="elevated" textColor="#0C0C0CFF" onPress={submit} disabled={isFull} > {isFull ? t('dynamic.info.btn2') : t('dynamic.info.btn1')}</Button>;
+    }
+    if (isApplication) {
+      return <Button className=" bg-[#EE2737FF] flex-auto mr-2" mode="elevated" textColor="#0C0C0CFF" onPress={submit} disabled={isApplication} > {isApplication ? t('dynamic.info.btn2') : t('dynamic.info.btn1')}</Button>;
+    }
+    return <Button className=" bg-[#EE2737FF] flex-auto mr-2" mode="elevated" textColor="#0C0C0CFF" onPress={submit}> {t('dynamic.info.btn1')}</Button>;
+  };
+
 
   const RenderList = ({ item }) => {
     const { activityTime, activityPlace, amount, useOfExpenses, activityPersonNumber, activitySignUpNumber, showOrNotPersonNumber } = item;
@@ -169,7 +190,7 @@ const DynamicInfo = () => {
       data?.data?.whetherSignUp == '1' && <View className="h-14 px-5">
         <Divider />
         <View className="flex-row items-center">
-          <Button className=" bg-[#EE2737FF] flex-auto mr-2" mode="elevated" textColor="#0C0C0CFF" onPress={submit} disabled={isFull} > {isFull ? t('dynamic.info.btn2') : t('dynamic.info.btn1')}  </Button>
+          <RenderBtn />
           <IconButton icon="upload" size={22} mode="contained" containerColor={'#EE2737FF'} iconColor={'#1A1311FF'} onPress={onShare} />
         </View>
       </View>
@@ -192,7 +213,7 @@ const DynamicInfo = () => {
           </View>
           <View className="flex-row justify-around items-center  w-full px-5 pb-5 ">
             <Button className="bg-transparent flex-1 mr-5" mode="outlined" labelStyle={{ fontWeight: 'bold' }} textColor="#ffffffbf" onPress={hideModal}>{t('common.btn1')}</Button>
-            <Button className="bg-[#EE2737FF] flex-1" textColor="#000000FF" labelStyle={{ fontWeight: 'bold' }} mode="contained" onPress={async () => await runAsync()} >{t('common.btn2')}</Button>
+            <Button className="bg-[#EE2737FF] flex-1" textColor="#000000FF" labelStyle={{ fontWeight: 'bold' }} mode="contained" onPress={async () => await handleSignUp()} >{t('common.btn2')}</Button>
           </View>
         </View>
       </Modal>

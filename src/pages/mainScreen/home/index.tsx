@@ -59,6 +59,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
 
+    console.log(data.id,'data.id');
 
     if (data.id) {
       getcarouselListApi();

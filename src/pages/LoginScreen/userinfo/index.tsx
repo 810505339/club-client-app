@@ -1,7 +1,7 @@
 import BaseLayout from '@components/baselayout';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { View, Image, Pressable, TouchableWithoutFeedback, NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
+import { View, Image, Pressable, TouchableWithoutFeedback, NativeSyntheticEvent, TextInputFocusEventData, ImageSourcePropType } from 'react-native';
 import { IconButton, Button, Text, TextInput, TouchableRipple } from 'react-native-paper';
 import { Asset, launchImageLibrary } from 'react-native-image-picker';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
@@ -12,13 +12,16 @@ import { updateFile } from '@api/common';
 import Toast from 'react-native-toast-message';
 import { editUserInfoApi } from '@api/login';
 import { useNavigation } from '@react-navigation/native';
-import { ScreenNavigationProp } from '@router/type';
+import { RootStackParamList } from '@router/type';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useRequest } from 'ahooks';
+import { detailsById } from '@api/user';
 
 const bgImage = require('@assets/imgs/login/login-register-bg.png');
 
 
 const UserInfo = () => {
-  const navigation = useNavigation<ScreenNavigationProp<'HomeTab'>>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   //选择头像
   const [selectImage, setSelectImage] = useState<Asset>({ uri: '' });
   //选择日期
@@ -28,6 +31,26 @@ const UserInfo = () => {
   });
   const formatDay = dayjs(dateTimer.date).format('YYYY-MM-DD');
   const [nickname, setNickname] = useState('');
+  /* 是否选择头像  */
+  const [isChanged, setIsChanged] = useState(false);
+
+  useRequest(detailsById, {
+    onSuccess: (res) => {
+      console.log(res, 'res');
+      const _data = res.data;
+      if (res.success) {
+        console.log(_data.avatarUrl);
+
+        setSelectImage({ uri: _data.avatarUrl });
+        setNickname(_data.nickname);
+        setdateTimer(draft => {
+          draft.date = dayjs(_data.birthday).toDate();
+        });
+      }
+
+    },
+  });
+
 
   const onChange = (event: DateTimePickerEvent, selectDate?: Date) => {
     const currentDate = selectDate || dateTimer.date;
@@ -55,16 +78,19 @@ const UserInfo = () => {
     }
 
     try {
-      const { data } = await uploadImage(selectImage);
-      if (data.success) {
-        console.log(data, 'uploadImage');
-        console.log(data, 'uploadImage');
-        const { data: userInfo } = await editUserInfoApi({ avatarFileId: data.data.id, nickname, birthday: formatDay });
-        if (userInfo.data) {
-          //修改用户信息成功
-          navigation.navigate('HomeTab');
+      let id;
+      if (isChanged) {
+        const { data } = await uploadImage(selectImage);
+        if (data.success) {
+          console.log(data, 'uploadImage');
+          console.log(data, 'uploadImage');
+          id = data.data.id;
         }
-
+      }
+      const { data: userInfo } = await editUserInfoApi({ avatarFileId: id, nickname, birthday: formatDay });
+      if (userInfo.data) {
+        //修改用户信息成功
+        navigation.navigate('HomeTabs');
       }
 
     } catch (error) {
@@ -85,12 +111,15 @@ const UserInfo = () => {
 
     if (response.didCancel) {
       console.log('User cancelled image picker');
+      setIsChanged(false);
     } else if (response.errorMessage) {
       console.log('ImagePicker Error: ', response.errorMessage);
+      setIsChanged(false);
     } else {
       if (response.assets) {
 
         setSelectImage(response.assets[0]);
+        setIsChanged(true);
       }
 
       // You can now use the chosen image as an avatar
@@ -129,7 +158,8 @@ const UserInfo = () => {
 
   />);
 
-  const btnRender = (<Image source={{ uri: selectImage!.uri }} className="h-24 w-24  rounded-full" />);
+  const btnRender = (<Image source={selectImage} className="h-24 w-24  rounded-full border border-red-500" />);
+
 
 
 
@@ -139,7 +169,7 @@ const UserInfo = () => {
         <View>
           <Text className="mb-2">您的头像</Text>
           <Pressable onPress={handleChooseImage} >
-            {selectImage!.uri ? btnRender : imgRender}
+            {selectImage?.uri ? btnRender : imgRender}
           </Pressable>
         </View>
         <View className="mt-10">

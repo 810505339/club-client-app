@@ -10,91 +10,38 @@ import { Image, View } from 'react-native';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 
 
-const image = 'https://avatars.githubusercontent.com/u/15199031?v=4';
+
 
 const DemoScreen = () => {
-  const navigation = useNavigation<ScreenNavigationProp<'AuthenticationFacestatus'>>();
-  const [base64Data, setbase64Data] = useState(image);
 
-  async function getImage() {
-    // const imageResponse = await fetch(`file://${image}`);
-    const imageResponse = await fetch(`${image}`);
-    const blobData = await imageResponse.blob();
-    const base64Data = await blobToBase64(blobData);
-    setbase64Data(base64Data);
-    try {
-      const { data } = await checkFace({ picBase64: base64Data as string });
-      console.log(data);
-      navigation.navigate('AuthenticationFacestatus', {
-        status: data.success ? 1 : 0,
-      });
+  const navigation = useNavigation();
 
-    } catch (error) {
 
-    }
-
-  }
-
-  function blobToBase64(blob: Blob) {
-    return new Promise((resolve, _) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.readAsDataURL(blob);
+  function toChat() {
+    navigation.navigate('Chat', {
+      conversation: {
+        // userID: userId,
+        conversationID: `c2c_${1755121255683485697}`,
+        showName: '群聊',
+        groupID: 1755121255683485697,
+        type: 2,
+        initialMessageList: [],
+        unMount: (message: V2TimMessage[]) => { },
+      },
     });
   }
 
 
   return (
     <BaseLayout>
-
-      <TestDrawer />
-      <Button onPress={getImage}>上传人脸</Button>
-      <Image source={{ uri: base64Data }} className="h-80" />
+      <Button onPress={toChat}>上传人脸</Button>
     </BaseLayout>
   );
 };
 
 
 
-const TestDrawer = () => {
-  const ref = useRef<BottomSheetModalMethods>(null);
-  const handleClick = () => {
-    console.log(ref.current);
-    ref.current?.present();
-  };
-  // renders
-  const renderFooter = useCallback(
-    props => (
-      <BottomSheetFooter {...props} bottomInset={24}>
-        <View >
-          <Text>Footer</Text>
-        </View>
-      </BottomSheetFooter>
-    ),
-    []
-  );
-  return <View>
-    <Button onPress={handleClick}>弹窗</Button>
-    <BottomSheetModal
-      ref={ref}
-      enablePanDownToClose
-      snapPoints={['50%']}
-      keyboardBlurBehavior="restore"
-      enableContentPanningGesture={false}
-      handleHeight={0}
-      handleComponent={null}
-      backgroundStyle={{
 
-      }}
-      style={{ borderRadius: 20, overflow: 'hidden' }}
-      footerComponent={renderFooter}
-    >
-      <View>
-        <Text>你好</Text>
-      </View>
-    </BottomSheetModal>
-  </View>;
-};
 
 
 export default DemoScreen;

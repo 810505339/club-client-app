@@ -12,7 +12,7 @@ const toastConfig:ToastConfig = {
   */
   success: (props) => (
     <View
-      {...props}
+
       className="  bg-slate-800   bottom-0 py-2 px-4 rounded-3xl"
 
     >

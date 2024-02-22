@@ -20,6 +20,7 @@ export interface CheckFaceRes {
  * @param {string} params.picBase64 图片base64
  * @returns
  */
-export function checkFace(params: CheckFaceParams): Promise<CheckFaceRes> {
-  return service.post('/admin/customer/checkFace', params);
+export async function checkFace(params: CheckFaceParams): Promise<CheckFaceRes> {
+  const { data } = await service.post('consumption/customer/checkFace', params);
+  return data;
 }

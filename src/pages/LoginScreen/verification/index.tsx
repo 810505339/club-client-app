@@ -6,8 +6,8 @@ import BaseLayout from '@components/baselayout';
 import { useCountdown } from '@hooks/useCountdown';
 import { useCallback, useEffect, useState } from 'react';
 import VerificationCodeField from './component/VerificationCodeField';
-import {  loginApi, sendYzmApi } from '@api/login';
-import { getGenericPassword } from 'react-native-keychain';
+import { loginApi, sendYzmApi } from '@api/login';
+
 
 const bgImage = require('@assets/imgs/login/login-register-bg.png');
 
@@ -30,11 +30,6 @@ const Verification = () => {
 
   };
 
-  const test = async () => {
-    const data = await getGenericPassword();
-    console.log(data);
-
-  };
 
   const codeChange = useCallback((value: string) => {
     // setCode(value);
@@ -44,18 +39,23 @@ const Verification = () => {
     try {
 
       const data = await loginApi({ code, mobile });
-      console.log(data,'handleLogin');
+      console.log(data, 'handleLogin');
+      console.log(data.setPersonalInfo);
+
 
       //没有人脸去人脸识别
-      if (!data.checkFace) {
+      if (!data?.user_info?.checkFace) {
         navigation.navigate('AuthenticationSex');
         return;
       }
 
       //设置信息
-      if (!data.setPersonalInfo) {
+      if (!data?.user_info?.setPersonalInfo) {
+        navigation.navigate('AuthenticationSex');
         return;
       }
+
+      navigation.navigate('HomeTabs');
     } catch (err) {
 
     }
@@ -70,14 +70,14 @@ const Verification = () => {
   const ResendRender = (
     <Text className="text-center text-[#ffffff7f]">
       没收到验证码？
-      <Text className="text-white font-semibold" onPress={test}>
+      <Text className="text-white font-semibold" onPress={sendVerification}>
         重新发送
       </Text>
     </Text>
   );
 
   const CountdownRender = (
-    <Text className="text-center text-[#ffffff7f] font-semibold" onPress={sendVerification}>
+    <Text className="text-center text-[#ffffff7f] font-semibold" >
       <Text className="text-[#EE2737]">{count}秒</Text>后重试
     </Text>
   );

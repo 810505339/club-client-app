@@ -22,11 +22,11 @@ export const getOrderDetail = async (orderId: string) => {
 //支付（临时）
 export const tempPay = async (orderId: string) => {
   return service({
-    url: `/consumption/order/tempPay`,
+    url: '/consumption/order/tempPay',
     method: 'post',
-    data:{
-      orderId
-    }
+    data: {
+      orderId,
+    },
   });
 };
 
@@ -37,4 +37,14 @@ export const paySuccessPost = async (data: any) => {
     method: 'post',
     data,
   });
+};
+
+
+//取消订单
+export const cancelOrder = async (orderId: any) => {
+  const { data } = await service({
+    url: `/consumption/order/cancel/${orderId}`,
+    method: 'get',
+  });
+  return data;
 };

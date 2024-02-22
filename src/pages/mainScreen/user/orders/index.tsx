@@ -1,23 +1,92 @@
 import BaseLayout from '@components/baselayout';
-import { RefreshControl, View, TouchableOpacity, Image } from 'react-native';
-import { Text } from 'react-native-paper';
+import { View, TouchableOpacity, Image } from 'react-native';
+import { Button, Modal, Text } from 'react-native-paper';
 import { TabsProvider, Tabs, TabScreen } from 'react-native-paper-tabs';
-import Animated from 'react-native-reanimated';
+
 import { useImmer } from 'use-immer';
-import ListHeaderComponent from './components/ListHeaderComponent';
+
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNavigationProp } from '@router/type';
-import { useRequest } from 'ahooks';
-import { getOrderDetail, getOrderList, tempPay } from '@api/order';
+
+import { cancelOrder, getOrderDetail, getOrderList, tempPay } from '@api/order';
 import CustomFlatList from '@components/custom-flatlist';
-import { FC } from 'react';
+import { FC, memo, useCallback, useRef } from 'react';
 import { fileStore } from '@store/getfileurl';
 import { useTranslation } from 'react-i18next';
+import Dialog from '@components/dialog';
+/* 预定门票 */
+const card1Image = require('assets/imgs/base/card_1.png');
+/* 拼酒局 */
+const card2Image = require('assets/imgs/base/card_2.png');
+
+enum IOrderType {
+  拼酒局 = 'WINE_PARTY',
+  预定门票 = 'TICKET',
+  预定卡座 = 'BOOTH',
+  活动 = 'ACTIVITY',
+}
+
+enum IOrderStatus {
+  未支付 = 'NOT_PAY',
+  支付成功 = 's'
+}
+
+/* 订单图片 */
+const getImage = (orderType: IOrderType, img: string) => {
+  if (orderType === IOrderType.预定门票 || orderType === IOrderType.活动) {
+    return {
+      uri: img,
+    };
+  }
+  if (orderType === IOrderType.拼酒局) {
+    return card2Image;
+  }
+  if (orderType === IOrderType.预定卡座) {
+    return card1Image;
+  }
+};
+/* 根据不同的type获取OrderContext */
+const getOrderContext = (orderType:IOrderType) => {
+  
+};
 
 
-const Item: FC<any> = (props) => {
-  const { name, orderStatus, handleItemPress, orderType, createTime, originalAmount, picture } = props;
+const Item: FC<any> = memo((props) => {
+  const { name, orderStatus, handleItemPress, orderType, createTime, originalAmount, picture, cancel, toNext, orderId } = props;
   const img = fileStore.fileUrl + (picture?.fileName ?? '');
+
+  /*  */
+  const RenderOrderStatus = () => {
+    return <View className="py-2.5 mt-2.5 flex-row items-center justify-between">
+      <Text className="text-xs text-[#ffffff] ">
+        剩余
+        <Text className="text-[#EE2737FF]">1:29:56</Text>
+        可继续支付
+      </Text>
+      <View className="flex-row gap-2">
+        <Button mode="outlined" style={{
+          borderColor: '#ee2737',
+          height: 34,
+        }}
+          labelStyle={{ marginHorizontal: 10, fontSize: 12, marginVertical: 5 }}
+          onPress={() => cancel(orderId)}
+        >
+          取消订单
+        </Button>
+        <Button mode="outlined" textColor="#ffffff" style={{
+          height: 34,
+        }} labelStyle={{ marginHorizontal: 5, fontSize: 12, marginVertical: 5 }}
+          onPress={() => toNext(orderId)}>
+          继续支付
+        </Button>
+      </View>
+
+    </View>;
+  };
+
+
+
+
   return <TouchableOpacity onPress={() => handleItemPress(props)}>
     <View className="  bg-[#151313FF]  p-2.5   rounded-xl border  border-[#252525] m-2.5">
       <View className="flex-row items-center justify-between">
@@ -26,8 +95,8 @@ const Item: FC<any> = (props) => {
       </View>
 
       <View className="mt-2.5 flex-row">
-        <View className="w-24 h-14 bg-violet-500 rounded-md">
-          <Image source={{ uri: img }} />
+        <View className="w-24 h-14  rounded-md">
+          <Image source={getImage(orderType, img)} className="w-24 h-14  rounded-md" />
         </View>
         <View className="flex-auto ml-2.5 mr-5">
           <Text numberOfLines={2} className="text-[#ffffff] text-sm">{name}</Text>
@@ -35,26 +104,10 @@ const Item: FC<any> = (props) => {
         </View>
         <Text>${originalAmount}</Text>
       </View>
-      <View className="py-2.5 mt-2.5 flex-row items-center justify-between">
-        <Text className="text-xs text-[#ffffff] ">
-          剩余
-          <Text className="text-[#EE2737FF]">1:29:56</Text>
-          可继续支付
-        </Text>
-        <View className="flex-row">
-          <View className="w-16 border border-[#EE2737FF] py-2 px-1 rounded-2xl mr-2.5 items-center justify-center">
-            <Text className="text-[#EE2737FF] text-xs">取消订单</Text>
-          </View>
-          <View className="w-16 border border-[#ffffff] py-2 px-1 rounded-2xl items-center justify-center">
-            <Text className="text-[#ffffff] text-xs">继续支付</Text>
-          </View>
-        </View>
-
-      </View>
-
+      {orderStatus === IOrderStatus.未支付 && <RenderOrderStatus />}
     </View>
   </TouchableOpacity>;
-};
+});
 
 
 
@@ -72,6 +125,7 @@ const a = orderStatus.map(o => o.title);
 const Orders = () => {
 
   const navigation = useNavigation<ScreenNavigationProp<'OrdersInfo'>>();
+  const Dom = useRef();
   const { t } = useTranslation();
 
   const [data, setData] = useImmer({
@@ -88,41 +142,77 @@ const Orders = () => {
       },
       {
         title: '拼酒局',
-        orderType: 'WINE_PARTY',
+        orderType: IOrderType.拼酒局,
       },
       {
         title: '预定门票',
-        orderType: 'TICKET',
+        orderType: IOrderType.预定门票,
       },
       {
         title: '预定卡座',
-        orderType: 'BOOTH',
+        orderType: IOrderType.预定卡座,
+      },
+      {
+        title: '活动',
+        orderType: IOrderType.活动,
       },
 
     ],
+    visible: false,
+    selectOrderId: '0',
+
   });
+
+  /* 点击取消取消订单 */
+  const cancel = useCallback((orderId: string) => {
+    setData(draft => {
+      draft.visible = true;
+      draft.selectOrderId = orderId;
+    });
+  }, [data.selectOrderId]);
+  /* 点击继续支付 */
+  const toNext = useCallback((orderId: string) => {
+    handleItemPress({ orderId });
+  }, [navigation]);
+  /* 点击取消订单确定 */
+  const confirm = async () => {
+    const res = await cancelOrder(data.selectOrderId);
+    if (res.success) {
+
+      onDismiss();
+      Dom.current!.refreshData();
+    }
+
+  };
+  /* 点击取消订单取消 */
+  const onDismiss = () => {
+    setData(draft => {
+      draft.visible = false;
+    });
+  };
 
 
   const handleItemPress = async (item: any) => {
 
     const { data } = await getOrderDetail(item.orderId);
+    const img = fileStore.fileUrl + (item.picture?.fileName ?? '');
     console.log(data);
+
+
     navigation.navigate('OrdersInfo', {
       orderContext: [
         { label: t('orders.label8'), value: data.productName },
         { label: t('orders.label9'), value: data.productNum },
-        { label: t('orders.label2'), value: `${data.areaName}` },
+        { label: t('orders.label2'), value: data.areaName },
         { label: t('orders.label6'), value: data.latestArrivalTime },
 
       ],
-      // headerImg: card_2,
+      headerImg: getImage(item.orderType, img),
       submit: async () => {
         await tempPay(item.orderId);
       },
       storeId: item.storeId,
       amount: item.realAmount,
-      
-
     });
   };
   const handleChangeIndex = (index: number) => {
@@ -157,31 +247,24 @@ const Orders = () => {
             <View>
 
               {index === data.defaultIndex && <CustomFlatList
-                renderItem={(item) => <Item {...item} handleItemPress={handleItemPress} />}
+                renderItem={(item) => <Item {...item} handleItemPress={handleItemPress} cancel={cancel} toNext={toNext} />}
                 onFetchData={getOrderList}
                 params={{ orderType: orderType }}
                 keyExtractor={(item) => item.storeId}
+                ref={Dom}
               />}
             </View>
           </TabScreen>);
         })}
-        {/* <TabScreen label="全部">
-          <View className="bg-transparent">
-            <Animated.FlatList
-              ListHeaderComponent={<ListHeaderComponent list={data.types} tabIndex={data.typeIndex} />}
-              renderItem={({ item }) => renderItem({ item, handleItemPress })}
-              ListFooterComponent={<Text className="text-center pb-5">没有更多</Text>}
-              keyExtractor={item => item}
-              data={data.cells}
-              stickyHeaderIndices={[0]}
-              refreshControl={<RefreshControl refreshing={data.refreshing} onRefresh={onRefresh} />}
-            />
-          </View>
-        </TabScreen> */}
       </Tabs>
     </TabsProvider>
+    <Dialog visible={data.visible} confirm={confirm} onDismiss={onDismiss} >
+      <Text>是否取消订单?取消以后无法恢复</Text>
+    </Dialog>
   </BaseLayout>);
 };
+
+
 
 export default Orders;
 

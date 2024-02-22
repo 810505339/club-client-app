@@ -1,14 +1,13 @@
 import BaseLayout from '@components/baselayout';
-import { useRequest } from 'ahooks';
 import { getCustomerCoupon } from '@api/coupon';
-import { ImageBackground, RefreshControl, TouchableOpacity, View, useWindowDimensions, Animated } from 'react-native';
-import { Button, Checkbox, Text } from 'react-native-paper';
+import { ImageBackground, TouchableOpacity, View, useWindowDimensions, Animated } from 'react-native';
+import {  Checkbox, Text } from 'react-native-paper';
 
 import CustomFlatList from '@components/custom-flatlist';
 
 import { useTranslation } from 'react-i18next';
 import { TabView, SceneMap, SceneRendererProps, NavigationState } from 'react-native-tab-view';
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '@router/type';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -137,7 +136,7 @@ const CouponsModal = () => {
               className="flex-1"
               key={i}
               onPress={() => setIndex(i)}>
-              <Animated.Text className={'text-center font-bold text-sm'} style={{ opacity }}>{route.title}</Animated.Text>
+              <Animated.Text className={'text-center font-bold text-sm text-white'} style={{ opacity }}>{route.title}</Animated.Text>
             </TouchableOpacity>
           );
         })}

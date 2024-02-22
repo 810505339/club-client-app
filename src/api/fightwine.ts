@@ -99,4 +99,60 @@ export const myWinePartyApi = async (params: any) => {
   return res;
 };
 
+//加入酒局审批（我买单模式）
+export const joinApproval = async (data: any) => {
+  const { data: res } = await service({
+    url: '/consumption/wineParty/player/joinApproval',
+    method: 'put',
+    data,
+  });
+  return res;
+};
+//踢人（我买单模式）
+export const kickOut = async (data: any) => {
+  const { data: res } = await service({
+    url: '/consumption/wineParty/player/kickOut',
+    method: 'put',
+    data,
+  });
+  return res;
+};
 
+
+export const cancelWineParty = async (partyId: string) => {
+  const { data: res } = await service({
+    url: `/consumption/wineParty/cancel/${partyId}`,
+    method: 'put',
+  });
+  return res;
+};
+
+
+//退出酒局
+export const quitWineParty = async (partyId: any) => {
+  const { data: res } = await service({
+    url: `/consumption/wineParty/quit/${partyId}`,
+    method: 'put',
+  });
+  return res;
+};
+
+
+//检查是否需要锁局确认
+export const checkNeedLockConfirm = async(partyId: any) => {
+  const { data: res } = await service({
+    url: `/consumption/wineParty/checkNeedLockConfirm/${partyId}`,
+    method: 'get',
+  });
+  return res;
+};
+
+
+//确认锁局
+export const lockConfirm = async (partyId: any) => {
+  const { data: res } = await service({
+    url: `/consumption/wineParty/lockConfirm/${partyId}`,
+    method: 'put',
+  });
+  return res;
+};

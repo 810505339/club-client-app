@@ -46,8 +46,8 @@ const getImage = (orderType: IOrderType, img: string) => {
   }
 };
 /* 根据不同的type获取OrderContext */
-const getOrderContext = (orderType:IOrderType) => {
-  
+const getOrderContext = (orderType: IOrderType) => {
+  //todo
 };
 
 

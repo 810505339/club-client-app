@@ -34,18 +34,18 @@ const App = () => {
       ? { ...MD3DarkTheme, colors: colors }
       : { ...MD3LightTheme, colors: colors };
   return (
-
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <BottomSheetModalProvider>
-        <PaperProvider theme={paperTheme}>
-          <SafeAreaProvider>
-            <StatusBar backgroundColor="transparent" translucent={true} />
-            <AppNavigator />
-            <Toast config={toastConfig} bottomOffset={200} position="bottom"  />
-          </SafeAreaProvider>
-        </PaperProvider>
-      </BottomSheetModalProvider>
-    </GestureHandlerRootView>
+    <AppNavigator />
+    // <GestureHandlerRootView style={{ flex: 1 }}>
+    //   <BottomSheetModalProvider>
+    //     <PaperProvider theme={paperTheme}>
+    //       <SafeAreaProvider>
+    //         <StatusBar backgroundColor="transparent" translucent={true} />
+           
+    //         <Toast config={toastConfig} bottomOffset={200} position="bottom"  />
+    //       </SafeAreaProvider>
+    //     </PaperProvider>
+    //   </BottomSheetModalProvider>
+    // </GestureHandlerRootView>
   );
 };
 

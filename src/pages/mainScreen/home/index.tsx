@@ -45,7 +45,7 @@ const HomeScreen = () => {
   }
 
   async function getcarouselListApi() {
-    const res = await getcarouselList({ storeId: data.id, type: '0', limitNum: '5' });
+    const res = await getcarouselList({ storeId: data.id, limitNum: '5' });
     setData((draft: IData) => {
       draft.swiperList = res ?? [];
     });

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, useWindowDimensions } from 'react-native';
 import { useCameraDevice, Camera, CameraPosition } from 'react-native-vision-camera';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useAppState } from '@react-native-community/hooks';
@@ -9,6 +9,8 @@ import useUserInfo from '@hooks/useUserInfo';
 import Toast from 'react-native-toast-message';
 import { RootStackParamList } from 'router/type';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import BaseLayout from '@components/baselayout';
+import { useRequest } from 'ahooks';
 
 
 
@@ -27,6 +29,7 @@ const AuthenticationCamera = () => {
   const appState = useAppState();
   const [active, setActive] = useState(true);
   const { userInfoStorage, save } = useUserInfo();
+  const dimensions = useWindowDimensions();
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', () => {
       setActive(false);
@@ -35,7 +38,9 @@ const AuthenticationCamera = () => {
   }, [navigation]);
 
   const isActive = active && isFocused && appState === 'active';
-
+  const { runAsync,loading } = useRequest((picBase64) => checkFace({ picBase64 }), {
+    manual: true,
+  });
   /* 人脸识别成功 */
   const takeFaceSuccess = () => {
     const { userInfo } = userInfoStorage;/* 获取用户信息 */
@@ -59,9 +64,7 @@ const AuthenticationCamera = () => {
       const file = await blobToBase64(flieByBlob);
       console.log(file);
 
-      const { data } = await checkFace({
-        picBase64: file as string,
-      });
+      const { data } = await runAsync(file);
       if (data.success) {
         /*  */
         takeFaceSuccess();
@@ -87,6 +90,9 @@ const AuthenticationCamera = () => {
     setcameraPosition(cameraPosition == 'back' ? 'front' : 'back');
   };
 
+  console.log('渲染');
+
+
 
   if (!device) {
     return (<View className="flex-1">
@@ -102,11 +108,11 @@ const AuthenticationCamera = () => {
   }
 
 
-  return <View className="h-full w-full items-center justify-end">
+  return <BaseLayout className="h-full w-full justify-end" loading={loading}>
     {isActive && <Camera
       ref={camera}
 
-      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+      style={{ position: 'absolute', top: 0, left: 0, width: dimensions.width, height: '100%' }}
       //https://github.com/mrousavy/react-native-vision-camera/issues/1988  不然会崩溃
 
       key={device.id}
@@ -130,7 +136,7 @@ const AuthenticationCamera = () => {
       </TouchableOpacity>
     </View>
 
-  </View>;
+  </BaseLayout>;
 
 };
 

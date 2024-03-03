@@ -74,6 +74,7 @@
     "react-native-video": "^5.2.1",
     "react-native-vision-camera": "^3.9.0",
     "runes": "^0.4.3",
+    "tpns_rn_plugin": "^1.1.8",
     "use-immer": "^0.9.0",
     "uuid": "^9.0.1",
     "valtio": "^1.13.0"

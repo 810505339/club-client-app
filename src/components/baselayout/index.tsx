@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { ImageBackground, View, type ImageSourcePropType } from 'react-native';
 import { StatusBar } from 'react-native';
 import { Text } from 'react-native-paper';
+import Loading from './loading';
 const defaultBg = require('@assets/imgs/base/default-bg.png');
 
 type IProps = {
@@ -10,7 +11,7 @@ type IProps = {
   className?: string
   showAppBar?: boolean
   showNoMore?: boolean,
-  loading?: boolean
+  loading?: boolean,
 };
 
 const RendernoMoreData = () => {
@@ -26,7 +27,7 @@ const BaseLayout: FC<PropsWithChildren<IProps>> = ({ source = defaultBg, classNa
       {source && <ImageBackground source={source} resizeMode="cover" className="absolute left-0 right-0 bottom-0 -z-10 top-0" />}
       {showAppBar && <View style={{ paddingTop: 56 + StatusBar.currentHeight! }} />}
       {showNoMore ? <RendernoMoreData /> : children}
-
+      {loading && <Loading />}
     </View>
   );
 };

@@ -20,7 +20,7 @@ import DemoGroup from './DemoGroup';
 import BlurviewDEmo from '@pages/demoScreen/blurview';
 import CouponsModal from '@pages/mainScreen/user/coupons/modal';
 
-const initialRouteName: keyof RootStackParamList = 'HomeTabs';
+const initialRouteName: keyof RootStackParamList = 'AuthenticationCamera';
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 export const Stack = createStackNavigator<RootStackParamList>();
 const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: DefaultTheme });
@@ -40,12 +40,10 @@ const AppNavigator = () => {
         <Stack.Screen name="Animated" component={AnimatedScreen} />
         <Stack.Screen name="Carouseldemo" component={Carouseldemo} />
         <Stack.Screen name="BlurviewDEmo" component={BlurviewDEmo} />
-
         {LoginGroup()}
         {Homegroup()}
         {UserGroup()}
         {FightGroup()}
-
         <Stack.Screen
           name="HomeTabs"
           component={HomeTabs}

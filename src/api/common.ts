@@ -22,7 +22,7 @@ limitNum  条数,示例值(5)
 */
 export type IParams = {
 	storeId: string,
-	type: string,
+	type?: string,
 	limitNum?: string
 }
 

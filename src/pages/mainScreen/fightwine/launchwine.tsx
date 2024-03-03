@@ -14,6 +14,7 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@router/type';
 import useSelectShop from '@hooks/useSelectShop';
+import Toast from 'react-native-toast-message';
 
 type IItem = {
   label: string,
@@ -95,6 +96,13 @@ const LaunchWine = () => {
 
 
   const handleNext = () => {
+    if (data.partyName === '') {
+      Toast.show({
+        text1: '请输入酒局名称',
+      });
+      return;
+    }
+
     navigation.navigate('Booths', {
       partyName: data.partyName,
       areaId: data.areaId,

@@ -32,7 +32,7 @@ const Booths = () => {
     maleNum: 0,
     femaleNum: 0,
     autoLock: false,
-    visible: true,
+    visible: false,
     selectPackage: {},
 
   });
@@ -95,6 +95,11 @@ const Booths = () => {
     //   drinksMealId: data.selectPackage?.id,
     //   ...data,
     // });
+    if ((!data.maleNum) && (!data.femaleNum)) {
+      Toast.show({ text1: '请输入人数' });
+      return;
+    }
+
     const res = await calPayAmount({
       boothId: selectBooth?.boothId,
       partyMode: winePartyMode,
@@ -139,7 +144,7 @@ const Booths = () => {
         },
         useScope: 'WINE_PARTY', //使用范围
         winePartyMode: winePartyMode,
-        storeId:storeId,
+        storeId: storeId,
         amount: `${res.data.payAmount}`,
       });
     }

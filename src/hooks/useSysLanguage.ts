@@ -1,11 +1,8 @@
-import {useEffect} from 'react';
-import {getLocales} from 'react-native-localize';
-import {changeLanguage} from '@utils/i18next';
-
+import { useEffect } from 'react';
+import { changeLanguage } from '@utils/i18next';
 //自动转换语言
 export default function () {
-  const systemLanguage = getLocales()[0].languageCode;
   useEffect(() => {
-    changeLanguage(systemLanguage);
-  }, [systemLanguage]);
+    changeLanguage();
+  }, []);
 }

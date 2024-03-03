@@ -1,15 +1,18 @@
 import BaseLayout from '@components/baselayout';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useCallback, useMemo, useState } from 'react';
-import { Image, ImageBackground, RefreshControl, Text, TouchableOpacity, View } from 'react-native';
-import { Divider, List } from 'react-native-paper';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Image, ImageBackground, Pressable, RefreshControl, Text, TouchableOpacity, View } from 'react-native';
+import { Appbar, Divider, List } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import { UsertackParamList } from '@router/type';
 import CheckAuthLayout from '@components/baselayout/checkLayout';
 import { BlurView } from '@react-native-community/blur';
 import { useRequest } from 'ahooks';
 import { detailsById, mineInfo } from '@api/user';
+import CustomModal from '@components/custom-modal';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import useLanguageSelect from './hooks/useLanguageSelect';
 
 const bg1Icon = require('@assets/imgs/user/bg_1.png');
 const bg2Icon = require('@assets/imgs/user/bg_2.png');
@@ -18,6 +21,9 @@ const manIcon = require('@assets/imgs/user/man.png');
 const womanIcon = require('@assets/imgs/user/woman.png');
 const certifiedIcon = require('@assets/imgs/user/certified.png');
 const noCertifiedIcon = require('@assets/imgs/user/noCertified.png');
+const logoIcon = require('@assets/imgs/base/logo.png');
+const editIcon = require('@assets/imgs/user/edit.png');
+const languageIcon = require('@assets/imgs/user/language.png');
 
 const wait = (timeout: number) => {
   return new Promise(resolve => {
@@ -69,7 +75,8 @@ const ListHeader = ({ balancePress }: IListHeader) => {
             <Image source={isCertifiedIcon} className="w-4 h-4 absolute left-2" />
             <Text className=" text-xs pl-8 pr-2 text-white opacity-50">{isCertifieText}</Text>
           </View>
-          <View className=" h-6 rounded-xl items-end justify-center overflow-hidden">
+
+          {userInfo?.checkFace && <View className=" h-6 rounded-xl items-end justify-center overflow-hidden">
             <BlurView
               style={{ position: 'absolute', bottom: 0, left: 0, right: 0, top: 0 }}
               blurType="dark"
@@ -79,7 +86,8 @@ const ListHeader = ({ balancePress }: IListHeader) => {
             />
             <Image source={sexIcon} className="w-4 h-4 absolute left-2" />
             <Text className="text-xs pl-8 pr-2 text-white opacity-50">{sexText}</Text>
-          </View>
+          </View>}
+
 
 
         </View>
@@ -108,6 +116,13 @@ const ListHeader = ({ balancePress }: IListHeader) => {
 
 const HomeScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<UsertackParamList>>();
+
+  useEffect(() => {
+    navigation.setOptions({
+      header: () => <Header />,
+    });
+
+  }, [navigation]);
 
 
 
@@ -157,6 +172,29 @@ const HomeScreen = () => {
       />
     </Animated.View>
   </BaseLayout>);
+};
+
+
+
+const Header = () => {
+
+  const { bottomSheetModalRef, languageList, showLanguage,selectLanguage,selectValue } = useLanguageSelect();
+
+
+
+  return ((<Appbar.Header style={{ backgroundColor: 'transparent' }} className="flex-row items-center justify-between px-4  pb-4">
+    <Image source={logoIcon} />
+    <View className="flex-row items-center gap-x-4">
+      <Pressable>
+        <Image source={editIcon} />
+      </Pressable>
+      <Pressable onPress={showLanguage}>
+        <Image source={languageIcon} />
+      </Pressable>
+    </View>
+
+    <CustomModal ref={bottomSheetModalRef} data={languageList} selectValue={selectValue} headerText="选择语言" onPress={selectLanguage} snapPoints={['35%']} />
+  </Appbar.Header>));
 };
 
 

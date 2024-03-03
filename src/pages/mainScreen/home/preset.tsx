@@ -113,7 +113,7 @@ const Preset = () => {
       ticketId: data.ticketId, //门票id
       storeId: shop.select.id,
       amount: `${data.total}`,//需要支付多少钱
-      
+
     });
   };
 
@@ -148,7 +148,7 @@ const Preset = () => {
         <Panel className="mt-20">
           <View className="">
             <Text className="text-xs text-white font-semibold opacity-50">{t('common.label1')}</Text>
-            <TextInput mode="outlined" className="flex-auto bg-transparent mt-4" value={shopName} showSoftInputOnFocus={false} outlineStyle={{ borderRadius: 16 }} right={<TextInput.Icon icon="chevron-down" />} onPressIn={showShop} />
+            <TextInput mode="outlined" className="flex-auto bg-transparent mt-4" value={shopName} showSoftInputOnFocus={false} outlineStyle={{ borderRadius: 16 }} right={<TextInput.Icon icon="chevron-down" onPress={showShop} />} onPressIn={showShop} />
           </View>
           <View className="mt-7">
             <Text className="text-xs text-white font-semibold opacity-50">{t('common.label2')}</Text>

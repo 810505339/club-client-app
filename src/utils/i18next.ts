@@ -4,6 +4,8 @@ import storage from '@storage/index';
 import * as en from '@locales/en-US';
 import * as zh from '@locales/zh-CN';
 import { getLocales } from 'react-native-localize';
+import { loadLanguageStorage } from '@storage/language/action';
+
 
 const files = require.context('../pages', true, /i18n\/.*\.ts$/);
 let enTarget = en;
@@ -30,7 +32,7 @@ const resources: Resource = {
 };
 
 
-const lngKey = '@lng';
+
 const languageDetector = {
   type: 'languageDetector' as ModuleType,
   async: true,
@@ -38,13 +40,12 @@ const languageDetector = {
     // 获取上次选择的语言
 
 
-    const lng = await storage.load({ key: lngKey });
-    console.log('123123123213', lng);
-    if (lng === 'locale') {
-      callback(getSystemLanguage());
-    } else {
-      callback(lng);
-    }
+    // const lng = await storage.load({ key: lngKey });
+    // if (lng === 'locale') {
+    //   callback(getSystemLanguage());
+    // } else {
+    //   callback(lng);
+    // }
   },
 };
 
@@ -77,18 +78,19 @@ export const getSystemLanguage = (): string => {
  * 切换语言
  * @param lng
  */
-export const changeLanguage = async (lng?: string) => {
-  // 切换语言
+export const changeLanguage = async () => {
+  // 判断是否选择过语言
 
-  //todo 首次进入需要读取storage.load
-  await i18next.changeLanguage(lng === 'locale' ? getSystemLanguage() : lng);
-  // 持久化当前选择
-  storage.save({
-    key: lngKey,
-    data: {
-      lng: lng,
-    },
-  });
+  try {
+    const { language } = await loadLanguageStorage();
+    console.log(language);
+
+    await i18next.changeLanguage(language);
+  } catch (error) {
+    console.log(error);
+    await i18next.changeLanguage('en');
+  }
+
 };
 
 export default i18next;

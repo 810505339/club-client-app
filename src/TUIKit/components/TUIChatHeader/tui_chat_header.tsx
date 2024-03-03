@@ -17,7 +17,7 @@ interface TUIChatHeaderProps {
   rightComponent?: HeaderSubComponent;
   backgroundColor?: string;
 }
-
+/* 聊天的head */
 export const TUIChatHeader = (props: TUIChatHeaderProps) => {
   const { title, avatarUrl, centerComponent, leftComponent, rightComponent } =
     props;
@@ -37,6 +37,7 @@ export const TUIChatHeader = (props: TUIChatHeaderProps) => {
         zIndex: 100,
         borderBottomColor: theme.colors.grey5,
         paddingLeft: 20,
+        backgroundColor: theme.colors.white,
       }}
       leftComponent={{
         icon: 'arrow-back-ios',
@@ -45,14 +46,15 @@ export const TUIChatHeader = (props: TUIChatHeaderProps) => {
       }}
       centerComponent={{ text: title, style: styles.heading }}
       rightComponent={getRightComponent()}
-      backgroundColor={theme.colors.white}
+      backgroundColor={theme.colors.black}
+      placement="center"
     />
   );
 };
 
 const styles = StyleSheet.create({
   heading: {
-    color: 'black',
+    color: 'white',
     fontSize: 16,
   },
 });

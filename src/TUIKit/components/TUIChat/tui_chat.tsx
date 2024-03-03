@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@rneui/themed';
 import React, { Fragment, useCallback, useMemo, useRef, useState } from 'react';
-import { Animated, findNodeHandle, StyleSheet } from 'react-native';
+import { Animated, findNodeHandle, ImageBackground, StyleSheet } from 'react-native';
 import { View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import type { V2TimMessage } from 'react-native-tim-js';
@@ -47,8 +47,9 @@ import {
 import type { TUIChatProps } from '../../interface';
 import { MessageAvatar } from '../TUIMessage/element/message_avatar';
 import { ScreenHeight, ScreenWidth } from '@rneui/base';
+import { Text } from 'react-native-paper';
 // import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-
+const defaultBg = require('@assets/imgs/base/default-bg.png');
 export const TUIChat = (props: TUIChatProps) => {
   const {
     conversation: { showName, faceUrl },
@@ -231,11 +232,11 @@ const MessageViewWithInput = (props: TUIChatProps) => {
   return (
     <Fragment>
       <GestureDetector gesture={gesture}>
+        {/* 聊天的页面 */}
         <Animated.View
           style={[
             styles.fill,
             messageListContainerStyle,
-            { backgroundColor: 'white' },
           ]}
           ref={(ref: View | null | undefined) => (viewNode.current = ref)}
           onLayout={() => {
@@ -246,6 +247,7 @@ const MessageViewWithInput = (props: TUIChatProps) => {
             });
           }}
         >
+          {/* 聊天消息 */}
           <TUIMessageList
             MessageElement={messageItemOption?.ItemComponent ?? MessageElement}
             onLoadMore={onLoadMore}
@@ -265,6 +267,7 @@ const MessageViewWithInput = (props: TUIChatProps) => {
           />
         </Animated.View>
       </GestureDetector>
+      {/* 输入框tool */}
       <KeyboardInsetsView
         style={[mainStyle]}
         onKeyboard={keyboard.createCallback(driverState)}
@@ -322,7 +325,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: ScreenWidth,
     height: ScreenHeight,
-    backgroundColor: '#EDEDED',
+
   },
   fill: {
     flex: 1,

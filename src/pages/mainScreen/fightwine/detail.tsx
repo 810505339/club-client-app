@@ -481,7 +481,7 @@ const FightwineDetail = () => {
           conversation: {
             // userID: userId,
             conversationID: `c2c_${res.id}`,
-            showName: '群聊',
+            showName: res.partyName,
             groupID: res.id,
             type: 2,
             initialMessageList: [],
@@ -579,7 +579,7 @@ const FightwineDetail = () => {
       <ActivityIndicator color="#EE2737FF" />
     </View>;
   };
-  console.log(userInfoHooks, 'userInfo');
+
   /* 如果没有验证人脸 */
   if (!userInfo?.checkFace) {
     return <BaseLayout >

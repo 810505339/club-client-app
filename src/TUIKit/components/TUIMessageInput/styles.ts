@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   absolute: {
@@ -59,7 +59,7 @@ export const styles = StyleSheet.create({
     height: 25,
   },
   sendBtn: {
-    backgroundColor: '#147AFF',
+    backgroundColor: 'black',
     borderRadius: 3,
   },
 });

@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import type { V2TimMessage } from 'react-native-tim-js';
 
 import { TUIChat } from '@TUIKit/components/TUIChat/index';
+import BaseLayout from '@components/baselayout';
 
 // type Props = NativeStackScreenProps<RootStackParamList, 'Chat'>;
 
@@ -15,10 +16,7 @@ function ChatScreen({ route, navigation }: any) {
   useEffect(() => {
     navigation.setOptions({
       title: conversation.showName ?? '',
-      headerBackTitleVisible: false,
-      headerStyle: {
-        backgroundColor: '#EDEDED',
-      },
+      headerBackTitleVisible: true,
     });
   }, [conversation.showName, navigation]);
 
@@ -30,16 +28,19 @@ function ChatScreen({ route, navigation }: any) {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <TUIChat
-        conversation={conversation}
-        loginUserID={userID}
-        showChatHeader={false}
-        unMount={unMount}
-        initialMessageList={initialMessageList}
-        onMergeMessageTap={handleMergeMessageTap}
-      />
-    </View>
+    <BaseLayout >
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} >
+        <TUIChat
+          conversation={conversation}
+          loginUserID={userID}
+          showChatHeader={false}
+          unMount={unMount}
+          initialMessageList={initialMessageList}
+          onMergeMessageTap={handleMergeMessageTap}
+        />
+      </View>
+
+    </BaseLayout>
   );
 }
 

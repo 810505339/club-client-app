@@ -20,7 +20,7 @@ import DemoGroup from './DemoGroup';
 import BlurviewDEmo from '@pages/demoScreen/blurview';
 import CouponsModal from '@pages/mainScreen/user/coupons/modal';
 
-const initialRouteName: keyof RootStackParamList = 'AuthenticationCamera';
+const initialRouteName: keyof RootStackParamList = 'DemoIm';
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 export const Stack = createStackNavigator<RootStackParamList>();
 const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: DefaultTheme });

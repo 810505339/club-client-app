@@ -37,7 +37,7 @@ const Preset = () => {
   const navgation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { t } = useTranslation();
 
-  const { run, refresh } = useRequest(onSaleNum, {
+  const { run, refresh, loading } = useRequest(onSaleNum, {
     manual: true,
     onSuccess: (res) => {
 
@@ -120,8 +120,11 @@ const Preset = () => {
 
 
   useEffect(() => {
+    console.log(shop.select.id,time,data.selectAreaId);
 
     if (shop.select.id && time && data.selectAreaId) {
+      console.log('请求');
+
       run({
         'storeId': shop.select.id,
         'areaId': data.selectAreaId,
@@ -132,12 +135,11 @@ const Preset = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    shop.select.id,
     time,
     data.selectAreaId,
   ]);
 
-  return (<BaseLayout className="">
+  return (<BaseLayout className="" loading={loading}>
     <CustomModal ref={bottomSheetModalRef} data={snap.shopList} selectValue={shop.select.id} onPress={onPress} headerText="选择门店" snapPoints={['50%']} />
     <View className="flex-1">
       <View className="flex-1">

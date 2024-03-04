@@ -1,28 +1,52 @@
+import { uuid } from 'react-native-uuid';
 import service from './base';
 import { btoa } from 'js-base64';
 import { setGenericPassword } from 'react-native-keychain';
 import storage from '@storage/index';
 import { IM_KEY } from '@storage/shop/key';
+import * as CryptoJS from 'crypto-js';
+
+/**
+ *加密处理
+ */
+export function encryption(src: string, keyWord: string) {
+	const key = CryptoJS.enc.Utf8.parse(keyWord);
+	// 加密
+	var encrypted = CryptoJS.AES.encrypt(src, key, {
+		iv: key,
+		mode: CryptoJS.mode.CFB,
+		padding: CryptoJS.pad.NoPadding,
+	});
+	return encrypted.toString();
+}
+
 
 /**
  * https://www.ietf.org/rfc/rfc6749.txt
  * OAuth 协议 4.3.1 要求格式为 form 而不是 JSON 注意！
  */
 const FORM_CONTENT_TYPE = 'application/x-www-form-urlencoded';
+/* 手机验证码登录 */
 const BASICAUTH = 'app_customer_sms:app_customer_sms';
+/* 手机密码登录 */
+const BASICAUTH_PASSWORD = 'app_customer:app_customer';
 
 type IData = {
 	[key in string]: string
 }
 
-//登录
 
-export const loginApi = async ({ code, grant_type = 'mobile', scope = 'server', mobile }: IData) => {
-	const basicAuth = 'Basic ' + btoa(BASICAUTH);
+//登录 grant_type =mobile or password
+
+export const loginApi = async ({ code, grant_type = 'mobile', scope = 'server', mobile = undefined, password, username = undefined }: IData) => {
+	const basicAuth = grant_type === 'mobile' ? 'Basic ' + btoa(BASICAUTH) : 'Basic ' + btoa(BASICAUTH_PASSWORD);
+	let encPassword = grant_type === 'password' ? encryption(password, 'club.2023.09.01@') : undefined;
+
 	const { data } = await service({
 		url: '/auth/oauth2/token',
 		method: 'post',
-		params: { code: code, grant_type: grant_type, scope: scope, mobile: mobile },
+		params: { code: code, grant_type: grant_type, scope, mobile, username },
+		data: { password: encPassword },
 		headers: {
 			'content-Type': FORM_CONTENT_TYPE,
 			skipToken: true,

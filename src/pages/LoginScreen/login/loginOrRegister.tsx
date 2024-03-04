@@ -27,7 +27,10 @@ const LoginOrRegister = () => {
       Toast.show({ text1: '请勾选' });
       return;
     }
-    checked ? navigation.navigate('OldUser') : navigation.navigate('NewUser');
+    /* 密码登录 */
+    navigation.navigate('OldUser', {
+      phone: phone,
+    });
   }
 
   //

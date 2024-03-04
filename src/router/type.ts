@@ -14,7 +14,9 @@ export type RootStackParamList = {
   LoginOrRegister: undefined,
   Login: undefined,
   NewUser: undefined,
-  OldUser: undefined,
+  OldUser: {
+    phone: string
+  },
   Chat: any,
   Verification: {
     phone: string

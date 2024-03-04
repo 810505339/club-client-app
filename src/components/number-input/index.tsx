@@ -15,6 +15,10 @@ const NumberInput = (props: Props) => {
   const { min = 0, max = 9999999999999, num = 0, onChange, onVerify } = props;
   const [value, selectValue] = useState(num);
 
+  useEffect(()=>{
+    selectValue(num);
+  },[num]);
+
 
   const onMinus = () => {
     onChangeText(`${value - 1}`);

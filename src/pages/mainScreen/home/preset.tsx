@@ -139,6 +139,8 @@ const Preset = () => {
     data.selectAreaId,
   ]);
 
+  
+
   return (<BaseLayout className="" loading={loading}>
     <CustomModal ref={bottomSheetModalRef} data={snap.shopList} selectValue={shop.select.id} onPress={onPress} headerText="选择门店" snapPoints={['50%']} />
     <View className="flex-1">

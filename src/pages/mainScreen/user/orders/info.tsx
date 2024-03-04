@@ -8,7 +8,11 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack/lib/ty
 import { useEffect } from 'react';
 import { useRequest } from 'ahooks';
 import { discounts } from '@api/coupon';
-
+import { ORDERSATUS } from './type';
+import Dialog from '@components/dialog';
+import { cancelOrder } from '@api/order';
+import { useImmer } from 'use-immer';
+import Toast from 'react-native-toast-message';
 
 
 const Payment = [
@@ -28,6 +32,12 @@ const OrdersInfo = () => {
       console.log(res, '获取成功');
     },
   });
+
+  const [allData, setAllData] = useImmer({
+    visible: false,
+  });
+
+
 
 
 
@@ -58,8 +68,28 @@ const OrdersInfo = () => {
     });
   };
 
+  /* 点击取消订单确定 */
+  const confirm = async () => {
+    const res = await cancelOrder(route.params?.orderId);
+    if (res.success) {
+      onDismiss();
+      Toast.show({
+        text1: '取消成功',
+      });
+      navigation.goBack();
+    }
 
-  const { orderContext = [], headerImg, submit } = route?.params;
+  };
+
+  /* 点击取消订单取消 */
+  const onDismiss = () => {
+    setAllData(draft => {
+      draft.visible = false;
+    });
+  };
+
+
+  const { orderContext = [], headerImg, submit, orderStatus } = route?.params;
 
 
   const couponNum = route.params?.couponId ? 1 : 0;
@@ -70,6 +100,20 @@ const OrdersInfo = () => {
     { label: '优惠金额：', value: `-$ ${couponUnAmount}`, color: '#FF2C2CFF', show: route.params?.couponId },
     { label: '实付金额：', value: `$ ${amount}`, color: '#E6A055FF', show: true },
   ];
+
+  const Nav = () => {
+    if (orderStatus === ORDERSATUS.未支付 || orderStatus === undefined) {
+      const className = orderStatus === undefined ? 'px-4 py-2' : 'flex-row justify-around items-center';
+      return <View className={`${className} mt-2 h-14`}>
+        <Divider className="absolute top-0 left-0 right-0" />
+        {orderStatus === undefined && <Button mode={'elevated'} className="bg-[#EE2737FF]" textColor="#0C0C0CFF" onPress={() => submit(route.params?.couponId)}>提交订单</Button>}
+        {orderStatus != undefined && (<>
+          <Button mode={'elevated'} textColor="#ffffff" onPress={() => setAllData(draft => { draft.visible = true; })}>取消订单</Button>
+          <Button mode={'elevated'} className="bg-[#EE2737FF]" textColor="#0C0C0CFF">继续支付</Button>
+        </>)}
+      </View>;
+    }
+  };
 
   return <BaseLayout className="bg-[#0B0B0BE6]">
     <View className="relative">
@@ -95,14 +139,14 @@ const OrdersInfo = () => {
             })}
           </View>
           <Divider />
-          <TouchableOpacity className=" flex-row  items-center justify-between py-3.5" onPress={toUrl}>
+          {orderStatus === undefined && (<TouchableOpacity className=" flex-row  items-center justify-between py-3.5" onPress={toUrl}>
             <Text className="text-xs font-bold text-white">优惠券</Text>
             <View className="flex-row items-center justify-center">
               <Text >已选择<Text className="text-[#E6A055FF]"> {couponNum} </Text> 张优惠券
               </Text>
               <IconButton icon="chevron-right" size={14} className="w-5 h-3" />
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity>)}
           <Divider />
           <View className="mt-3">
             {payList.map((item, index) => {
@@ -118,7 +162,7 @@ const OrdersInfo = () => {
               </View>);
             })}
           </View>
-          <View className="mt-5">
+          {orderStatus === undefined && <View className="mt-5">
             <Text className="text-xs font-bold text-white pb-2.5">请选择支付方式</Text>
             <Divider />
             {Payment.map((item, index) => (
@@ -131,16 +175,19 @@ const OrdersInfo = () => {
                 <Divider />
               </View>
             ))}
-          </View>
+          </View>}
+
         </Panel>
       </View>
     </ScrollView>
-    <View className="flex-row justify-around items-center mt-2 h-14">
-      <Divider className="absolute top-0 left-0 right-0" />
-      <Button mode={'elevated'} className="bg-[#EE2737FF]" textColor="#0C0C0CFF" onPress={() => submit(route.params?.couponId)}>确定</Button>
-      <Button mode={'elevated'} textColor="#ffffff">取消订单</Button>
-      <Button mode={'elevated'} className="bg-[#EE2737FF]" textColor="#0C0C0CFF">继续支付</Button>
-    </View>
+
+    <Nav />
+
+    {orderStatus === ORDERSATUS.未支付 && <Dialog visible={allData.visible} confirm={confirm} onDismiss={onDismiss} >
+      <Text>是否取消订单?取消以后无法恢复</Text>
+    </Dialog>}
+
+
   </BaseLayout>;
 };
 

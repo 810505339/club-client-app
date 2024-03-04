@@ -52,7 +52,9 @@ export type UsertackParamList = {
     activityId?: string
     boothId?: string
     winePartyMode?: string
-    amount?: string
+    amount?: string,
+    orderStatus?: string, //订单状态
+    orderId?: string, //订单id
   },
   SystemMessage: undefined,
   SystemMessageInfo: {

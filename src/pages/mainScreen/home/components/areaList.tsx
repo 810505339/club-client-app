@@ -29,7 +29,7 @@ const AreaItem = (props: IProps) => {
     </View>
     <Text className="text-white text-xs font-semibold mt-2.5">{name}</Text>
     <Text className="opacity-50 text-white" style={{ fontSize: 10 }}>{beginTime} - {endTime}</Text>
-    <Text className="text-[#E6A055FF] text-xs font-semibold mt-1">$12.00</Text>
+    {/* <Text className="text-[#E6A055FF] text-xs font-semibold mt-1">$12.00</Text> */}
   </TouchableOpacity>);
 };
 

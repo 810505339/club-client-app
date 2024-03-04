@@ -214,6 +214,8 @@ const Orders = () => {
       },
       storeId: item.storeId,
       amount: item.realAmount,
+      orderStatus: item.orderStatus,
+      orderId: item.orderId,
     });
   };
   const handleChangeIndex = (index: number) => {

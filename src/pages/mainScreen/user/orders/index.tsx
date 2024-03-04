@@ -14,6 +14,7 @@ import { FC, memo, useCallback, useRef } from 'react';
 import { fileStore } from '@store/getfileurl';
 import { useTranslation } from 'react-i18next';
 import Dialog from '@components/dialog';
+import ListHeaderComponent from './components/ListHeaderComponent';
 /* 预定门票 */
 const card1Image = require('assets/imgs/base/card_1.png');
 /* 拼酒局 */
@@ -121,7 +122,7 @@ const orderStatus = [
   { title: '支付失败', type: 'PAY_FAIL' },
   { title: '已取消', type: 'PAY_CANCEL' },
 ];
-const a = orderStatus.map(o => o.title);
+const orderStatusTitle = orderStatus.map(o => o.title);
 const Orders = () => {
 
   const navigation = useNavigation<ScreenNavigationProp<'OrdersInfo'>>();
@@ -242,7 +243,7 @@ const Orders = () => {
 
         {data.tabs.map((tab, index) => {
           const orderType = data.tabs[index].orderType;
-          // <ListHeaderComponent list={a} tabIndex={data.typeIndex} />;
+          <ListHeaderComponent list={orderStatusTitle} tabIndex={data.typeIndex} />;
           return (<TabScreen label={tab.title} key={index} >
             <View>
 

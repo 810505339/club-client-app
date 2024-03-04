@@ -40,10 +40,10 @@ type IListHeader = {
 const ListHeader = ({ balancePress }: IListHeader) => {
   const { data } = useRequest(mineInfo);
   const { data: _userInfo } = useRequest(detailsById);
+  /* 用户信息 */
   const userInfo = _userInfo?.data;
   const info = data?.data;
-  console.log(data?.data, 'data');
-  console.log(userInfo, 'userInfo');
+
 
   const fontText = 'text-xs text-[#ffffff7f]';
   const box = 'items-center  h-28 pb-3 justify-end mb-2 relative';
@@ -59,7 +59,7 @@ const ListHeader = ({ balancePress }: IListHeader) => {
         {userInfo?.avatarUrl && <Animated.Image className={' w-24 h-24   rounded-full'} style={{ resizeMode: 'contain' }} source={{ uri: userInfo?.avatarUrl }} />}
       </View>
       <View className=" ml-5   flex-auto" >
-        <View><Text className="text-lg text-[#fff] font-bold">Romania Slovakiean</Text></View>
+        <View><Text className="text-lg text-[#fff] font-bold">{userInfo?.nickname}</Text></View>
         <View >
           <Text numberOfLines={1} ellipsizeMode="tail" className="text-white opacity-50">个性签名 {userInfo?.personalSignature}</Text>
         </View>
@@ -178,7 +178,7 @@ const HomeScreen = () => {
 
 const Header = () => {
 
-  const { bottomSheetModalRef, languageList, showLanguage,selectLanguage,selectValue } = useLanguageSelect();
+  const { bottomSheetModalRef, languageList, showLanguage, selectLanguage, selectValue } = useLanguageSelect();
 
 
 

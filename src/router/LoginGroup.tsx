@@ -16,7 +16,7 @@ import AuthenticationFacestatus from '@pages/LoginScreen/authentication/facestat
 
 const LoginGroup = () => {
 
-  return <Stack.Group screenOptions={{presentation:'modal'}}>
+  return <Stack.Group screenOptions={{ presentation: 'modal' }}>
     <Stack.Screen
       name="Login"
       options={{ headerShown: false }}
@@ -73,7 +73,7 @@ const LoginGroup = () => {
       name="UserInfo"
       component={UserInfo}
 
-      options={{ title: '输入验证码', headerShown: false }}
+      options={{ title: '用户信息' }}
     />
 
     {/* <Stack.Screen

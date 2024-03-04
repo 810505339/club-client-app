@@ -119,7 +119,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
     navigation.setOptions({
-      header: () => <Header />,
+      header: () => <Header navigation={navigation} />,
     });
 
   }, [navigation]);
@@ -176,16 +176,17 @@ const HomeScreen = () => {
 
 
 
-const Header = () => {
-
+const Header = ({ navigation }) => {
   const { bottomSheetModalRef, languageList, showLanguage, selectLanguage, selectValue } = useLanguageSelect();
 
-
+  function toUserInfo() {
+    navigation.navigate('UserInfo');
+  }
 
   return ((<Appbar.Header style={{ backgroundColor: 'transparent' }} className="flex-row items-center justify-between px-4  pb-4">
     <Image source={logoIcon} />
     <View className="flex-row items-center gap-x-4">
-      <Pressable>
+      <Pressable onPress={toUserInfo}>
         <Image source={editIcon} />
       </Pressable>
       <Pressable onPress={showLanguage}>

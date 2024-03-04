@@ -44,7 +44,7 @@ const UserInfo = () => {
         setSelectImage({ uri: _data.avatarUrl });
         setNickname(_data.nickname);
         setdateTimer(draft => {
-          draft.date = dayjs(_data.birthday).toDate();
+          draft.date = _data.birthday ? dayjs(_data.birthday).toDate() : new Date();
         });
       }
 
@@ -183,20 +183,14 @@ const UserInfo = () => {
           <TextInput className="bg-transparent" showSoftInputOnFocus={false} value={formatDay} onFocus={onFocus} />
 
         </View>
-        {/* <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} className=" h-32 mt-auto justify-start">
-        <Button
-            mode="outlined"
-            style={{
-              borderColor: '#FFFFFF',
-              borderRadius: 33,
-            }}
-            labelStyle={{ fontSize: 18, color: '#FFFFFF', fontWeight: '600' }}
-            contentStyle={{ height: 50 }}
-            onPress={handleNext}
-          >
-            完成
-          </Button>
-        </KeyboardAvoidingView> */}
+
+        <View className="mt-10">
+          <Text className="mb-2">你的个性签名</Text>
+          {dateTimer.show && <DateTimePicker onChange={onChange} value={dateTimer.date} />}
+
+          <TextInput className="bg-transparent" showSoftInputOnFocus={false} value={formatDay} onFocus={onFocus} />
+
+        </View>
         <View className="h-32 mt-auto  justify-start">
           <Button
             mode="outlined"

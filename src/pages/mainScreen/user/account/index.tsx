@@ -1,28 +1,40 @@
 import BaseLayout from '@components/baselayout';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RefreshControl, View } from 'react-native';
-import { Divider, List, Text } from 'react-native-paper';
+import { FlatList, RefreshControl, View } from 'react-native';
+import { Button, Divider, List, Text } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
-import { UsertackParamList } from '@router/type';
+import { RootStackParamList, UsertackParamList } from '@router/type';
 import { useImmer } from 'use-immer';
+import storage from '@storage/index';
 
 const Account = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<UsertackParamList>>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const [data, setData] = useImmer({
     refreshing: false,
-    list: [
+    info: [
       { id: 'AccountPhone', title: '手机', description: '0056-85649653' },
       { id: '1', title: '登录密码', description: '未设置' },
       { id: '2', title: '支付密码', description: '未设置' },
       { id: '3', title: '第三方账号绑定', description: '未设置' },
     ],
+    third: [
+      { id: 'AccountPhone', title: 'Apple ID', description: '0056-85649653' },
+      { id: '1', title: 'Google', description: '未设置' },
+      { id: '2', title: 'Facebook', description: '未设置' },
+      { id: '3', title: 'X', description: '未设置' },
+      { id: '4', title: 'WeChat', description: '未设置' },
+    ],
   });
 
-  const onRefresh = () => {
+  async function handleOut() {
+     //退出登录
+    await storage.clearMap();
+    await 
+    navigation.navigate('HomeTabs');
 
-  };
+  }
   const handleItemPress = (item) => {
     navigation.navigate(item.id);
   };
@@ -40,15 +52,29 @@ const Account = () => {
 
 
   return (<BaseLayout className="bg-[#0B0B0BFF]">
-    <Animated.View className={'mx-5 rounded-xl border border-[#ffffff19] mt-2.5'}>
-      <Animated.FlatList
-        ItemSeparatorComponent={() => <Divider className="text-[#ffffff19]" />}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        data={data.list}
-        refreshControl={<RefreshControl refreshing={data.refreshing} onRefresh={onRefresh} />}
-      />
-    </Animated.View>
+    <View className="p-2">
+      <Text className="pl-2 font-bold my-4">基础账号设置</Text>
+      <View className="rounded-xl border border-[#343434] bg-[#191919]">
+        <FlatList
+          data={data.info}
+          ItemSeparatorComponent={Divider}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem} />
+      </View>
+    </View>
+    <View className="p-2">
+      <Text className="pl-2 font-bold my-4">第三方账号绑定</Text>
+      <View className="rounded-xl border border-[#343434] bg-[#191919]">
+        <FlatList
+          data={data.third}
+          ItemSeparatorComponent={Divider}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem} />
+      </View>
+    </View>
+    <View className="p-5 flex-1 flex-row items-end">
+      <Button mode="outlined" className="flex-1" textColor="white" onPress={handleOut} >退出登录</Button>
+    </View>
   </BaseLayout>);
 };
 

@@ -1,6 +1,5 @@
 import BaseLayout from '@components/baselayout';
-import { RouteProp, useRoute } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { View, Image, Pressable, TouchableWithoutFeedback, NativeSyntheticEvent, TextInputFocusEventData, ImageSourcePropType } from 'react-native';
 import { IconButton, Button, Text, TextInput, TouchableRipple } from 'react-native-paper';
 import { Asset, launchImageLibrary } from 'react-native-image-picker';

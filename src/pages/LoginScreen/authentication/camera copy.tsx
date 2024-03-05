@@ -1,4 +1,4 @@
-import { View, Text, useWindowDimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Image, useWindowDimensions } from 'react-native';
 import { useCameraDevice, Camera, CameraPosition } from 'react-native-vision-camera';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useAppState } from '@react-native-community/hooks';
@@ -19,18 +19,25 @@ const quitIcon = require('@assets/imgs/login/camera/quit.png');
 
 
 const AuthenticationCamera = () => {
-  console.log('渲染了AuthenticationCamera');
 
   const [cameraPosition, setcameraPosition] = useState<CameraPosition>('back');
   //front
   const device = useCameraDevice(cameraPosition);
   const camera = useRef<Camera>(null);
+  const isFocused = useIsFocused();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const appState = useAppState();
+  const [active, setActive] = useState(true);
   const { userInfoStorage, save } = useUserInfo();
   const dimensions = useWindowDimensions();
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', () => {
+      setActive(false);
+    });
+    return unsubscribe;
+  }, [navigation]);
 
-
-
+  const isActive = active && isFocused && appState === 'active';
   const { runAsync, loading } = useRequest((picBase64) => checkFace({ picBase64 }), {
     manual: true,
   });
@@ -94,6 +101,11 @@ const AuthenticationCamera = () => {
 
   }
 
+  if (!isActive) {
+    return (<View className="flex-1">
+      <Text>请打开摄像头</Text>
+    </View>);
+  }
 
 
   // return <BaseLayout className="h-full w-full justify-end" loading={loading}>
@@ -112,17 +124,17 @@ const AuthenticationCamera = () => {
 
   // </BaseLayout>;
   return <View>
-    {device && <Camera
+    {isActive && <Camera
       ref={camera}
 
-      style={{ width: dimensions.width, height: dimensions.height }}
+      style={{ width: dimensions.width, height: '100%' }}
       //https://github.com/mrousavy/react-native-vision-camera/issues/1988  不然会崩溃
 
       key={device.id}
       device={device} //此相机设备包含的物理设备类型列表。
       // video={true} //录像功能打开关闭
       // supportsVideoHDR={true}
-      isActive={true} //是否打开相机， 可以缓存相机，加快打开速度
+      isActive={isActive} //是否打开相机， 可以缓存相机，加快打开速度
       photo={true} //拍照功能是否打开
       resizeMode="contain"
 

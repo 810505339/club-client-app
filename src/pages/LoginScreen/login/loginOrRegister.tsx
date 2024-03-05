@@ -7,13 +7,14 @@ import { ScreenNavigationProp } from '@router/type';
 import BaseLayout from '@components/baselayout';
 import Toast from 'react-native-toast-message';
 import { loginApi, sendYzmApi } from '@api/login';
+import { useRequest } from 'ahooks';
 const bgImage = require('@assets/imgs/login/login-register-bg.png');
 
 
 const LoginOrRegister = () => {
 
 
-  const [phone, setPhone] = useState('13111111111');
+  const [phone, setPhone] = useState('');
   const [checked, setChecked] = useState(false);
   const navigation = useNavigation<
     | ScreenNavigationProp<'NewUser'>
@@ -21,51 +22,63 @@ const LoginOrRegister = () => {
     | ScreenNavigationProp<'Verification'>
   >();
 
+  const { loading, runAsync } = useRequest(() => sendYzmApi(phone), {
+    manual: true,
+  });
+
   //密码登录
   function handlePwsLogin() {
-    if (!checked) {
-      Toast.show({ text1: '请勾选' });
-      return;
+    /* 是否允许通过 */
+    const isPass = verify();
+
+    if (isPass) {
+      /* 密码登录 */
+      navigation.navigate('OldUser', {
+        phone: phone,
+      });
     }
-    /* 密码登录 */
-    navigation.navigate('OldUser', {
-      phone: phone,
-    });
+
   }
 
   //
   async function handleVerification() {
-    if (!checked) {
-      Toast.show({ text1: '请勾选' });
-      return;
-    }
-
-    if (phone.length < 11) {
-      Toast.show({ text1: '手机号错误' });
-      return;
-    }
+    const isPass = verify();
     //发送验证码
+    if (isPass) {
+      try {
+        const { data } = await runAsync();
+        if (data) {
+          navigation.navigate('Verification', {
+            phone,
+          });
+        }
+      } catch (err) {
 
-    try {
-
-      const { data } = await sendYzmApi(phone);
-
-
-      navigation.navigate('Verification', {
-        phone,
-      });
-
-    } catch (err) {
-
+      }
     }
+
+
 
 
 
 
   }
+  /* 验证规则是否通过 */
+  function verify() {
+    if (!checked) {
+      Toast.show({ text1: '请勾选' });
+      return false;
+    }
+
+    if (phone.length < 11) {
+      Toast.show({ text1: '手机号错误' });
+      return false;
+    }
+    return true;
+  }
 
   return (
-    <BaseLayout source={bgImage}>
+    <BaseLayout source={bgImage} loading={loading}>
       <View className="mx-5 mt-11">
         <View>
           <Text className="text-[#ffffff7f] text-sx">请输入你的联系电话</Text>

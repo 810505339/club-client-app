@@ -39,7 +39,7 @@ const Authentication = () => {
     }
 
 
-    navigation.navigate('AuthenticationCamera');
+    navigation.navigate('DemoCamera');
   };
 
 

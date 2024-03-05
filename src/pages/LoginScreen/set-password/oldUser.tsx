@@ -17,7 +17,7 @@ const OldUser = () => {
   });
   const route = useRoute<RouteProp<RootStackParamList, 'OldUser'>>();
   const { phone } = route.params;
-  const { runAsync } = useRequest(() => loginApi({
+  const { runAsync, loading } = useRequest(() => loginApi({
     username: phone,
     password: allData.password,
     grant_type: 'password',
@@ -32,17 +32,18 @@ const OldUser = () => {
   }
 
   async function handleLogin() {
-    if (allData.password) {
+    if (!allData.password) {
       Toast.show({
         text1: '请输入密码',
       });
+      return;
     }
     //todo
     await runAsync();
   }
 
   return (
-    <BaseLayout source={bgImage}>
+    <BaseLayout source={bgImage} loading={loading}>
       <View className="mx-5 mt-11">
         <PswInput label="请输入密码" onChangeText={onChangeText} />
       </View>

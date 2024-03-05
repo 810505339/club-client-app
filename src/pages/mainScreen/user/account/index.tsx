@@ -69,7 +69,7 @@ const Account = () => {
           data={data.third}
           ItemSeparatorComponent={Divider}
           keyExtractor={(item) => item.id}
-          renderItem={renderItem} />``
+          renderItem={renderItem} />
       </View>
     </View>
     <View className="p-5 flex-1 flex-row items-end">

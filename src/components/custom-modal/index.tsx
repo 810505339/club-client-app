@@ -1,7 +1,7 @@
 import Drawer from '@components/drawer';
-import { FC, forwardRef, useCallback, useEffect, useState } from 'react';
-import { View } from 'react-native';
-import { BottomSheetFooter, BottomSheetModal } from '@gorhom/bottom-sheet';
+import { FC, forwardRef, useCallback, useEffect, useState, useMemo } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { BottomSheetFooter, BottomSheetModal, BottomSheetScrollView, BottomSheetView } from '@gorhom/bottom-sheet';
 import { Button, RadioButton, Text } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 const headerIcon = require('@assets/imgs/base/header.png');
@@ -36,7 +36,7 @@ const ListHeaderComponent: FC<{ headerText?: string }> = ({ headerText = '标 �
 };
 
 const ListFooterComponent: FC<{ btnText?: string, onPress: () => void }> = ({ btnText = '确定', onPress }) => {
-  return <View className="px-5">
+  return <View className="p-5">
     <Button
       mode="outlined"
       style={{ borderColor: '#EE2737', backgroundColor: '#EE2737', height: 50, borderRadius: 33 }}
@@ -77,29 +77,58 @@ const CustomModal = forwardRef<BottomSheetModal, IModalProp>((props, ref) => {
 
   // renders
   const renderFooter = useCallback(
-    props => {
+    () => {
       return (
-        <BottomSheetFooter {...props} bottomInset={24}>
-          <ListFooterComponent btnText={btnText} onPress={() => onPress(data?.find(d => d.id == value))} />
-        </BottomSheetFooter>
+        <ListFooterComponent btnText={btnText} onPress={() => onPress(data?.find(d => d.id == value))} />
       );
     },
     [btnText, data, onPress, value]
   );
 
-  //['33.3%']
-  return <Drawer snapPoints={snapPoints} ref={ref} onDismiss={onDismiss} footerComponent={renderFooter} >
-    <View className="h-full pb-5">
-      <ListHeaderComponent headerText={headerText} />
-      <RadioButton.Group onValueChange={(value) => setValue(value)} value={value}>
-        {data.map((item) => <Item key={item.id} {...item} />)}
-      </RadioButton.Group>
 
-    </View>
+
+
+  const renderItem = useCallback(
+    (item) => (
+
+      <RadioButton.Item key={item.id}
+        mode={'android'}
+        label={item.name}
+        color={'#EE2737'}
+        labelStyle={{ color: '#ffffff' }}
+        style={{ borderRadius: 12, borderWidth: 1, borderColor: '#2D2424', padding: 20, margin: 10, backgroundColor: '#221f1f7f' }} //#2D2424
+        value={item.id} />
+    ),
+    []
+  );
+
+
+  return <Drawer snapPoints={snapPoints} ref={ref} onDismiss={onDismiss}  >
+    <BottomSheetView >
+      <ListHeaderComponent headerText={headerText} />
+    </BottomSheetView>
+    <BottomSheetScrollView  >
+      {/* <RadioButton.Group onValueChange={(value) => setValue(value)} value={value}>
+
+        {data.map((item) => <RadioButton.Item key={item.id}
+          mode={'android'}
+          label={item.name}
+          color={'#EE2737'}
+          labelStyle={{ color: '#ffffff' }}
+          style={{ borderRadius: 12, borderWidth: 1, borderColor: '#2D2424', padding: 20, margin: 10, backgroundColor: '#221f1f7f' }} //#2D2424
+          value={item.id} />)}
+      </RadioButton.Group> */}
+      <RadioButton.Group onValueChange={(value) => setValue(value)} value={value}>
+        {data.map(renderItem)}
+      </RadioButton.Group>
+    </BottomSheetScrollView>
+    <BottomSheetView >
+      {renderFooter()}
+    </BottomSheetView>
   </Drawer>;
 });
 
 
 
-
 export default CustomModal;
+

@@ -7,6 +7,7 @@ import { useCountdown } from '@hooks/useCountdown';
 import { useCallback, useEffect, useState } from 'react';
 import VerificationCodeField from './component/VerificationCodeField';
 import { loginApi, sendYzmApi } from '@api/login';
+import { useRequest } from 'ahooks';
 
 
 const bgImage = require('@assets/imgs/login/login-register-bg.png');
@@ -20,19 +21,23 @@ const Verification = () => {
   const mobile = route.params.phone;
   const [isResend, setIsResend] = useState(false);
   const { count, start, stop } = useCountdown(60);
-  const [code, setCode] = useState('1234');
+  const [code, setCode] = useState('');
+
+  const { runAsync, loading } = useRequest(() => sendYzmApi(mobile), {
+    manual: true,
+  });
 
   const sendVerification = async () => {
     setIsResend(true);
     start();
 
-    await sendYzmApi(mobile);
+    await runAsync();
 
   };
 
 
   const codeChange = useCallback((value: string) => {
-    // setCode(value);
+    setCode(value);
   }, []);
 
   const handleLogin = async () => {
@@ -51,7 +56,7 @@ const Verification = () => {
 
       //设置信息
       if (!data?.user_info?.setPersonalInfo) {
-        navigation.navigate('AuthenticationSex');
+        navigation.navigate('UserInfo');
         return;
       }
 
@@ -83,7 +88,7 @@ const Verification = () => {
   );
 
   return (
-    <BaseLayout source={bgImage}>
+    <BaseLayout source={bgImage} loading={loading}>
       <View className="mx-5 mt-11">
         <Text className="text-[#ffffff7f]">请输入验证码</Text>
         <View className="mt-4">

@@ -1,4 +1,4 @@
-import { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetBackgroundProps, BottomSheetModal, BottomSheetProps, BottomSheetBackground } from '@gorhom/bottom-sheet';
+import { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetBackgroundProps, BottomSheetModal, BottomSheetProps, BottomSheetScrollView  } from '@gorhom/bottom-sheet';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { FC, useCallback, useMemo, useRef, forwardRef } from 'react';
 import { View } from 'react-native';

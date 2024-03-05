@@ -194,7 +194,7 @@ const Header = ({ navigation }) => {
       </Pressable>
     </View>
 
-    <CustomModal ref={bottomSheetModalRef} data={languageList} selectValue={selectValue} headerText="选择语言" onPress={selectLanguage} snapPoints={['35%']} />
+    <CustomModal ref={bottomSheetModalRef} data={languageList} selectValue={selectValue} headerText="选择语言" onPress={selectLanguage} snapPoints={['50%']} />
   </Appbar.Header>));
 };
 

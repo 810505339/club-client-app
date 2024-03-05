@@ -43,9 +43,9 @@ const HomeScreen = () => {
       draft.id = value.id;
     });
   }
-
+  /* 轮播图 */
   async function getcarouselListApi() {
-    const res = await getcarouselList({ storeId: data.id, limitNum: '5',type:'app' });
+    const res = await getcarouselList({ storeId: data.id, limitNum: '5',type:'0' });
     setData((draft: IData) => {
       draft.swiperList = res ?? [];
     });

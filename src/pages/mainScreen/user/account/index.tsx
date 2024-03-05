@@ -3,10 +3,10 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, RefreshControl, View } from 'react-native';
 import { Button, Divider, List, Text } from 'react-native-paper';
-import Animated from 'react-native-reanimated';
 import { RootStackParamList, UsertackParamList } from '@router/type';
 import { useImmer } from 'use-immer';
 import storage from '@storage/index';
+import { resetGenericPassword } from 'react-native-keychain';
 
 const Account = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
@@ -29,9 +29,9 @@ const Account = () => {
   });
 
   async function handleOut() {
-     //退出登录
+    //退出登录
     await storage.clearMap();
-    await 
+    await resetGenericPassword();
     navigation.navigate('HomeTabs');
 
   }
@@ -69,7 +69,7 @@ const Account = () => {
           data={data.third}
           ItemSeparatorComponent={Divider}
           keyExtractor={(item) => item.id}
-          renderItem={renderItem} />
+          renderItem={renderItem} />``
       </View>
     </View>
     <View className="p-5 flex-1 flex-row items-end">

@@ -1,4 +1,4 @@
-import { View, Text, useWindowDimensions } from 'react-native';
+import { View, Text, useWindowDimensions, TouchableOpacity, Image } from 'react-native';
 import { useCameraDevice, Camera, CameraPosition } from 'react-native-vision-camera';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useAppState } from '@react-native-community/hooks';
@@ -29,6 +29,9 @@ const AuthenticationCamera = () => {
   const { userInfoStorage, save } = useUserInfo();
   const dimensions = useWindowDimensions();
 
+  const isActive = 'userInfo' in userInfoStorage;
+
+  console.log(isActive);
 
 
   const { runAsync, loading } = useRequest((picBase64) => checkFace({ picBase64 }), {
@@ -83,7 +86,7 @@ const AuthenticationCamera = () => {
     setcameraPosition(cameraPosition == 'back' ? 'front' : 'back');
   };
 
-  console.log('渲染');
+
 
 
 
@@ -111,22 +114,34 @@ const AuthenticationCamera = () => {
   //   </View>
 
   // </BaseLayout>;
-  return <View>
+  return <View className="h-full w-full justify-end">
     {device && <Camera
       ref={camera}
 
-      style={{ width: dimensions.width, height: dimensions.height }}
+      style={{ width: dimensions.width, height: dimensions.height, position:'absolute' }}
       //https://github.com/mrousavy/react-native-vision-camera/issues/1988  不然会崩溃
 
       key={device.id}
       device={device} //此相机设备包含的物理设备类型列表。
       // video={true} //录像功能打开关闭
       // supportsVideoHDR={true}
-      isActive={true} //是否打开相机， 可以缓存相机，加快打开速度
+      isActive={isActive} //是否打开相机， 可以缓存相机，加快打开速度
       photo={true} //拍照功能是否打开
       resizeMode="contain"
 
     />}
+
+    <View className="  flex-row w-full items-center justify-around mb-[25%]">
+      <TouchableOpacity className="p-2 rounded-full bg-[#D51D1D99]" onPress={changecamera}>
+        <Image source={switchIcon} />
+      </TouchableOpacity>
+      <TouchableOpacity className=" w-16 h-16 rounded-full  border-2 border-white justify-center items-center" onPress={takePhoto} >
+        <View className="bg-white w-14 h-14 rounded-full" />
+      </TouchableOpacity>
+      <TouchableOpacity className="p-2 rounded-full bg-[#00000099]" onPress={handlequit}>
+        <Image source={quitIcon} />
+      </TouchableOpacity>
+    </View>
   </View>;
 
 };

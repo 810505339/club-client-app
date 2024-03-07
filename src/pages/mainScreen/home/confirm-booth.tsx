@@ -17,6 +17,7 @@ import useSelectShop from '@hooks/useSelectShop';
 import { useImmer } from 'use-immer';
 import { useTranslation } from 'react-i18next';
 import { booking } from '@api/booths';
+import Toast from 'react-native-toast-message';
 
 
 type IItem = {
@@ -68,6 +69,12 @@ const ConfirmBooth = () => {
 
   const toUrl = () => {
 
+    if (!selectBooth.boothId) {
+      Toast.show({
+        text1: '请选择卡座',
+      });
+      return;
+    }
 
     navigation.navigate('OrdersInfo', {
       orderContext: [

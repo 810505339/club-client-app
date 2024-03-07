@@ -7,9 +7,9 @@ import Verification from '@pages/LoginScreen/verification/index';
 import AuthenticationSex from '@pages/LoginScreen/authentication/sex';
 import AuthenticationPower from '@pages/LoginScreen/authentication/power';
 import Authentication from '@pages/LoginScreen/authentication/index';
-import AuthenticationCamera from '@pages/LoginScreen/authentication/camera';
+
 import UserInfo from '@pages/LoginScreen/userinfo';
-import AuthenticationFacestatus from '@pages/LoginScreen/authentication/facestatus';
+
 // import AuthenticationCamera from '@pages/loginScreen/authentication/camera';
 // import AuthenticationFacestatus from '@pages/loginScreen/authentication/facestatus';
 // import UserInfo from '@pages/loginScreen/userinfo/index';
@@ -57,17 +57,8 @@ const LoginGroup = () => {
       component={Authentication}
       options={{ title: '输入验证码' }}
     />
-    <Stack.Screen
-      name="AuthenticationCamera"
-      component={AuthenticationCamera}
-      options={{ title: '输入验证码', headerShown: false }}
-    />
-    <Stack.Screen
-      name="AuthenticationFacestatus"
-      component={AuthenticationFacestatus}
 
-      options={{ title: '输入验证码', headerShown: false }}
-    />
+
 
     <Stack.Screen
       name="UserInfo"

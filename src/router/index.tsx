@@ -19,8 +19,9 @@ import DemoGroup from './DemoGroup';
 
 import BlurviewDEmo from '@pages/demoScreen/blurview';
 import CouponsModal from '@pages/mainScreen/user/coupons/modal';
+import AuthenticationCamera from '@pages/LoginScreen/authentication/camera';
 
-const initialRouteName: keyof RootStackParamList = 'Authentication';
+const initialRouteName: keyof RootStackParamList = 'HomeTabs';
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 export const Stack = createStackNavigator<RootStackParamList>();
 const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: DefaultTheme });
@@ -33,6 +34,11 @@ const AppNavigator = () => {
         headerTransparent: true,
         // animation: 'none',
       }}>
+        <Stack.Screen
+          name="AuthenticationCamera"
+          component={AuthenticationCamera}
+          options={{ title: '', headerShown: false }}
+        />
 
         <Stack.Screen name="Demo" component={Demo} />
         <Stack.Screen name="IM" component={IM} />

@@ -30,13 +30,12 @@ const PackageItem = (props: IProps) => {
 
 
   const border = index === activeIndex ? 'border-2 border-[#E6A055FF]' : '';
-  return (<TouchableOpacity onPress={() => onPress(index)}>
-    <View className={` w-24 h-16 mr-5 rounded-xl ${border} overflow-hidden`} >
+  return (<TouchableOpacity onPress={() => onPress(index)} >
+    <View className={` w-24 h-16 mx-5 rounded-xl ${border} overflow-hidden `} >
       <Image resizeMode="cover" source={source} className="w-24 h-16 " />
     </View>
-    <Text className="text-white text-xs font-semibold mt-2.5">{name}</Text>
+    <Text className="text-white text-xs font-semibold mt-2.5 truncate">{name}</Text>
     <Text className="opacity-50 text-white w-24" style={{ fontSize: 10 }} >{introduction}</Text>
-
   </TouchableOpacity>);
 };
 

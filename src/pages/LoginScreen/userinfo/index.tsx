@@ -30,6 +30,7 @@ const UserInfo = () => {
   });
   const formatDay = dayjs(dateTimer.date).format('YYYY-MM-DD');
   const [nickname, setNickname] = useState('');
+  const [personalSignature, setPersonalSignature] = useState('');
   /* 是否选择头像  */
   const [isChanged, setIsChanged] = useState(false);
 
@@ -86,7 +87,7 @@ const UserInfo = () => {
           id = data.data.id;
         }
       }
-      const { data: userInfo } = await editUserInfoApi({ avatarFileId: id, nickname, birthday: formatDay });
+      const { data: userInfo } = await editUserInfoApi({ avatarFileId: id, nickname, birthday: formatDay,personalSignature });
       if (userInfo.data) {
         //修改用户信息成功
         navigation.navigate('HomeTabs');
@@ -187,7 +188,7 @@ const UserInfo = () => {
           <Text className="mb-2">你的个性签名</Text>
           {dateTimer.show && <DateTimePicker onChange={onChange} value={dateTimer.date} />}
 
-          <TextInput className="bg-transparent" showSoftInputOnFocus={false} value={formatDay} onFocus={onFocus} />
+          <TextInput className="bg-transparent" showSoftInputOnFocus={false} value={personalSignature} onChangeText={(t)=>setPersonalSignature(t)} />
 
         </View>
         <View className="h-32 mt-auto  justify-start">

@@ -16,6 +16,7 @@ import { useEffect } from 'react';
 import { checkBooth, calPayAmount, create } from '@api/fightwine';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import useSelectShop from '@hooks/useSelectShop';
+import { useRequest } from 'ahooks';
 const boy = require('@assets/imgs/fightwine/boys.png');
 const girls = require('@assets/imgs/fightwine/girls.png');
 const width = Dimensions.get('window').width;
@@ -38,6 +39,9 @@ const Booths = () => {
   });
   const selectBooth: any = booths?.activeIndex != undefined ? booths.list[booths?.activeIndex] : {};
   const { shopName } = useSelectShop();
+  const { loading, runAsync } = useRequest((params) => calPayAmount(params), {
+    manual: true,
+  });
 
 
 
@@ -100,7 +104,7 @@ const Booths = () => {
       return;
     }
 
-    const res = await calPayAmount({
+    const res = await runAsync({
       boothId: selectBooth?.boothId,
       partyMode: winePartyMode,
       maleNum: data.maleNum,
@@ -216,7 +220,7 @@ const Booths = () => {
 
 
 
-  return (<BaseLayout>
+  return (<BaseLayout loading={loading}>
     {<Image resizeMode="cover" className="absolute top-0" style={{ width: width, height: 500 }} source={{ uri: file + '/' + booths?.picture?.fileName }} />}
     <ScrollView >
       <Panel className="mt-[200]">

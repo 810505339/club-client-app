@@ -95,6 +95,8 @@ export interface EditSelfParams {
 
 	/*生日 */
 	birthday: string;
+	/* 个性签名 */
+	personalSignature: string
 }
 
 
@@ -104,6 +106,7 @@ export interface EditSelfParams {
  * @param {number} params.avatarFileId 头像文件id
  * @param {string} params.nickname 昵称
  * @param {object} params.birthday 生日
+ * @param {object} params.personalSignature 个性签名
  * @returns
  */
 export const editUserInfoApi = (data: EditSelfParams) => {

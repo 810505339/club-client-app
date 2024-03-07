@@ -103,6 +103,14 @@ const LaunchWine = () => {
       return;
     }
 
+    if (!shop.select.id)
+    {
+      Toast.show({
+        text1: '请选择区域',
+      });
+      return;
+    }
+
     navigation.navigate('Booths', {
       partyName: data.partyName,
       areaId: data.areaId,

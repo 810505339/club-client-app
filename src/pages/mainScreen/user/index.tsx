@@ -12,6 +12,7 @@ import { useRequest } from 'ahooks';
 import { detailsById, mineInfo } from '@api/user';
 import CustomModal from '@components/custom-modal';
 import useLanguageSelect from './hooks/useLanguageSelect';
+import { useImmer } from 'use-immer';
 
 
 const bg1Icon = require('@assets/imgs/user/bg_1.png');
@@ -37,8 +38,11 @@ const ListHeader = ({ balancePress }: IListHeader) => {
   /* 用户信息 */
   const userInfo = _userInfo?.data;
   const info = data?.data;
+
+
   const fontText = 'text-xs text-[#ffffff7f]';
   const box = 'items-center  h-28 pb-3 justify-end mb-2 relative';
+
   const sexIcon = userInfo?.gender === 1 ? manIcon : womanIcon;
   const isCertifiedIcon = userInfo?.checkFace ? certifiedIcon : noCertifiedIcon;
   const sexText = userInfo?.gender === 1 ? '男' : '女';
@@ -73,6 +77,7 @@ const ListHeader = ({ balancePress }: IListHeader) => {
               blurType="dark"
               blurAmount={5}
               reducedTransparencyFallbackColor="transparent"
+
 
             />
             <Image source={sexIcon} className="w-4 h-4 absolute left-2" />
@@ -114,6 +119,16 @@ const HomeScreen = () => {
     });
 
   }, [navigation]);
+  const [allData, setAllData] = useImmer({
+    refreshing: false,
+  });
+
+  function onRefresh() {
+    setAllData(draft => {
+      draft.refreshing = true;
+      draft.refreshing = false;
+    });
+  }
 
 
 
@@ -153,6 +168,7 @@ const HomeScreen = () => {
         ItemSeparatorComponent={Divider}
         renderItem={renderItem}
         keyExtractor={item => item.id}
+        refreshControl={<RefreshControl refreshing={allData.refreshing} onRefresh={onRefresh} />}
         data={cells}
       />
     </Animated.View>

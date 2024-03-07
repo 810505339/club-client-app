@@ -1,5 +1,5 @@
 import BaseLayout from '@components/baselayout';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { View, Image, Pressable, TouchableWithoutFeedback, NativeSyntheticEvent, TextInputFocusEventData, ImageSourcePropType } from 'react-native';
 import { IconButton, Button, Text, TextInput, TouchableRipple } from 'react-native-paper';
 import { Asset, launchImageLibrary } from 'react-native-image-picker';
@@ -31,8 +31,9 @@ const UserInfo = () => {
   const formatDay = dayjs(dateTimer.date).format('YYYY-MM-DD');
   const [nickname, setNickname] = useState('');
   const [personalSignature, setPersonalSignature] = useState('');
-  /* 是否选择头像  */
-  const [isChanged, setIsChanged] = useState(false);
+  const [selected, setSelected] = useState(false);
+
+  const id = useRef('');
 
   useRequest(detailsById, {
     onSuccess: (res) => {
@@ -46,6 +47,8 @@ const UserInfo = () => {
         setdateTimer(draft => {
           draft.date = _data.birthday ? dayjs(_data.birthday).toDate() : new Date();
         });
+        setPersonalSignature(_data.personalSignature);
+        id.current = _data.avatarFileId;
       }
 
     },
@@ -78,17 +81,20 @@ const UserInfo = () => {
     }
 
     try {
-      let id;
-      if (isChanged) {
-        const { data } = await uploadImage(selectImage);
+
+      if (selected) {
+        const data = await uploadImage(selectImage);
+        console.log(data, '这是data哦');
         if (data.success) {
-          console.log(data, 'uploadImage');
-          console.log(data, 'uploadImage');
-          id = data.data.id;
+          id.current = data.data.id;
+
         }
+
       }
-      const { data: userInfo } = await editUserInfoApi({ avatarFileId: id, nickname, birthday: formatDay,personalSignature });
-      if (userInfo.data) {
+      const { data: userInfo } = await editUserInfoApi({ avatarFileId: id.current, nickname, birthday: formatDay, personalSignature });
+
+
+      if (userInfo.success) {
         //修改用户信息成功
         navigation.navigate('HomeTabs');
       }
@@ -111,15 +117,15 @@ const UserInfo = () => {
 
     if (response.didCancel) {
       console.log('User cancelled image picker');
-      setIsChanged(false);
+
     } else if (response.errorMessage) {
       console.log('ImagePicker Error: ', response.errorMessage);
-      setIsChanged(false);
+
     } else {
       if (response.assets) {
-
+        console.log(response.assets[0]);
         setSelectImage(response.assets[0]);
-        setIsChanged(true);
+        setSelected(true);
       }
 
       // You can now use the chosen image as an avatar
@@ -136,6 +142,8 @@ const UserInfo = () => {
 
   // 上传图片api调用
   async function uploadImage(params: Asset) {
+    console.log(params.uri);
+
     const formData = new FormData();
     formData.append('file', {
       uri: params.uri,
@@ -158,7 +166,7 @@ const UserInfo = () => {
 
   />);
 
-  const btnRender = (<Image source={selectImage} className="h-24 w-24  rounded-full border border-red-500" />);
+  const btnRender = (<Image source={selectImage} className="h-24 w-24  rounded-full" />);
 
 
 
@@ -186,9 +194,7 @@ const UserInfo = () => {
 
         <View className="mt-10">
           <Text className="mb-2">你的个性签名</Text>
-          {dateTimer.show && <DateTimePicker onChange={onChange} value={dateTimer.date} />}
-
-          <TextInput className="bg-transparent" showSoftInputOnFocus={false} value={personalSignature} onChangeText={(t)=>setPersonalSignature(t)} />
+          <TextInput className="bg-transparent" value={personalSignature} onChangeText={(t) => setPersonalSignature(t)} />
 
         </View>
         <View className="h-32 mt-auto  justify-start">

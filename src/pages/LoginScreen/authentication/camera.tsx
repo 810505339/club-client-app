@@ -58,7 +58,8 @@ const AuthenticationCamera = () => {
       console.log(file);
 
       const { data } = await runAsync(file);
-      if (data.success) {
+      console.log(data);
+      if (data) {
         /*  */
         takeFaceSuccess();
       }
@@ -115,7 +116,7 @@ const AuthenticationCamera = () => {
     {device && <Camera
       ref={camera}
 
-      style={{ width: dimensions.width, height: dimensions.height,position:'absolute' }}
+      style={{ width: dimensions.width, height: dimensions.height, position: 'absolute' }}
       //https://github.com/mrousavy/react-native-vision-camera/issues/1988  不然会崩溃
 
       key={device.id}

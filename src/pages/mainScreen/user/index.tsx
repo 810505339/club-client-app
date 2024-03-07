@@ -11,8 +11,8 @@ import { BlurView } from '@react-native-community/blur';
 import { useRequest } from 'ahooks';
 import { detailsById, mineInfo } from '@api/user';
 import CustomModal from '@components/custom-modal';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import useLanguageSelect from './hooks/useLanguageSelect';
+
 
 const bg1Icon = require('@assets/imgs/user/bg_1.png');
 const bg2Icon = require('@assets/imgs/user/bg_2.png');
@@ -24,12 +24,6 @@ const noCertifiedIcon = require('@assets/imgs/user/noCertified.png');
 const logoIcon = require('@assets/imgs/base/logo.png');
 const editIcon = require('@assets/imgs/user/edit.png');
 const languageIcon = require('@assets/imgs/user/language.png');
-
-const wait = (timeout: number) => {
-  return new Promise(resolve => {
-    setTimeout(resolve, timeout);
-  });
-};
 
 
 
@@ -43,11 +37,8 @@ const ListHeader = ({ balancePress }: IListHeader) => {
   /* 用户信息 */
   const userInfo = _userInfo?.data;
   const info = data?.data;
-
-
   const fontText = 'text-xs text-[#ffffff7f]';
   const box = 'items-center  h-28 pb-3 justify-end mb-2 relative';
-
   const sexIcon = userInfo?.gender === 1 ? manIcon : womanIcon;
   const isCertifiedIcon = userInfo?.checkFace ? certifiedIcon : noCertifiedIcon;
   const sexText = userInfo?.gender === 1 ? '男' : '女';
@@ -56,7 +47,7 @@ const ListHeader = ({ balancePress }: IListHeader) => {
   return <View className=" rounded-t-3xl">
     <View className="mb-8 px-5 flex   flex-row    box-border">
       <View className="w-24 h-24   rounded-full">
-        {userInfo?.avatarUrl && <Animated.Image className={' w-24 h-24   rounded-full'} style={{ resizeMode: 'contain' }} source={{ uri: userInfo?.avatarUrl }} />}
+        {userInfo?.avatarUrl && <Image className={' w-24  h-24 rounded-full'} resizeMode="cover" source={{ uri: userInfo?.avatarUrl }} />}
       </View>
       <View className=" ml-5   flex-auto" >
         <View><Text className="text-lg text-[#fff] font-bold">{userInfo?.nickname}</Text></View>
@@ -139,12 +130,7 @@ const HomeScreen = () => {
 
 
 
-  const [refreshing, setRefreshing] = useState(false);
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
 
-    wait(2000).then(() => setRefreshing(false));
-  }, []);
 
   const balancePress = (name: string) => {
     navigation.navigate(name);
@@ -168,7 +154,6 @@ const HomeScreen = () => {
         renderItem={renderItem}
         keyExtractor={item => item.id}
         data={cells}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       />
     </Animated.View>
   </BaseLayout>);

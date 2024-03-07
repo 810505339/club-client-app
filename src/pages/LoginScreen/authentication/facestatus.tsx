@@ -17,8 +17,8 @@ const Facestatus = () => {
   const navigation = useNavigation<ScreenNavigationProp<'UserInfo'>>();
   const { userInfoStorage, save } = useUserInfo();
   //1 or 0
-  // const status = route.params.status;
-  const status = 1;
+  const status = route.params.status;
+
   const error = '可能原因:第三方检测错误';
   const stateImage = status === 1 ? successImage : errorImage;
   const opacity = useSharedValue(0);
@@ -49,7 +49,7 @@ const Facestatus = () => {
       return;
     }
 
-    navigation.navigate('HomeTabs');
+    navigation.replace('HomeTabs');
   }
 
 

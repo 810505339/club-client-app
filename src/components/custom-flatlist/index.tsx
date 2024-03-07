@@ -66,7 +66,7 @@ const CustomFlatList = forwardRef<CustomFlatListRef, IPaginatedFlatListProps<any
     errorComponent = <Text>Oops! Something went wrong.</Text>,
     noMoreData = <RendernoMoreData />,
     noDataComponent = <RenderNoData />,
-    renderHeader = <></>,
+    ListHeaderComponent = <></>,
     ...rest
   } = props;
 
@@ -182,12 +182,13 @@ const CustomFlatList = forwardRef<CustomFlatListRef, IPaginatedFlatListProps<any
 
   useImperativeHandle(ref, () => ({
     refreshData,
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }), []);
 
   // 渲染 FlatList
   return (
     <FlatList
+      ListHeaderComponent={ListHeaderComponent}
       data={allData.data}
       {...rest}
       refreshing={isLoading}

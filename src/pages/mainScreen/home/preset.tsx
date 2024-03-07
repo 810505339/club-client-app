@@ -25,6 +25,16 @@ import { ticketBooking } from '@api/ticket';
 const tickerBg = require('@assets/imgs/home/preset/ticket-header.png');
 const card_1 = require('@assets/imgs/base/card_1.png');
 
+const defaultData = {
+  remainingNum: 0, //剩余票数
+  selectAreaId: '',
+  total: 0,
+  ticketId: '',
+  amount: 0,
+  ticketName: '',
+  num: 0,//默认票数
+};
+
 
 const Preset = () => {
 
@@ -54,15 +64,7 @@ const Preset = () => {
   });
 
 
-  const [data, setData] = useImmer({
-    remainingNum: 0, //剩余票数
-    selectAreaId: '',
-    total: 0,
-    ticketId: '',
-    amount: 0,
-    ticketName: '',
-    num: 0,//默认票数
-  });
+  const [data, setData] = useImmer(defaultData);
   const formatDay = dayjs(time).format('YYYY-MM-DD');
   //当选择的区域变化的时候
   const changeArea = async (list: any, index: number) => {
@@ -120,7 +122,15 @@ const Preset = () => {
 
 
   useEffect(() => {
-    console.log(shop.select.id,time,data.selectAreaId);
+    console.log(shop.select.id, time, data.selectAreaId);
+    if (!data.selectAreaId) {
+      Toast.show({ text1: '暂无区域' });
+      setData((draft) => {
+        Object.keys(defaultData).map(k => {
+          draft[k] = defaultData[k];
+        });
+      });
+    }
 
     if (shop.select.id && time && data.selectAreaId) {
       console.log('请求');
@@ -139,7 +149,7 @@ const Preset = () => {
     data.selectAreaId,
   ]);
 
-  
+
 
   return (<BaseLayout className="" loading={loading}>
     <CustomModal ref={bottomSheetModalRef} data={snap.shopList} selectValue={shop.select.id} onPress={onPress} headerText="选择门店" snapPoints={['50%']} />

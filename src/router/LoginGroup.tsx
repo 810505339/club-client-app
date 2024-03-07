@@ -4,14 +4,16 @@ import NewUser from '@pages/LoginScreen/set-password/newUser';
 import OldUser from '@pages/LoginScreen/set-password/oldUser';
 import LoginOrRegister from '@pages/LoginScreen/login/loginOrRegister';
 import Verification from '@pages/LoginScreen/verification/index';
+
 import AuthenticationSex from '@pages/LoginScreen/authentication/sex';
 import AuthenticationPower from '@pages/LoginScreen/authentication/power';
 import Authentication from '@pages/LoginScreen/authentication/index';
+import AuthenticationFacestatus from '@pages/LoginScreen/authentication/facestatus';
 
 import UserInfo from '@pages/LoginScreen/userinfo';
 
 // import AuthenticationCamera from '@pages/loginScreen/authentication/camera';
-// import AuthenticationFacestatus from '@pages/loginScreen/authentication/facestatus';
+
 // import UserInfo from '@pages/loginScreen/userinfo/index';
 
 const LoginGroup = () => {
@@ -67,11 +69,11 @@ const LoginGroup = () => {
       options={{ title: '用户信息' }}
     />
 
-    {/* <Stack.Screen
-      name="Camera"
-      component={Camera}
-      options={{ title: 'Camera' }}
-    /> */}
+    <Stack.Screen
+      name="AuthenticationFacestatus"
+      component={AuthenticationFacestatus}
+      options={{ title: '1' }}
+    />
   </Stack.Group>;
 };
 

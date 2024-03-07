@@ -88,7 +88,7 @@ export const sendYzmApi = (mobile: string) => {
 // 参数接口
 export interface EditSelfParams {
 	/*头像文件id */
-	avatarFileId: number;
+	avatarFileId: string;
 
 	/*昵称 */
 	nickname: string;

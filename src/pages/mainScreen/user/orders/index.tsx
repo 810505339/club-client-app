@@ -10,11 +10,13 @@ import { ScreenNavigationProp } from '@router/type';
 
 import { cancelOrder, getOrderDetail, getOrderList, tempPay } from '@api/order';
 import CustomFlatList from '@components/custom-flatlist';
-import { FC, memo, useCallback, useRef } from 'react';
+import { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
+import dayjs from 'dayjs';
 import { fileStore } from '@store/getfileurl';
 import { useTranslation } from 'react-i18next';
 import Dialog from '@components/dialog';
 import ListHeaderComponent from './components/ListHeaderComponent';
+import { useInterval } from 'ahooks';
 /* 预定门票 */
 const card1Image = require('assets/imgs/base/card_1.png');
 /* 拼酒局 */
@@ -53,17 +55,31 @@ const getOrderContext = (orderType: IOrderType) => {
 
 
 const Item: FC<any> = memo((props) => {
-  const { name, orderStatus, handleItemPress, orderType, createTime, originalAmount, picture, cancel, toNext, orderId } = props;
-  const img = fileStore.fileUrl + (picture?.fileName ?? '');
+  const { name, orderStatus, handleItemPress, orderType, createTime, originalAmount, picture, cancel, toNext, orderId, payEndTime } = props;
+  const img = fileStore.fileUrl + '/' + (picture?.fileName ?? '');
+
+  const PayEndTimeRender = (props: { payEndTime: string }) => {
+    const { payEndTime } = props;
+    const date1 = dayjs(payEndTime ?? new Date());
+    const date2 = dayjs(new Date());
+    const [seconds, setSeconds] = useState(date1.diff(date2, 'second'));
+    const time = dayjs().startOf('day').second(seconds);
+    const formattedTime = time.format('HH:mm:ss');
+    useInterval(() => {
+      setSeconds(seconds - 1);
+    }, 1000);
+
+    return <Text className="text-xs text-[#ffffff] ">
+      剩余
+      <Text className="text-[#EE2737FF]">{formattedTime}</Text>
+      可继续支付
+    </Text>;
+  };
 
   /*  */
   const RenderOrderStatus = () => {
     return <View className="py-2.5 mt-2.5 flex-row items-center justify-between">
-      <Text className="text-xs text-[#ffffff] ">
-        剩余
-        <Text className="text-[#EE2737FF]">1:29:56</Text>
-        可继续支付
-      </Text>
+      {payEndTime && <PayEndTimeRender payEndTime={payEndTime} />}
       <View className="flex-row gap-2">
         <Button mode="outlined" style={{
           borderColor: '#ee2737',
@@ -253,7 +269,7 @@ const Orders = () => {
                 renderItem={(item) => <Item {...item} handleItemPress={handleItemPress} cancel={cancel} toNext={toNext} />}
                 onFetchData={getOrderList}
                 params={{ orderType: orderType }}
-                keyExtractor={(item) => item.storeId}
+                keyExtractor={(item) => item.orderId}
                 ref={Dom}
               />}
             </View>

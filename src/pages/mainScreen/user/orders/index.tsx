@@ -55,7 +55,7 @@ const getOrderContext = (orderType: IOrderType) => {
 
 
 const Item: FC<any> = memo((props) => {
-  const { name, orderStatus, handleItemPress, orderType, createTime, originalAmount, picture, cancel, toNext, orderId, payEndTime } = props;
+  const { name, orderStatus, handleItemPress, orderType, createTime, originalAmount, picture, cancel, orderId, payEndTime } = props;
   const img = fileStore.fileUrl + '/' + (picture?.fileName ?? '');
 
   const PayEndTimeRender = (props: { payEndTime: string }) => {
@@ -93,7 +93,7 @@ const Item: FC<any> = memo((props) => {
         <Button mode="outlined" textColor="#ffffff" style={{
           height: 34,
         }} labelStyle={{ marginHorizontal: 5, fontSize: 12, marginVertical: 5 }}
-          onPress={() => toNext(orderId)}>
+          onPress={() => handleItemPress(props)}>
           继续支付
         </Button>
       </View>
@@ -187,10 +187,7 @@ const Orders = () => {
       draft.selectOrderId = orderId;
     });
   }, [data.selectOrderId]);
-  /* 点击继续支付 */
-  const toNext = useCallback((orderId: string) => {
-    handleItemPress({ orderId });
-  }, [navigation]);
+
   /* 点击取消订单确定 */
   const confirm = async () => {
     const res = await cancelOrder(data.selectOrderId);
@@ -212,7 +209,7 @@ const Orders = () => {
   const handleItemPress = async (item: any) => {
 
     const { data } = await getOrderDetail(item.orderId);
-    const img = fileStore.fileUrl + (item.picture?.fileName ?? '');
+    const img = fileStore.fileUrl + '/' + (item.picture?.fileName ?? '');
     console.log(data);
 
 
@@ -266,7 +263,7 @@ const Orders = () => {
             <View>
 
               {index === data.defaultIndex && <CustomFlatList
-                renderItem={(item) => <Item {...item} handleItemPress={handleItemPress} cancel={cancel} toNext={toNext} />}
+                renderItem={(item) => <Item {...item} handleItemPress={handleItemPress} cancel={cancel} />}
                 onFetchData={getOrderList}
                 params={{ orderType: orderType }}
                 keyExtractor={(item) => item.orderId}

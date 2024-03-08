@@ -89,7 +89,11 @@ const OrdersInfo = () => {
   };
 
 
-  const { orderContext = [], headerImg, submit, orderStatus } = route?.params;
+  const { orderContext = [], headerImg, submit, orderStatus, orderId } = route?.params;
+
+  if (orderId) {
+    //如果orderId todo
+  }
 
 
   const couponNum = route.params?.couponId ? 1 : 0;
